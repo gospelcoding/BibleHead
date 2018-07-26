@@ -7,8 +7,8 @@ class NewVerseForm extends React.PureComponent {
     super(props);
     this.state = {
       book: "Genesis",
-      startChapter: 1,
-      startVerse: 1
+      startChapter: "1",
+      startVerse: "1"
     };
   }
 

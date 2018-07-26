@@ -21,7 +21,7 @@ import NewVerseForm from './components/NewVerseForm'
 // });
 
 // type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component {
   render() {
     return (
       <NewVerseForm />
