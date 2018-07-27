@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { View, Picker } from "react-native";
 import ChapterVerseInput from "./ChapterVerseInput";
 import EndReferenceInput from "./EndReferenceInput";
@@ -9,7 +10,7 @@ import {
   isValidEndVerse
 } from "../util/verse_ref_utils";
 
-function ReferenceInput(props) {
+export default function ReferenceInput(props) {
   const books = ["Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy"];
   return (
     <View>
@@ -60,4 +61,12 @@ function ReferenceInput(props) {
   );
 }
 
-export default ReferenceInput;
+ReferenceInput.propTypes = {
+  book: PropTypes.string.isRequired,
+  startChapter: PropTypes.string.isRequired,
+  startVerse: PropTypes.string.isRequired,
+  endChapter: PropTypes.string.isRequired,
+  endVerse: PropTypes.string.isRequired,
+  multiverse: PropTypes.bool,
+  updateState: PropTypes.func.isRequired
+};

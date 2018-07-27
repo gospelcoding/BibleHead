@@ -1,7 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Text, Switch, View } from "react-native";
 
-function MultiverseCheck(props) {
+export default function MultiverseCheck(props) {
   return (
     <View style={{ flexDirection: "row" }}>
       <Switch value={false} onValueChange={props.setMultiverse} />
@@ -10,4 +11,6 @@ function MultiverseCheck(props) {
   );
 }
 
-export default MultiverseCheck;
+MultiverseCheck.propTypes = {
+  setMultiverse: PropTypes.func.isRequired
+};
