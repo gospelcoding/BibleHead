@@ -1,21 +1,12 @@
 import React from "react";
 import { View, TextInput, Text } from "react-native";
-import { isValidInteger } from "../util/util";
-
-function isValidChapter(chapterStr) {
-  return isValidInteger(chapterStr, { min: 1, max: 150 });
-}
-
-function isValidVerse(verseStr) {
-  return isValidInteger(verseStr, { min: 1, max: 200 });
-}
 
 export default class ChapterVerseInput extends React.PureComponent {
   render() {
-    let chapterTextStyle = isValidChapter(this.props.chapter)
+    let chapterTextStyle = this.props.validChapter
       ? { color: "black" }
       : { color: "red" };
-    let verseTextStyle = isValidVerse(this.props.verse)
+    let verseTextStyle = this.props.validVerse
       ? { color: "black" }
       : { color: "red" };
     return (

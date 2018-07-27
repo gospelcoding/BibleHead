@@ -1,6 +1,16 @@
 import React from "react";
-import { View, Text, TextInput, Picker } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Picker,
+  SafeAreaView,
+  StyleSheet
+} from "react-native";
 import ChapterVerseInput from "./ChapterVerseInput";
+import EndReferenceInput from "./EndReferenceInput";
+import DebugText from "./DebugText";
+import ReferenceInput from "./ReferenceInput";
 
 class NewVerseForm extends React.PureComponent {
   constructor(props) {
@@ -8,39 +18,40 @@ class NewVerseForm extends React.PureComponent {
     this.state = {
       book: "Genesis",
       startChapter: "1",
-      startVerse: "1"
+      startVerse: "1",
+      multiverse: false,
+      endChapter: "1",
+      endVerse: "2"
     };
   }
 
   render() {
-    const books = ["Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy"];
     return (
-      <View>
-        <Text style={{ paddingTop: 40 }}>{JSON.stringify(this.state)}</Text>
-        <TextInput placeholder="Paste or type verse text here." />
-        <Picker
-          selectedValue={this.state.book}
-          onValueChange={value => {
-            this.setState({ book: value });
-          }}
-        >
-          {books.map(book => {
-            return <Picker.Item key={book} label={book} value={book} />;
-          })}
-        </Picker>
-        <ChapterVerseInput
-          chapter={this.state.startChapter}
-          verse={this.state.startVerse}
-          updateChapter={c => {
-            this.setState({ startChapter: c });
-          }}
-          updateVerse={v => {
-            this.setState({ startVerse: v });
+      <SafeAreaView style={{ flex: 1 }}>
+        <TextInput
+          style={styles.verseTextInput}
+          placeholder="Paste or type verse text here."
+        />
+        <ReferenceInput
+          book={this.state.book}
+          startChapter={this.state.startChapter}
+          startVerse={this.state.startVerse}
+          endChapter={this.state.endChapter}
+          endVerse={this.state.endVerse}
+          multiverse={this.state.multiverse}
+          updateState={newState => {
+            this.setState(newState);
           }}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  verseTextInput: {
+    flex: 1
+  }
+});
 
 export default NewVerseForm;
