@@ -7,5 +7,5 @@ export default function DebugText(props) {
 }
 
 DebugText.propTypes = {
-  object: PropTypes.object
+  object: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };

@@ -1,7 +1,9 @@
 import React from "react";
-import { TextInput, SafeAreaView, StyleSheet } from "react-native";
+import { TextInput, SafeAreaView, StyleSheet, Button } from "react-native";
 import DebugText from "./DebugText";
 import ReferenceInput from "./ReferenceInput";
+import VerseStorage from "../models/VerseStorage";
+import { newVerse } from "../models/Verse";
 
 class NewVerseForm extends React.PureComponent {
   constructor(props) {
@@ -17,9 +19,32 @@ class NewVerseForm extends React.PureComponent {
     };
   }
 
+  componentDidMount() {
+    VerseStorage.getVerseIndex().then(vindex => {
+      this.setState({ vindex: vindex });
+    });
+  }
+
+  onSaveButton = () => {
+    const verse = newVerse(
+      this.state.verseText,
+      this.state.book,
+      this.state.startChapter,
+      this.state.startVerse,
+      this.state.multiverse && this.state.endChapter,
+      this.state.multiverse && this.state.endVerse
+    );
+    VerseStorage.createVerse(verse).then(() => {
+      VerseStorage.getVerseIndex().then(vindex => {
+        this.setState({ vindex: vindex });
+      });
+    });
+  };
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <DebugText object={this.state.vindex} />
         <ReferenceInput
           book={this.state.book}
           startChapter={this.state.startChapter}
@@ -40,6 +65,7 @@ class NewVerseForm extends React.PureComponent {
             this.setState({ verseText: text });
           }}
         />
+        <Button onPress={this.onSaveButton} title="Save" />
       </SafeAreaView>
     );
   }

@@ -12,6 +12,7 @@
     "react-native": "0.56.0"
   },
   "devDependencies": {
+    "babel-eslint": "^8.2.6",
     "babel-jest": "23.0.1",
     "babel-preset-react-native": "^5.0.1",
     "eslint": "^5.0.1",
