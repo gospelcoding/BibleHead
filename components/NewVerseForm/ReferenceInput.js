@@ -8,7 +8,7 @@ import {
   isValidStartVerse,
   isValidEndChapter,
   isValidEndVerse
-} from "../util/verse_ref_utils";
+} from "../../util/verse_ref_utils";
 
 export default function ReferenceInput(props) {
   const books = ["Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy"];

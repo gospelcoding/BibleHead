@@ -5,18 +5,33 @@ export default class VerseStorage {
     await createVerse(verse);
   }
 
-  // TODO - this should not be public because it exposes implementation details
-  static async getVerseIndex() {
-    return await getVerseIndex();
+  static async getAllVerses() {
+    return await getAllVerses();
   }
+}
+
+async function getAllVerses() {
+  const vindex = await getVerseIndex();
+  const verseDataKeys = vindex.map(id => {
+    return `bh.verseData.${id}`;
+  });
+  const keyDataPairs = await AsyncStorage.multiGet(verseDataKeys);
+  return keyDataPairs.map(pair => {
+    return JSON.parse(pair[1]);
+  });
 }
 
 async function createVerse(verse) {
   await assignVerseId(verse);
-  const { id, text, ...verseData } = verse;
-  await AsyncStorage.setItem(`bh.verseData.${id}`, JSON.stringify(verseData));
-  await AsyncStorage.setItem(`bh.verseText.${id}`, text);
-  await updateVerseIndex(verse);
+  const { text, ...verseData } = verse;
+  await Promise.all([
+    AsyncStorage.setItem(
+      `bh.verseData.${verseData.id}`,
+      JSON.stringify(verseData)
+    ),
+    AsyncStorage.setItem(`bh.verseText.${verseData.id}`, text),
+    updateVerseIndex(verse)
+  ]);
 }
 
 async function assignVerseId(verse) {
