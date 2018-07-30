@@ -1,6 +1,7 @@
 import React from "react";
 import { SafeAreaView, Text, Button, FlatList } from "react-native";
 import VerseStorage from "../../models/VerseStorage";
+import Verse from "../../models/Verse";
 
 export default class VerseList extends React.PureComponent {
   constructor(props) {
@@ -47,11 +48,7 @@ export default class VerseList extends React.PureComponent {
           data={this.state.versesData}
           keyExtractor={verse => `${verse.id}`}
           renderItem={({ item: verse }) => {
-            return (
-              <Text>
-                {`${verse.bookName} ${verse.startChapter}:${verse.startVerse}`}
-              </Text>
-            );
+            return <Text>{Verse.refText(verse)}</Text>;
           }}
         />
       </SafeAreaView>

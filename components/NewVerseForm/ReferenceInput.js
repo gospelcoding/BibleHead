@@ -9,19 +9,19 @@ import {
   isValidEndChapter,
   isValidEndVerse
 } from "../../util/verse_ref_utils";
+import BibleBook from "../../models/BibleBook";
 
 export default function ReferenceInput(props) {
-  const books = ["Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy"];
   return (
     <View>
       <Picker
-        selectedValue={props.book}
+        selectedValue={props.bookId}
         onValueChange={value => {
-          props.updateState({ book: value });
+          props.updateState({ bookId: value });
         }}
       >
-        {books.map(book => {
-          return <Picker.Item key={book} label={book} value={book} />;
+        {BibleBook.books.map((book, id) => {
+          return <Picker.Item key={id.toString()} label={book} value={id} />;
         })}
       </Picker>
       <ChapterVerseInput
@@ -62,7 +62,7 @@ export default function ReferenceInput(props) {
 }
 
 ReferenceInput.propTypes = {
-  book: PropTypes.string.isRequired,
+  bookId: PropTypes.number.isRequired,
   startChapter: PropTypes.string.isRequired,
   startVerse: PropTypes.string.isRequired,
   endChapter: PropTypes.string.isRequired,

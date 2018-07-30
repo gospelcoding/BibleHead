@@ -1,4 +1,5 @@
 import { AsyncStorage } from "react-native";
+import Verse from "./Verse";
 
 export default class VerseStorage {
   static async createVerse(verse) {
@@ -51,8 +52,12 @@ async function nextVerseId() {
 
 async function updateVerseIndex(verse) {
   let vindex = await getVerseIndex();
-  // TODO - actually sort the index!
-  vindex.push(verse.id);
+  const versesData = await getAllVerses();
+  let position = versesData.findIndex(compareVerse => {
+    return Verse.compare(verse, compareVerse) < 0;
+  });
+  if (position == -1) position = vindex.length;
+  vindex.splice(position, 0, verse.id);
   await AsyncStorage.setItem("bh.verseIndex", JSON.stringify(vindex));
 }
 

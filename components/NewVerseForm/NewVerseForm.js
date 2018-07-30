@@ -1,15 +1,15 @@
 import React from "react";
 import { TextInput, SafeAreaView, StyleSheet, Button } from "react-native";
-import DebugText from "../shared/DebugText";
 import ReferenceInput from "./ReferenceInput";
 import VerseStorage from "../../models/VerseStorage";
-import { newVerse } from "../../models/Verse";
+import Verse from "../../models/Verse";
+import BibleBook from "../../models/BibleBook";
 
-class NewVerseForm extends React.PureComponent {
+export default class NewVerseForm extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      book: "Genesis",
+      bookId: 0,
       startChapter: "1",
       startVerse: "1",
       multiverse: false,
@@ -20,13 +20,14 @@ class NewVerseForm extends React.PureComponent {
   }
 
   onSaveButton = () => {
-    const verse = newVerse(
+    const verse = Verse.newVerse(
       this.state.verseText,
-      this.state.book,
-      this.state.startChapter,
-      this.state.startVerse,
-      this.state.multiverse && this.state.endChapter,
-      this.state.multiverse && this.state.endVerse
+      this.state.bookId,
+      BibleBook.books[this.state.bookId],
+      parseInt(this.state.startChapter),
+      parseInt(this.state.startVerse),
+      this.state.multiverse && parseInt(this.state.endChapter),
+      this.state.multiverse && parseInt(this.state.endVerse)
     );
     VerseStorage.createVerse(verse).then(() => {
       this.props.navigation.goBack();
@@ -37,7 +38,7 @@ class NewVerseForm extends React.PureComponent {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ReferenceInput
-          book={this.state.book}
+          bookId={this.state.bookId}
           startChapter={this.state.startChapter}
           startVerse={this.state.startVerse}
           endChapter={this.state.endChapter}
@@ -67,5 +68,3 @@ const styles = StyleSheet.create({
     flex: 1
   }
 });
-
-export default NewVerseForm;
