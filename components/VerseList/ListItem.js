@@ -1,18 +1,14 @@
 import React from "react";
-import {
-  Text,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-  Button
-} from "react-native";
+import { Text, StyleSheet, View, Button } from "react-native";
 import Verse from "../../models/Verse";
 import LearnedToggleButton from "./LearnedToggleButton";
+import XPlatformTouchable from "../shared/XPlatformTouchable";
 
 export default function ListItem(props) {
   return (
     <View style={styles.item}>
-      <TouchableWithoutFeedback
+      <XPlatformTouchable
+        rippleColor="#EEEEEE"
         onPress={() => {
           props.toggleSelect(props.verse);
         }}
@@ -20,7 +16,7 @@ export default function ListItem(props) {
         <View>
           <Text style={styles.refText}>{Verse.refText(props.verse)}</Text>
         </View>
-      </TouchableWithoutFeedback>
+      </XPlatformTouchable>
       {props.selected && (
         <View>
           {props.verse.text && <Text>{props.verse.text}</Text>}
