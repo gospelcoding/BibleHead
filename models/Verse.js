@@ -35,6 +35,22 @@ export default class Verse {
   static compare(a, b) {
     return verseCompareVal(a) - verseCompareVal(b);
   }
+
+  static getLearningAndReviewingLists(verses) {
+    let learning = [];
+    let reviewing = [];
+    for (const verse of verses) {
+      if (verse.learned) {
+        reviewing.push(verse);
+      } else {
+        learning.push(verse);
+      }
+    }
+    return {
+      learning: learning,
+      reviewing: reviewing
+    };
+  }
 }
 
 function verseCompareVal(verse) {

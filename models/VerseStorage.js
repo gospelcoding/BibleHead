@@ -1,5 +1,6 @@
 import { AsyncStorage } from "react-native";
 import Verse from "./Verse";
+import update from "immutability-helper";
 
 export default class VerseStorage {
   static async createVerse(verse) {
@@ -8,6 +9,14 @@ export default class VerseStorage {
 
   static async getAllVerses() {
     return await getAllVerses();
+  }
+
+  static async getVerseText(verse) {
+    return await getVerseText(verse);
+  }
+
+  static async updateVerse(verse, mergeVerse) {
+    return await updateVerse(verse, mergeVerse);
   }
 }
 
@@ -20,6 +29,10 @@ async function getAllVerses() {
   return keyDataPairs.map(pair => {
     return JSON.parse(pair[1]);
   });
+}
+
+async function getVerseText(verse) {
+  return await AsyncStorage.getItem(`bh.verseText.${verse.id}`);
 }
 
 async function createVerse(verse) {
@@ -64,4 +77,15 @@ async function updateVerseIndex(verse) {
 async function getVerseIndex() {
   const vIndexJson = await AsyncStorage.getItem("bh.verseIndex");
   return vIndexJson ? JSON.parse(vIndexJson) : [];
+}
+
+// We might have to update the index!
+async function updateVerse(verse, mergeVerse) {
+  const newVerse = update(verse, { $merge: mergeVerse });
+  const { text, ...verseData } = newVerse;
+  AsyncStorage.setItem(
+    `bh.verseData.${verseData.id}`,
+    JSON.stringify(verseData)
+  );
+  if (text) AsyncStorage.setItem(`bh.verseText.${verseData.id}`);
 }
