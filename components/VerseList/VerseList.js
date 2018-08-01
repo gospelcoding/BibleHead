@@ -79,7 +79,10 @@ export default class VerseList extends React.PureComponent {
   }
 
   practiceVerse = verse => {
-    this.props.navigation.navigate("VersePractice", { verse: verse });
+    this.props.navigation.navigate("VersePractice", {
+      verse: verse,
+      updateVerse: this.updateVerseAndSave
+    });
   };
 
   toggleSelect = verse => {
