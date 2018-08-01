@@ -1,4 +1,4 @@
-function isValidInteger(str, options) {
+export function isValidInteger(str, options) {
   const n = parseInt(str);
   if (isNaN(n)) return false;
   if (options.min && n < options.min) return false;
@@ -6,4 +6,20 @@ function isValidInteger(str, options) {
   return true;
 }
 
-export { isValidInteger };
+function randInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
+function swap(array, i, j) {
+  if (i == j) return;
+  const temp = array[j];
+  array[j] = array[i];
+  array[i] = temp;
+}
+
+export function shuffle(array) {
+  for (let i = array.length - 1; i > 0; --i) {
+    let swapIndex = randInt(i);
+    swap(array, i, swapIndex);
+  }
+}

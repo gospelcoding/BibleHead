@@ -35,6 +35,7 @@ export default class VerseList extends React.PureComponent {
                 selected={verse.id == this.state.selectedId}
                 toggleSelect={this.toggleSelect}
                 updateVerse={this.updateVerseAndSave}
+                practiceVerse={this.practiceVerse}
               />
             );
           }}
@@ -71,11 +72,15 @@ export default class VerseList extends React.PureComponent {
   // TODO do this different!!
   componentDidMount() {
     this.refresh();
-    this._subscribe = this.props.navigation.addListener(
-      "didFocus",
-      this.refresh
-    );
+    // this._subscribe = this.props.navigation.addListener(
+    //   "didFocus",
+    //   this.refresh
+    // );
   }
+
+  practiceVerse = verse => {
+    this.props.navigation.navigate("VersePractice", { verse: verse });
+  };
 
   toggleSelect = verse => {
     if (!verse.text) this.loadVerseText(verse);
