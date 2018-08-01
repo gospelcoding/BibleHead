@@ -87,5 +87,5 @@ async function updateVerse(verse, mergeVerse) {
     `bh.verseData.${verseData.id}`,
     JSON.stringify(verseData)
   );
-  if (text) AsyncStorage.setItem(`bh.verseText.${verseData.id}`);
+  if (text) AsyncStorage.setItem(`bh.verseText.${verseData.id}`, text);
 }
