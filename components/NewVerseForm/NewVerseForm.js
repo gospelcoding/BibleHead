@@ -29,9 +29,9 @@ export default class NewVerseForm extends React.PureComponent {
       this.state.multiverse && parseInt(this.state.endChapter),
       this.state.multiverse && parseInt(this.state.endVerse)
     );
-    VerseStorage.createVerse(verse).then(() => {
-      this.props.navigation.goBack();
-    });
+    const addVerse = this.props.navigation.getParam("addVerse");
+    addVerse(verse);
+    this.props.navigation.goBack();
   };
 
   render() {

@@ -16,8 +16,7 @@ export default class Verse {
       startVerse: startVerse,
       endChapter: endChapter,
       endVerse: endVerse,
-      learned: false,
-      reviews: 0
+      learned: false
     };
   }
 
@@ -30,6 +29,28 @@ export default class Verse {
           : `-${verse.endChapter}:${verse.endVerse}`;
     }
     return ref;
+  }
+
+  static reviewWeight(verse) {
+    const age = new Date().getTime() - (verse.lastReview || 0);
+    const reviews = (verse.successfulReviews || 0) + 1; // Add one to prevent using 0 in geometric weighting
+    const lastWrongFactor = verse.lastReviewWrong ? 2 : 1;
+    return (age * lastWrongFactor) / reviews;
+  }
+
+  static selectReviewVerses(verses, number) {
+    let weightedVerses = verses.map(verse => {
+      return {
+        verse: verse,
+        weight: this.reviewWeight(verse)
+      };
+    });
+    weightedVerses.sort((a, b) => {
+      return b.weight - a.weight;
+    });
+    return weightedVerses.slice(0, number).map(wVerse => {
+      return wVerse.verse;
+    });
   }
 
   static compare(a, b) {
@@ -49,6 +70,29 @@ export default class Verse {
     return {
       learning: learning,
       reviewing: reviewing
+    };
+  }
+
+  static markLearnedParams(verse) {
+    return {
+      learned: true,
+      lastReview: verse.lastReview || 0,
+      successfulReviews: verse.successfulReviews || 0
+    };
+  }
+
+  static successfulReviewParams(verse) {
+    return {
+      lastReview: new Date().getTime(),
+      successfulReviews: (verse.successfulReviews || 0) + 1,
+      lastReviewWrong: false
+    };
+  }
+
+  static failedReviewParams(verse) {
+    return {
+      lastReview: new Date().getTime(),
+      lastReviewWrong: true
     };
   }
 }

@@ -4,15 +4,11 @@ import update from "immutability-helper";
 
 export default class VerseStorage {
   static async createVerse(verse) {
-    await createVerse(verse);
+    return await createVerse(verse);
   }
 
   static async getAllVerses() {
     return await getAllVerses();
-  }
-
-  static async getVerseText(verse) {
-    return await getVerseText(verse);
   }
 
   static async updateVerse(verse, mergeVerse) {
@@ -20,36 +16,19 @@ export default class VerseStorage {
   }
 }
 
-async function getAllVerses() {
-  const vindex = await getVerseIndex();
-  const verseDataKeys = vindex.map(id => {
-    return `bh.verseData.${id}`;
-  });
-  const keyDataPairs = await AsyncStorage.multiGet(verseDataKeys);
-  return keyDataPairs.map(pair => {
-    return JSON.parse(pair[1]);
-  });
-}
-
-async function getVerseText(verse) {
-  return await AsyncStorage.getItem(`bh.verseText.${verse.id}`);
-}
-
 async function createVerse(verse) {
-  await assignVerseId(verse);
-  const { text, ...verseData } = verse;
+  verse = await assignVerseId(verse);
+  verse.createdAt = new Date().getTime();
   await Promise.all([
-    AsyncStorage.setItem(
-      `bh.verseData.${verseData.id}`,
-      JSON.stringify(verseData)
-    ),
-    AsyncStorage.setItem(`bh.verseText.${verseData.id}`, text),
-    updateVerseIndex(verse)
+    AsyncStorage.setItem(`bh.verse.${verse.id}`, JSON.stringify(verse)),
+    addVerseToIndex(verse)
   ]);
+  return verse;
 }
 
 async function assignVerseId(verse) {
-  verse.id = await takeNextVerseId();
+  const id = await takeNextVerseId();
+  return update(verse, { $merge: { id: id } });
 }
 
 async function takeNextVerseId() {
@@ -63,7 +42,18 @@ async function nextVerseId() {
   return parseInt(idStr) || 1;
 }
 
-async function updateVerseIndex(verse) {
+async function getAllVerses() {
+  const vindex = await getVerseIndex();
+  const verseKeys = vindex.map(id => {
+    return `bh.verse.${id}`;
+  });
+  const keyDataPairs = await AsyncStorage.multiGet(verseKeys);
+  return keyDataPairs.map(pair => {
+    return JSON.parse(pair[1]);
+  });
+}
+
+async function addVerseToIndex(verse) {
   let vindex = await getVerseIndex();
   const versesData = await getAllVerses();
   let position = versesData.findIndex(compareVerse => {
@@ -82,10 +72,5 @@ async function getVerseIndex() {
 // We might have to update the index!
 async function updateVerse(verse, mergeVerse) {
   const newVerse = update(verse, { $merge: mergeVerse });
-  const { text, ...verseData } = newVerse;
-  AsyncStorage.setItem(
-    `bh.verseData.${verseData.id}`,
-    JSON.stringify(verseData)
-  );
-  if (text) AsyncStorage.setItem(`bh.verseText.${verseData.id}`, text);
+  AsyncStorage.setItem(`bh.verse.${newVerse.id}`, JSON.stringify(newVerse));
 }

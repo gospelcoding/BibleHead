@@ -4,6 +4,7 @@ import VerseStorage from "../../models/VerseStorage";
 import Verse from "../../models/Verse";
 import ListItem from "./ListItem";
 import update from "immutability-helper";
+import SectionHeader from "./SectionHeader";
 
 export default class VerseList extends React.PureComponent {
   constructor(props) {
@@ -15,50 +16,24 @@ export default class VerseList extends React.PureComponent {
       selectedId: null
     };
   }
-  render() {
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        {this.state.loading && <Text>Loading...</Text>}
-        <SectionList
-          sections={[
-            { title: "Learning", data: this.state.learningList },
-            { title: "Reviewing", data: this.state.reviewingList }
-          ]}
-          keyExtractor={verse => `${verse.id}`}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text style={{ fontWeight: "bold" }}>{title}</Text>
-          )}
-          renderItem={({ item: verse }) => {
-            return (
-              <ListItem
-                verse={verse}
-                selected={verse.id == this.state.selectedId}
-                toggleSelect={this.toggleSelect}
-                updateVerse={this.updateVerseAndSave}
-                practiceVerse={this.practiceVerse}
-              />
-            );
-          }}
-        />
-      </SafeAreaView>
-    );
-  }
 
   static navigationOptions = ({ navigation }) => {
     return {
-      headerTitle: "BibleHead",
+      headerTitle: "Verses",
       headerRight: (
         <Button
           title="New"
           onPress={() => {
-            navigation.navigate("NewVerseForm");
+            navigation.navigate("NewVerseForm", {
+              addVerse: navigation.getParam("addVerse")
+            });
           }}
         />
       )
     };
   };
 
-  refresh = () => {
+  getVerses = () => {
     VerseStorage.getAllVerses().then(verseList => {
       const lists = Verse.getLearningAndReviewingLists(verseList);
       this.setState({
@@ -69,13 +44,9 @@ export default class VerseList extends React.PureComponent {
     });
   };
 
-  // TODO do this different!!
   componentDidMount() {
-    this.refresh();
-    // this._subscribe = this.props.navigation.addListener(
-    //   "didFocus",
-    //   this.refresh
-    // );
+    this.getVerses();
+    this.props.navigation.setParams({ addVerse: this.addVerseAndSave });
   }
 
   practiceVerse = verse => {
@@ -85,22 +56,47 @@ export default class VerseList extends React.PureComponent {
     });
   };
 
+  doReview = () => {
+    const versesToReview = Verse.selectReviewVerses(
+      this.state.reviewingList,
+      5
+    );
+    this.props.navigation.navigate("VerseReview", {
+      verses: versesToReview,
+      updateVerse: this.updateVerseAndSave
+    });
+  };
+
   toggleSelect = verse => {
-    if (!verse.text) this.loadVerseText(verse);
     this.setState(prevState => {
       const selectedId = prevState.selectedId == verse.id ? null : verse.id;
       return { selectedId: selectedId };
     });
   };
 
-  loadVerseText = async verse => {
-    const text = await VerseStorage.getVerseText(verse);
-    this.updateVerse(verse, { text: text });
+  addVerse = verse => {
+    this.setState(prevState => {
+      const listName = verse.learned ? "reviewingList" : "learningList";
+      const list = prevState[listName];
+      let index = list.findIndex(v => {
+        return Verse.compare(verse, v) < 0;
+      });
+      if (index == -1) index = list.length;
+      const newList = update(list, {
+        $splice: [[index, 0, verse]]
+      });
+      return { [listName]: newList };
+    });
   };
 
-  // TODO But what if the Reference changes? And therefore the sort order...
+  addVerseAndSave = async verse => {
+    verse = await VerseStorage.createVerse(verse);
+    this.addVerse(verse);
+    this.toggleSelect(verse);
+  };
+
   updateVerse = (verse, mergeVerse) => {
-    if (mergeVerse.learned !== undefined) {
+    if (this.needToMoveVerse(mergeVerse)) {
       this.updateVerseAndMove(verse, mergeVerse);
     } else {
       this.setState(prevState => {
@@ -118,27 +114,32 @@ export default class VerseList extends React.PureComponent {
     }
   };
 
+  needToMoveVerse(mergeVerse) {
+    return (
+      mergeVerse.learned !== undefined ||
+      mergeVerse.bookId ||
+      mergeVerse.startChapter ||
+      mergeVerse.startVerse
+    );
+  }
+
   updateVerseAndMove = (verse, mergeVerse) => {
+    this.removeVerse(verse);
+    const newVerse = update(verse, { $merge: mergeVerse });
+    this.addVerse(newVerse);
+  };
+
+  removeVerse = verse => {
     this.setState(prevState => {
-      const newVerse = update(verse, { $merge: mergeVerse });
-      let newLists = {};
-      const oldArray = verse.learned ? "reviewingList" : "learningList";
-      const oldIndex = prevState[oldArray].findIndex(v => {
+      const listName = verse.learned ? "reviewingList" : "learningList";
+      const list = prevState[listName];
+      const index = list.findIndex(v => {
         return v.id == verse.id;
       });
-      newLists[oldArray] = update(prevState[oldArray], {
-        $splice: [[oldIndex, 1]]
+      const newList = update(list, {
+        $splice: [[index, 1]]
       });
-
-      const newArray = newVerse.learned ? "reviewingList" : "learningList";
-      let newIndex = prevState[newArray].findIndex(v => {
-        return Verse.compare(newVerse, v) < 0;
-      });
-      if (newIndex == -1) newIndex = prevState[newArray].length;
-      newLists[newArray] = update(prevState[newArray], {
-        $splice: [[newIndex, 0, newVerse]]
-      });
-      return newLists;
+      return { [listName]: newList };
     });
   };
 
@@ -146,4 +147,41 @@ export default class VerseList extends React.PureComponent {
     this.updateVerse(verse, mergeVerse);
     VerseStorage.updateVerse(verse, mergeVerse);
   };
+
+  render() {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        {this.state.loading && <Text>Loading...</Text>}
+        <SectionList
+          sections={[
+            { title: "Learning", data: this.state.learningList },
+            {
+              title: "Reviewing",
+              reviewButton: true,
+              data: this.state.reviewingList
+            }
+          ]}
+          keyExtractor={verse => `${verse.id}`}
+          renderSectionHeader={({ section: { title, reviewButton } }) => (
+            <SectionHeader
+              title={title}
+              reviewButton={reviewButton}
+              doReview={this.doReview}
+            />
+          )}
+          renderItem={({ item: verse }) => {
+            return (
+              <ListItem
+                verse={verse}
+                selected={verse.id == this.state.selectedId}
+                toggleSelect={this.toggleSelect}
+                updateVerse={this.updateVerseAndSave}
+                practiceVerse={this.practiceVerse}
+              />
+            );
+          }}
+        />
+      </SafeAreaView>
+    );
+  }
 }

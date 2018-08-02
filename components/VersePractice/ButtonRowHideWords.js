@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Button } from "react-native";
+import PropTypes from "prop-types";
 import PeekButton from "./PeekButton";
 
 export default function ButtonRowHideWords(props) {
@@ -11,3 +12,11 @@ export default function ButtonRowHideWords(props) {
     </View>
   );
 }
+
+ButtonRowHideWords.propTypes = {
+  style: PropTypes.object.isRequired,
+  normalStep: PropTypes.func.isRequired,
+  bigStep: PropTypes.func.isRequired,
+  setPeek: PropTypes.func.isRequired,
+  cancelPeek: PropTypes.func.isRequired
+};
