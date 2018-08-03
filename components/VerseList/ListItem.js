@@ -3,6 +3,7 @@ import { Text, StyleSheet, View, Button } from "react-native";
 import Verse from "../../models/Verse";
 import LearnedToggleButton from "./LearnedToggleButton";
 import XPlatformTouchable from "../shared/XPlatformTouchable";
+import I18n from "../../i18n/i18n";
 
 export default function ListItem(props) {
   return (
@@ -32,7 +33,7 @@ export default function ListItem(props) {
               onPress={() => {
                 props.practiceVerse(props.verse);
               }}
-              title="Practice"
+              title={I18n.t("Practice")}
             />
           </View>
         </View>

@@ -5,6 +5,7 @@ import Verse from "../../models/Verse";
 import ListItem from "./ListItem";
 import update from "immutability-helper";
 import SectionHeader from "./SectionHeader";
+import I18n from "../../i18n/i18n";
 
 export default class VerseList extends React.PureComponent {
   constructor(props) {
@@ -19,7 +20,7 @@ export default class VerseList extends React.PureComponent {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      headerTitle: "Verses",
+      headerTitle: I18n.t("Verses"),
       headerRight: (
         <Button
           title="New"
@@ -154,9 +155,9 @@ export default class VerseList extends React.PureComponent {
         {this.state.loading && <Text>Loading...</Text>}
         <SectionList
           sections={[
-            { title: "Learning", data: this.state.learningList },
+            { title: I18n.t("Learning"), data: this.state.learningList },
             {
-              title: "Reviewing",
+              title: I18n.t("Reviewing"),
               reviewButton: true,
               data: this.state.reviewingList
             }

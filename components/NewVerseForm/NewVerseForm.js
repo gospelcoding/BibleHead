@@ -1,9 +1,9 @@
 import React from "react";
 import { TextInput, SafeAreaView, StyleSheet, Button } from "react-native";
 import ReferenceInput from "./ReferenceInput";
-import VerseStorage from "../../models/VerseStorage";
 import Verse from "../../models/Verse";
 import BibleBook from "../../models/BibleBook";
+import I18n from "../../i18n/i18n";
 
 export default class NewVerseForm extends React.PureComponent {
   constructor(props) {
@@ -50,14 +50,14 @@ export default class NewVerseForm extends React.PureComponent {
         />
         <TextInput
           style={styles.verseTextInput}
-          placeholder="Paste or type verse text here."
+          placeholder={I18n.t("VerseTextInputHint")}
           multiline={true}
           value={this.state.verseText}
           onChangeText={text => {
             this.setState({ verseText: text });
           }}
         />
-        <Button onPress={this.onSaveButton} title="Save" />
+        <Button onPress={this.onSaveButton} title={I18n.t("Save")} />
       </SafeAreaView>
     );
   }
