@@ -14,7 +14,7 @@ const RootStack = createStackNavigator(
     VersePractice: VersePractice,
     VerseReview: VerseReview
   },
-  { initialRouteName: "VerseList" }
+  { initialRouteName: "NewVerseForm" }
 );
 
 export default class App extends React.PureComponent {

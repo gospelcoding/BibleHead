@@ -1,4 +1,6 @@
 export default {
+  EnterReference: "< Reference",
+  EnterText: "Text >",
   Learning: "Learning",
   MarkLearned: "Mark Learned",
   MarkUnlearned: "Mark Unlearned",

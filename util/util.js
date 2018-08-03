@@ -23,3 +23,11 @@ export function shuffle(array) {
     swap(array, i, swapIndex);
   }
 }
+
+export function intArray(max) {
+  let array = new Array(max);
+  for (let i = 1; i <= max; ++i) {
+    array[i - 1] = i;
+  }
+  return array;
+}
