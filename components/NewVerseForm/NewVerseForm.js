@@ -12,16 +12,23 @@ export default class NewVerseForm extends React.PureComponent {
     super(props);
     this.state = {
       page: "ref",
+      singleVerse: true,
+      bibleBooks: BibleBook.books,
       verse: {
-        bookId: 0,
+        bookId: 39,
+        bookName: BibleBook.books[39],
         startChapter: 1,
         startVerse: 1,
-        endChapter: 1,
-        endVerse: 2,
-        verseText: ""
+        text: ""
       }
     };
   }
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam("title", I18n.t("NewVerse"))
+    };
+  };
 
   updateVerse = mergeVerse => {
     this.setState(prevState => ({
@@ -29,28 +36,35 @@ export default class NewVerseForm extends React.PureComponent {
     }));
   };
 
+  setSingleVerse = singleVerse => {
+    this.setState(prevState => {
+      const mergeVerse = singleVerse
+        ? { endChapter: undefined, endVerse: undefined }
+        : {
+            endChapter: prevState.verse.startChapter,
+            endVerse: prevState.verse.startVerse + 1
+          };
+
+      return {
+        singleVerse: singleVerse,
+        verse: update(prevState.verse, { $merge: mergeVerse })
+      };
+    });
+  };
+
   goToPage = page => {
     this.setState({ page: page });
+    if (page == "text")
+      this.props.navigation.setParams({
+        title: Verse.refText(this.state.verse)
+      });
   };
 
   saveVerse = () => {
-    console.warn("Save Verse is not yet implemented!");
+    const addVerse = this.props.navigation.getParam("addVerse");
+    addVerse(this.state.verse);
+    this.props.navigation.goBack();
   };
-
-  // onSaveButton = () => {
-  //   const verse = Verse.newVerse(
-  //     this.state.verseText,
-  //     this.state.bookId,
-  //     BibleBook.books[this.state.bookId],
-  //     parseInt(this.state.startChapter),
-  //     parseInt(this.state.startVerse),
-  //     this.state.multiverse && parseInt(this.state.endChapter),
-  //     this.state.multiverse && parseInt(this.state.endVerse)
-  //   );
-  //   const addVerse = this.props.navigation.getParam("addVerse");
-  //   addVerse(verse);
-  //   this.props.navigation.goBack();
-  // };
 
   render() {
     return (
@@ -60,15 +74,18 @@ export default class NewVerseForm extends React.PureComponent {
             <ReferenceInput
               verse={this.state.verse}
               updateVerse={this.updateVerse}
+              singleVerse={this.state.singleVerse}
+              setSingleVerse={this.setSingleVerse}
+              bibleBooks={this.state.bibleBooks}
             />
           ) : (
             <TextInput
               style={styles.verseTextInput}
               placeholder={I18n.t("VerseTextInputHint")}
               multiline={true}
-              value={this.state.verseText}
+              value={this.state.verse.text}
               onChangeText={text => {
-                this.setState({ verseText: text });
+                this.updateVerse({ text: text });
               }}
             />
           )}

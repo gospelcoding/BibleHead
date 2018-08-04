@@ -20,7 +20,7 @@ export default function LearnedToggleButton(props) {
 }
 
 LearnedToggleButton.propTypes = {
-  verse: PropTypes.shape({ learned: PropTypes.bool.isRequired }).isRequired,
+  verse: PropTypes.shape({ learned: PropTypes.bool }).isRequired,
   updateVerse: PropTypes.func.isRequired,
   toggleSelect: PropTypes.func.isRequired
 };

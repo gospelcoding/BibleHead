@@ -3,13 +3,7 @@ import PropTypes from "prop-types";
 import { View, Picker } from "react-native";
 import ChapterVerseInput from "./ChapterVerseInput";
 import EndReferenceInput from "./EndReferenceInput";
-import {
-  isValidStartChapter,
-  isValidStartVerse,
-  isValidEndChapter,
-  isValidEndVerse
-} from "../../util/verse_ref_utils";
-import BibleBook from "../../models/BibleBook";
+import SingleVerseToggle from "./SingleVerseToggle";
 
 export default function ReferenceInput(props) {
   const verse = props.verse;
@@ -18,20 +12,20 @@ export default function ReferenceInput(props) {
       <View style={{ flexDirection: "row" }}>
         <Picker
           style={{ flex: 1 }}
-          selectedValue={verse.bookId}
-          onValueChange={value => {
-            props.updateVerse({ bookId: value });
+          selectedValue={verse.bookName}
+          onValueChange={(name, id) => {
+            props.updateVerse({ bookId: id, bookName: name });
           }}
         >
-          {BibleBook.books.map((book, id) => {
-            return <Picker.Item key={id.toString()} label={book} value={id} />;
+          {props.bibleBooks.map((book, id) => {
+            return (
+              <Picker.Item key={id.toString()} label={book} value={book} />
+            );
           })}
         </Picker>
         <ChapterVerseInput
           chapter={verse.startChapter}
           verse={verse.startVerse}
-          validChapter={isValidStartChapter(verse.startChapter)}
-          validVerse={isValidStartVerse(verse.startVerse)}
           updateChapter={c => {
             props.updateVerse({ startChapter: c });
           }}
@@ -40,26 +34,15 @@ export default function ReferenceInput(props) {
           }}
         />
       </View>
-      <EndReferenceInput
-        multiverse={props.multiverse}
-        chapter={verse.endChapter}
-        verse={verse.endVerse}
-        validChapter={isValidEndChapter(verse.endChapter, verse.startChapter)}
-        validVerse={isValidEndVerse(
-          verse.endVerse,
-          verse.startVerse,
-          verse.endChapter,
-          verse.startChapter
-        )}
-        updateChapter={c => {
-          props.updateVerse({ endChapter: c });
-        }}
-        updateVerse={v => {
-          props.updateVerse({ endVerse: v });
-        }}
-        setMultiverse={() => {
-          props.updateState({ multiverse: true });
-        }}
+      {!props.singleVerse && (
+        <EndReferenceInput
+          verse={props.verse}
+          updateVerse={props.updateVerse}
+        />
+      )}
+      <SingleVerseToggle
+        singleVerse={props.singleVerse}
+        setSingleVerse={props.setSingleVerse}
       />
     </View>
   );
@@ -70,8 +53,11 @@ ReferenceInput.propTypes = {
     bookId: PropTypes.number.isRequired,
     startChapter: PropTypes.number.isRequired,
     startVerse: PropTypes.number.isRequired,
-    endChapter: PropTypes.number.isRequired,
-    endVerse: PropTypes.number.isRequired
+    endChapter: PropTypes.number,
+    endVerse: PropTypes.number
   }),
-  updateVerse: PropTypes.func.isRequired
+  updateVerse: PropTypes.func.isRequired,
+  singleVerse: PropTypes.bool.isRequired,
+  setSingleVerse: PropTypes.func.isRequired,
+  bibleBooks: PropTypes.arrayOf(PropTypes.string)
 };

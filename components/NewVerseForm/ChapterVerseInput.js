@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet } from "react-native";
-import Picker from "react-native-wheel-picker";
+import { View, Text, StyleSheet, Picker } from "react-native";
 import { intArray } from "../../util/util";
 
 const chapterNumbers = intArray(150);
@@ -47,16 +46,12 @@ export default function ChapterVerseInput(props) {
 const styles = StyleSheet.create({
   chapterVerseInput: {
     flexDirection: "row",
-    alignItems: "center",
-    flex: 1
+    alignItems: "center"
   },
   numberPicker: {
-    flex: 1,
-    fontSize: 40
+    width: 80
   },
-  pickerItem: {
-    fontSize: 30
-  },
+  pickerItem: {},
   colon: {
     fontSize: 30
   }
