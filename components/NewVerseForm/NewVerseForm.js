@@ -6,17 +6,20 @@ import BibleBook from "../../models/BibleBook";
 import I18n from "../../i18n/i18n";
 import update from "immutability-helper";
 import VerseEditorButtons from "./VerseEditorButtons";
+import LanguageModal from "./LanguageModal";
 
 export default class NewVerseForm extends React.PureComponent {
   constructor(props) {
     super(props);
+    const bibleBooks = BibleBook.books();
     this.state = {
       page: "ref",
       singleVerse: true,
-      bibleBooks: BibleBook.books,
+      bibleBooks: bibleBooks,
+      verseLang: I18n.currentLang(),
       verse: {
         bookId: 39,
-        bookName: BibleBook.books[39],
+        bookName: bibleBooks[39],
         startChapter: 1,
         startVerse: 1,
         text: ""
@@ -52,6 +55,13 @@ export default class NewVerseForm extends React.PureComponent {
     });
   };
 
+  setVerseLang = code => {
+    this.setState({
+      verseLang: code,
+      bibleBooks: BibleBook.books(code)
+    });
+  };
+
   goToPage = page => {
     this.setState({ page: page });
     if (page == "text")
@@ -69,6 +79,14 @@ export default class NewVerseForm extends React.PureComponent {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <LanguageModal
+          langModalDisplayed={!!this.state.langModalDisplayed}
+          verseLang={this.state.verseLang}
+          setVerseLang={this.setVerseLang}
+          hideLangModal={() => {
+            this.setState({ langModalDisplayed: false });
+          }}
+        />
         <View style={{ flex: 1 }}>
           {this.state.page == "ref" ? (
             <ReferenceInput
@@ -77,6 +95,10 @@ export default class NewVerseForm extends React.PureComponent {
               singleVerse={this.state.singleVerse}
               setSingleVerse={this.setSingleVerse}
               bibleBooks={this.state.bibleBooks}
+              showLangModal={() => {
+                this.setState({ langModalDisplayed: true });
+              }}
+              verseLang={this.state.verseLang}
             />
           ) : (
             <TextInput
