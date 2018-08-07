@@ -4,6 +4,8 @@ import { shuffle } from "../../util/util";
 import ButtonRow from "./ButtonRow";
 import PropTypes from "prop-types";
 
+const isIOS = Platform.OS == "ios";
+
 export default class HideWordsGame extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -29,11 +31,11 @@ export default class HideWordsGame extends React.PureComponent {
   };
 
   normalStep = () => {
-    this.takeStep(2);
+    this.takeStep(4);
   };
 
   bigStep = () => {
-    this.takeStep(6);
+    this.takeStep(12);
   };
 
   replay = () => {
@@ -47,7 +49,7 @@ export default class HideWordsGame extends React.PureComponent {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         <View style={{ flex: 1 }}>
           <Text style={styles.hideWordsText}>
             {this.state.peek ? this.props.verse.text : this.state.gameText}
@@ -56,6 +58,7 @@ export default class HideWordsGame extends React.PureComponent {
         <ButtonRow
           game="HideWords"
           done={this.state.done}
+          step={this.state.step}
           setPeek={() => this.setState({ peek: true })}
           cancelPeek={() => {
             this.setState({ peek: false });
@@ -65,6 +68,7 @@ export default class HideWordsGame extends React.PureComponent {
           replay={this.replay}
           goHome={this.props.goHome}
           markLearned={this.props.markLearned}
+          verseLearned={this.props.verse.learned}
         />
       </View>
     );
@@ -98,8 +102,17 @@ function calculateStep(gameText, coordinates, step, numberToStep) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: isIOS ? "white" : undefined
+  },
   hideWordsText: {
-    fontFamily: Platform.OS == "ios" ? "Menlo" : "monospace"
+    fontFamily: isIOS ? "Menlo" : "monospace",
+    fontSize: 24,
+    padding: 8,
+    backgroundColor: "white",
+    margin: isIOS ? 0 : 8,
+    elevation: isIOS ? 0 : 4
   }
 });
 

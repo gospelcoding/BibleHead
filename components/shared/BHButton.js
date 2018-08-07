@@ -75,14 +75,8 @@ const styles = StyleSheet.create({
 
 BHButton.propTypes = {
   title: PropTypes.string,
-  textStyle: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.arrayOf(PropTypes.object)
-  ]),
-  buttonStyle: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.arrayOf(PropTypes.object)
-  ]),
+  textStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  buttonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   children: PropTypes.object,
   color: PropTypes.string
 };

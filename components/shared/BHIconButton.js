@@ -21,10 +21,18 @@ export default function BHIconButton(props) {
 function icons(name) {
   return Platform.select({
     ios: {
-      add: "ios-add"
+      add: "ios-add",
+      eye: "ios-eye",
+      replay: "ios-refresh",
+      home: "ios-home",
+      check: "ios-checkmark"
     },
     android: {
-      add: "add"
+      add: "add",
+      eye: "remove-red-eye",
+      replay: "replay",
+      home: "home",
+      check: "check"
     }
   })[name];
 }

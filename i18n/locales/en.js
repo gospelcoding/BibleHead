@@ -3,6 +3,7 @@ export default {
   EnterReference: "< Reference",
   EnterText: "Text >",
   Lang: "English",
+  Learned: "Learned",
   Learning: "Learning",
   MarkLearned: "Mark Learned",
   MarkUnlearned: "Mark Unlearned",

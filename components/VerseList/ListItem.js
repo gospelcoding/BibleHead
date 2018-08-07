@@ -11,8 +11,6 @@ export default function ListItem(props) {
   return (
     <View style={styles.item}>
       <XPlatformTouchable
-        color="#ffffff"
-        borderlessRipple={true}
         onPress={() => {
           props.toggleSelect(props.verse);
         }}

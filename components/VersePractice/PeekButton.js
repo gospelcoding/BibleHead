@@ -1,17 +1,31 @@
 import React from "react";
-import { Text, View } from "react-native";
-import XPlatformTouchable from "../shared/XPlatformTouchable";
+import PropTypes from "prop-types";
+import BHIconButton from "../shared/BHIconButton";
+import ThemeColors from "../../util/ThemeColors";
 
 export default function PeekButton(props) {
+  let { step, textStyle, buttonStyle, ...otherProps } = props;
+
+  if (step == 0) {
+    (textStyle = [textStyle, { opacity: 0 }]),
+      (buttonStyle = [buttonStyle, { opacity: 0 }]);
+  }
+
   return (
-    <XPlatformTouchable
-      rippleColor="#DDDDDD"
+    <BHIconButton
+      name="eye"
+      size={36}
+      color={ThemeColors.yellow}
       onPressIn={props.setPeek}
       onPressOut={props.cancelPeek}
-    >
-      <View>
-        <Text style={{ color: "blue", fontSize: 18 }}>Peek</Text>
-      </View>
-    </XPlatformTouchable>
+      textStyle={textStyle}
+      buttonStyle={buttonStyle}
+      {...otherProps}
+    />
   );
 }
+
+PeekButton.propTypes = {
+  step: PropTypes.number.isRequired
+  // And props for BHButton
+};

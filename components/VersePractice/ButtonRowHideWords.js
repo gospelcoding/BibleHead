@@ -7,9 +7,31 @@ import BHButton from "../shared/BHButton";
 export default function ButtonRowHideWords(props) {
   return (
     <View style={props.style}>
-      <PeekButton setPeek={props.setPeek} cancelPeek={props.cancelPeek} />
-      <BHButton title=">>" onPress={props.normalStep} />
-      <BHButton title=">>>" onPress={props.bigStep} />
+      <View style={props.buttonContainerStyle}>
+        <PeekButton
+          step={props.step}
+          setPeek={props.setPeek}
+          cancelPeek={props.cancelPeek}
+          buttonStyle={props.buttonStyle}
+          textStyle={props.iconButtonTextStyle}
+        />
+      </View>
+      <View style={props.buttonContainerStyle}>
+        <BHButton
+          title=">>"
+          buttonStyle={props.buttonStyle}
+          textStyle={props.buttonTextStyle}
+          onPress={props.normalStep}
+        />
+      </View>
+      <View style={props.buttonContainerStyle}>
+        <BHButton
+          title=">>>"
+          buttonStyle={props.buttonStyle}
+          textStyle={props.buttonTextStyle}
+          onPress={props.bigStep}
+        />
+      </View>
     </View>
   );
 }
