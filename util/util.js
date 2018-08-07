@@ -31,3 +31,14 @@ export function intArray(max) {
   }
   return array;
 }
+
+export function aShadeDarker(color) {
+  return (
+    "#" +
+    [color.slice(1, 3), color.slice(3, 5), color.slice(5, 7)]
+      .map(hex => {
+        return Math.round(parseInt(`0x${hex}`) * 0.9).toString(16);
+      })
+      .join("")
+  );
+}

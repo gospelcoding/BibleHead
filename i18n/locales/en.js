@@ -15,7 +15,7 @@ export default {
   to: "to",
   VerseNotInLang: "My verse is not in English.",
   VerseTextInputHint: "Paste or type verse text here.",
-  Verses: "Verses",
+  MyVerses: "My Verses",
   xOfY: "{{x}} of {{y}}",
   bibleBooks: [
     "Genesis",

@@ -15,7 +15,7 @@ export default {
   to: "à",
   VerseNotInLang: "Mon verset n'est pas en français.",
   VerseTextInputHint: "Coller ou taper le texte du verset ici.",
-  Verses: "Versets",
+  MyVerses: "Mes versets",
   xOfY: "{{x}} de {{y}}",
   bibleBooks: [
     "Genèse",

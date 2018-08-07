@@ -1,12 +1,13 @@
 import React from "react";
 import { View, Button } from "react-native";
 import PropTypes from "prop-types";
+import BHButton from "../shared/BHButton";
 
 export default function ButtonRowReviewFinal(props) {
   return (
     <View style={props.style}>
-      <Button title="Wrong" onPress={props.reviewFailed} />
-      <Button title="Right" onPress={props.reviewSuccess} />
+      <BHButton title="Wrong" onPress={props.reviewFailed} />
+      <BHButton title="Right" onPress={props.reviewSuccess} />
     </View>
   );
 }

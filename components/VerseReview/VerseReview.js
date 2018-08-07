@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import ShowWordsGame from "./ShowWordsGame";
 import Verse from "../../models/Verse";
 import I18n from "../../i18n/i18n";
+import CommonStyles from "../../util/CommonStyles";
 
 export default class VerseReview extends React.PureComponent {
   constructor(props) {
@@ -13,17 +14,6 @@ export default class VerseReview extends React.PureComponent {
       splitIndex: 0
     };
   }
-
-  static navigationOptions = ({ navigation }) => {
-    const verses = navigation.getParam("verses");
-    const verseNumber = 1 + navigation.getParam("verseNumber", 0);
-    return {
-      title: navigation.getParam("title", Verse.refText(verses[0])),
-      headerRight: (
-        <Text>{I18n.t("xOfY", { x: verseNumber, y: verses.length })}</Text>
-      )
-    };
-  };
 
   nextVerse = () => {
     this.setState((prevState, props) => {
@@ -45,12 +35,26 @@ export default class VerseReview extends React.PureComponent {
     this.setState({ splitIndex: splitIndex });
   };
 
+  static navigationOptions = ({ navigation }) => {
+    const verses = navigation.getParam("verses");
+    const verseNumber = 1 + navigation.getParam("verseNumber", 0);
+    return {
+      ...CommonStyles.headerOptions,
+      title: navigation.getParam("title", Verse.refText(verses[0])),
+      headerRight: (
+        <Text style={styles.headerRight}>
+          {I18n.t("xOfY", { x: verseNumber, y: verses.length })}
+        </Text>
+      )
+    };
+  };
+
   render() {
     const verse = this.props.navigation.getParam("verses")[
       this.state.verseNumber
     ];
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={CommonStyles.screenRoot}>
         <ShowWordsGame
           verse={verse}
           splitIndex={this.state.splitIndex}
@@ -62,6 +66,14 @@ export default class VerseReview extends React.PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  headerRight: {
+    color: "white",
+    fontSize: 16,
+    padding: 8
+  }
+});
 
 VerseReview.propTypes = {
   navigation: PropTypes.shape({

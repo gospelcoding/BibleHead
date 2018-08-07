@@ -1,11 +1,20 @@
 import React from "react";
-import { SafeAreaView, Text, Button, SectionList } from "react-native";
+import {
+  SafeAreaView,
+  Text,
+  SectionList,
+  StyleSheet,
+  Platform
+} from "react-native";
 import VerseStorage from "../../models/VerseStorage";
 import Verse from "../../models/Verse";
 import ListItem from "./ListItem";
 import update from "immutability-helper";
 import SectionHeader from "./SectionHeader";
 import I18n from "../../i18n/i18n";
+import BHStatusBar from "../shared/BHStatusBar";
+import CommonStyles from "../../util/CommonStyles";
+import BHActionButton from "../shared/BHActionButton";
 
 export default class VerseList extends React.PureComponent {
   constructor(props) {
@@ -17,22 +26,6 @@ export default class VerseList extends React.PureComponent {
       selectedId: null
     };
   }
-
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerTitle: I18n.t("Verses"),
-      headerRight: (
-        <Button
-          title="New"
-          onPress={() => {
-            navigation.navigate("NewVerseForm", {
-              addVerse: navigation.getParam("addVerse")
-            });
-          }}
-        />
-      )
-    };
-  };
 
   getVerses = () => {
     VerseStorage.getAllVerses().then(verseList => {
@@ -149,11 +142,30 @@ export default class VerseList extends React.PureComponent {
     VerseStorage.updateVerse(verse, mergeVerse);
   };
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      ...CommonStyles.headerOptions,
+      headerTitle: I18n.t("MyVerses"),
+      headerRight: (
+        <BHActionButton
+          onPress={() => {
+            navigation.navigate("NewVerseForm", {
+              addVerse: navigation.getParam("addVerse")
+            });
+          }}
+          name="add"
+        />
+      )
+    };
+  };
+
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={CommonStyles.screenRoot}>
+        <BHStatusBar />
         {this.state.loading && <Text>Loading...</Text>}
         <SectionList
+          style={styles.list}
           sections={[
             { title: I18n.t("Learning"), data: this.state.learningList },
             {
@@ -186,3 +198,9 @@ export default class VerseList extends React.PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  list: {
+    margin: Platform.OS == "ios" ? 0 : 8
+  }
+});

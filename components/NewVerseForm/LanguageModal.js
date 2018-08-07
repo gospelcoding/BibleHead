@@ -1,8 +1,9 @@
 import React from "react";
-import { Text, FlatList, Button, StyleSheet, Modal, View } from "react-native";
+import { Text, FlatList, StyleSheet, Modal, View } from "react-native";
 import PropTypes from "prop-types";
 import XPlatformTouchable from "../shared/XPlatformTouchable";
 import I18n from "../../i18n/i18n";
+import BHButton from "../shared/BHButton";
 
 export default function LanguageModal(props) {
   return (
@@ -31,7 +32,7 @@ export default function LanguageModal(props) {
         </View>
         <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
           {/* <Button title={I18n.t('Cancel')} onPress={props.hideLangModal} /> */}
-          <Button title={I18n.t("Done")} onPress={props.hideLangModal} />
+          <BHButton title={I18n.t("Done")} onPress={props.hideLangModal} />
         </View>
       </View>
     </Modal>

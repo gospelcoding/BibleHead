@@ -1,13 +1,15 @@
 import React from "react";
-import { View, Button } from "react-native";
+import { View } from "react-native";
 import PropTypes from "prop-types";
+import XPlatformIconButton from "../shared/XPlatformIconButton";
+import BHButton from "../shared/BHButton";
 
 export default function ButtonRowShowWords(props) {
   return (
     <View style={props.style}>
-      <Button title=">" onPress={props.normalStep} />
-      <Button title=">>" onPress={props.bigStep} />
-      <Button title=">|" onPress={props.stepToEnd} />
+      <XPlatformIconButton title=">" onPress={props.normalStep} />
+      <BHButton title=">>" onPress={props.bigStep} />
+      <BHButton title=">|" onPress={props.stepToEnd} />
     </View>
   );
 }

@@ -2,6 +2,7 @@ import React from "react";
 import { SafeAreaView } from "react-native";
 import Verse from "../../models/Verse";
 import HideWordsGame from "./HideWordsGame";
+import CommonStyles from "../../util/CommonStyles";
 
 export default class VersePractice extends React.PureComponent {
   constructor(props) {
@@ -22,10 +23,17 @@ export default class VersePractice extends React.PureComponent {
     this.props.navigation.goBack();
   };
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      ...CommonStyles.headerOptions,
+      headerTitle: Verse.refText(navigation.getParam("verse", {}))
+    };
+  };
+
   render() {
     const verse = this.props.navigation.getParam("verse", {});
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={CommonStyles.screenRoot}>
         {this.state.game == "HideWords" && (
           <HideWordsGame
             verse={verse}
@@ -36,10 +44,4 @@ export default class VersePractice extends React.PureComponent {
       </SafeAreaView>
     );
   }
-
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerTitle: Verse.refText(navigation.getParam("verse", {}))
-    };
-  };
 }

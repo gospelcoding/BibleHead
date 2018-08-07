@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { View, Picker, Button } from "react-native";
+import { View, Picker, StyleSheet } from "react-native";
 import ChapterVerseInput from "./ChapterVerseInput";
 import EndReferenceInput from "./EndReferenceInput";
 import SingleVerseToggle from "./SingleVerseToggle";
 import I18n from "../../i18n/i18n";
+import CommonStyles from "../../util/CommonStyles";
+import BHButton from "../shared/BHButton";
 
 export default function ReferenceInput(props) {
   const verse = props.verse;
@@ -12,7 +14,7 @@ export default function ReferenceInput(props) {
     <View>
       <View style={{ flexDirection: "row" }}>
         <Picker
-          style={{ flex: 1 }}
+          style={[styles.bookPicker, CommonStyles.picker]}
           selectedValue={verse.bookName}
           onValueChange={(name, id) => {
             props.updateVerse({ bookId: id, bookName: name });
@@ -45,10 +47,19 @@ export default function ReferenceInput(props) {
         singleVerse={props.singleVerse}
         setSingleVerse={props.setSingleVerse}
       />
-      <Button title={I18n.t("VerseNotInLang")} onPress={props.showLangModal} />
+      <BHButton
+        title={I18n.t("VerseNotInLang")}
+        onPress={props.showLangModal}
+      />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  bookPicker: {
+    flex: 1
+  }
+});
 
 ReferenceInput.propTypes = {
   verse: PropTypes.shape({

@@ -1,12 +1,13 @@
 import React from "react";
-import { Button, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import I18n from "../../i18n/i18n";
 import PropTypes from "prop-types";
+import BHButton from "../shared/BHButton";
 
 export default function VerseEditorButtons(props) {
   return props.page == "ref" ? (
     <View style={styles.buttonRow}>
-      <Button
+      <BHButton
         onPress={() => {
           props.goToPage("text");
         }}
@@ -15,13 +16,13 @@ export default function VerseEditorButtons(props) {
     </View>
   ) : (
     <View style={styles.buttonRow}>
-      <Button
+      <BHButton
         onPress={() => {
           props.goToPage("ref");
         }}
         title={I18n.t("EnterReference")}
       />
-      <Button onPress={props.saveVerse} title={I18n.t("Save")} />
+      <BHButton onPress={props.saveVerse} title={I18n.t("Save")} />
     </View>
   );
 }

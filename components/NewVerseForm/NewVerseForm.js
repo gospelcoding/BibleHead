@@ -7,6 +7,7 @@ import I18n from "../../i18n/i18n";
 import update from "immutability-helper";
 import VerseEditorButtons from "./VerseEditorButtons";
 import LanguageModal from "./LanguageModal";
+import CommonStyles from "../../util/CommonStyles";
 
 export default class NewVerseForm extends React.PureComponent {
   constructor(props) {
@@ -26,12 +27,6 @@ export default class NewVerseForm extends React.PureComponent {
       }
     };
   }
-
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: navigation.getParam("title", I18n.t("NewVerse"))
-    };
-  };
 
   updateVerse = mergeVerse => {
     this.setState(prevState => ({
@@ -76,9 +71,16 @@ export default class NewVerseForm extends React.PureComponent {
     this.props.navigation.goBack();
   };
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      ...CommonStyles.headerOptions,
+      title: navigation.getParam("title", I18n.t("NewVerse"))
+    };
+  };
+
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={CommonStyles.screenRoot}>
         <LanguageModal
           langModalDisplayed={!!this.state.langModalDisplayed}
           verseLang={this.state.verseLang}
