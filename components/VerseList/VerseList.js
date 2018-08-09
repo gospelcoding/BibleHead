@@ -149,7 +149,7 @@ export default class VerseList extends React.PureComponent {
       headerRight: (
         <BHActionButton
           onPress={() => {
-            navigation.navigate("NewVerseForm", {
+            navigation.navigate("LanguageList", {
               addVerse: navigation.getParam("addVerse")
             });
           }}

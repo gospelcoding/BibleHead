@@ -19,4 +19,10 @@ I18n.currentLang = function() {
   return this.currentLocale().replace(/-.*/, "");
 };
 
+I18n.codeConversion = {
+  en: "eng-US",
+  fr: "fra",
+  es: "spa"
+};
+
 export default I18n;
