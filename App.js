@@ -12,6 +12,7 @@ import ChapterList from "./components/VerseDownload/ChapterList";
 import VersePicker from "./components/VerseDownload/VersePicker";
 import VersePreview from "./components/VerseDownload/VersePreview";
 import VersionList from "./components/VerseDownload/VersionList";
+import BibleGateway from "./components/AddVerse/BibleGateway";
 
 const RootStack = createStackNavigator(
   {
@@ -20,6 +21,7 @@ const RootStack = createStackNavigator(
     NewVerseForm: NewVerseForm,
     VersePractice: VersePractice,
     VerseReview: VerseReview,
+    BibleGateway: BibleGateway,
     LanguageList: LanguageList,
     VersionList: VersionList,
     BookList: BookList,
