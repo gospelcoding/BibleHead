@@ -21,12 +21,17 @@ export default class Verse {
   }
 
   static refText(verse) {
-    let ref = `${verse.bookName} ${verse.startChapter}:${verse.startVerse}`;
+    let ref = `${verse.bookName} ${verse.startChapter}`;
+    if (verse.startVerse) ref += `:${verse.startVerse}`;
     if (verse.endChapter) {
-      ref +=
-        verse.endChapter == verse.startChapter
-          ? `-${verse.endVerse}`
-          : `-${verse.endChapter}:${verse.endVerse}`;
+      if (!verse.endVerse && verse.endChapter != verse.startChapter) {
+        ref += `-${verse.endChapter}`;
+      } else {
+        ref +=
+          verse.endChapter == verse.startChapter
+            ? `-${verse.endVerse}`
+            : `-${verse.endChapter}:${verse.endVerse}`;
+      }
     }
     return ref;
   }
@@ -98,5 +103,7 @@ export default class Verse {
 }
 
 function verseCompareVal(verse) {
-  return verse.startVerse + 1000 * (verse.startChapter + 1000 * verse.bookId);
+  return (
+    (verse.startVerse || 1) + 1000 * (verse.startChapter + 1000 * verse.bookId)
+  );
 }

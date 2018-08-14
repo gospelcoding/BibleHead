@@ -1,8 +1,11 @@
 import cheerio from "cheerio-without-node-native";
+import bookCodes from "./bibleCodes";
 
 export default function parsePassage(html) {
   const $ = cheerio.load(html);
-  const ref = $(".passage-display-bcv").text();
+  const refText = $(".passage-display-bcv").text();
+  const ref = parseRefText(refText);
+  const bookId = getBookId($);
   const pContents = $("p").contents();
   let text = "";
   for (let i = 0; i < pContents.length; ++i) {
@@ -15,8 +18,22 @@ export default function parsePassage(html) {
   }
   return {
     ref: ref,
+    refText: refText,
+    bookId: bookId,
     text: text
   };
+}
+
+function getBookId($) {
+  try {
+    const node = $("span.text");
+    // console.error(node);
+    const pattern = /(\w+)-\d+-\d+/;
+    const bookCode = node.attr("class").match(pattern)[1];
+    return bookCodes().indexOf(bookCode);
+  } catch (err) {
+    return -1;
+  }
 }
 
 function handleTextSpan(text, node) {
@@ -103,4 +120,49 @@ function pureTextContent(node) {
   return node.children.reduce((text, subNode) => {
     if (subNode.type == "text") return text + subNode.data;
   }, "");
+}
+
+function parseRefText(refText) {
+  const spaceIndex = refText.indexOf(" ");
+  const firstColonIndex = refText.indexOf(":");
+  const secondColonIndex = refText.lastIndexOf(":");
+  const dashIndex = refText.indexOf("-");
+
+  let ref = {};
+  if (spaceIndex < 0) return ref;
+  ref.bookName = refText.slice(0, spaceIndex);
+
+  // John 1-2
+  if (firstColonIndex < spaceIndex && dashIndex > 0) {
+    ref.startChapter = parseInt(refText.slice(spaceIndex + 1, dashIndex));
+    ref.endChapter = parseInt(refText.slice(dashIndex + 1));
+    return ref;
+  }
+
+  // John 1
+  if (firstColonIndex < spaceIndex) {
+    ref.startChapter = parseInt(refText.slice(spaceIndex + 1));
+    return ref;
+  }
+  ref.startChapter = parseInt(refText.slice(spaceIndex + 1, firstColonIndex));
+
+  // John 1:1
+  if (dashIndex < firstColonIndex) {
+    ref.startVerse = parseInt(refText.slice(firstColonIndex + 1));
+    return ref;
+  }
+
+  // John 1:1-2
+  if (secondColonIndex == firstColonIndex) {
+    ref.startVerse = parseInt(refText.slice(firstColonIndex + 1, dashIndex));
+    ref.endChapter = ref.startChapter;
+    ref.endVerse = parseInt(refText.slice(dashIndex + 1));
+    return ref;
+  }
+
+  // John 1:1-2:2
+  ref.startVerse = parseInt(refText.slice(firstColonIndex + 1, dashIndex));
+  ref.endChapter = parseInt(refText.slice(dashIndex + 1, secondColonIndex));
+  ref.endVerse = parseInt(refText.slice(secondColonIndex + 1));
+  return ref;
 }
