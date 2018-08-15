@@ -110,7 +110,7 @@ export default class BibleGateway extends React.PureComponent {
           >
             <ActivityIndicator />
             <Text style={{ fontSize: 20, paddingLeft: 8 }}>
-              Getting verse...
+              {I18n.t("GettingVerse")}
             </Text>
           </View>
         )}

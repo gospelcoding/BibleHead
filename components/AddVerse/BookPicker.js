@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native";
 import CommonStyles from "../../util/CommonStyles";
 import PickerList from "../shared/PickerList";
 import BibleBook from "../../models/BibleBook";
+import I18n from "../../i18n/i18n";
 
 export default class BookPicker extends React.PureComponent {
   constructor(props) {
@@ -14,7 +15,7 @@ export default class BookPicker extends React.PureComponent {
 
   static navigationOptions = () => {
     return {
-      title: "New Verse"
+      title: I18n.t("NewVerse")
     };
   };
 

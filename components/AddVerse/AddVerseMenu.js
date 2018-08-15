@@ -3,8 +3,15 @@ import { SafeAreaView, Text, StyleSheet, View } from "react-native";
 import XPlatformTouchable from "../shared/XPlatformTouchable";
 import CommonStyles from "../../util/CommonStyles";
 import ThemeColors from "../../util/ThemeColors";
+import I18n from "../../i18n/i18n";
 
 export default class AddVerseMenu extends React.PureComponent {
+  static navigationOptions() {
+    return {
+      title: I18n.t("NewVerse")
+    };
+  }
+
   render() {
     return (
       <SafeAreaView style={CommonStyles.screenRoot}>
@@ -19,7 +26,7 @@ export default class AddVerseMenu extends React.PureComponent {
             }}
           >
             <View style={styles.menuItem}>
-              <Text style={styles.menuItemText}>Manual Entry</Text>
+              <Text style={styles.menuItemText}>{I18n.t("ManualEntry")}</Text>
             </View>
           </XPlatformTouchable>
         </View>
@@ -38,7 +45,7 @@ export default class AddVerseMenu extends React.PureComponent {
           >
             <View style={styles.menuItem}>
               <Text style={styles.menuItemText}>
-                Download from Bible Gateway
+                {I18n.t("DownloadFromBibleGateway")}
               </Text>
             </View>
           </XPlatformTouchable>
