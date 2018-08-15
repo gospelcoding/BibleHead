@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-end"
+    alignItems: "flex-end",
+    backgroundColor: ThemeColors.grey
   }
 });

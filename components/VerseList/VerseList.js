@@ -149,7 +149,7 @@ export default class VerseList extends React.PureComponent {
       headerRight: (
         <BHActionButton
           onPress={() => {
-            navigation.navigate("BibleGateway", {
+            navigation.navigate("AddVerseMenu", {
               addVerse: navigation.getParam("addVerse")
             });
           }}

@@ -1,5 +1,9 @@
 export default {
+  AddEndVerse: "Ajouter verset finale",
   Book: "Livre",
+  ChangeEndVerse: "Changer verset finale",
+  ChangeStartChapter: "Changer chapitre",
+  ChangeStartVerse: "Changer verset",
   Chapter: "Chapitre",
   ChooseBible: "Version de la Bible",
   Done: "Terminer",
@@ -13,6 +17,7 @@ export default {
   MarkUnlearned: "Marquer comme pas appris",
   NewVerse: "Nouveau verset",
   Practice: "Pratiquer",
+  RemoveEndVerse: "Enlever verset finale",
   Reviewing: "À revoir",
   ReviewVerses: "Revoir des versets",
   Save: "Enregistrer",

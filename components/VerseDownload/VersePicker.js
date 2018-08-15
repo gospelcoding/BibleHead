@@ -28,7 +28,7 @@ export default class VersePicker extends React.PureComponent {
     );
     this.setState({
       passage: passage,
-      verses: intArray(endVerseNum).map(num => num.toString())
+      verses: intArray(1, endVerseNum).map(num => num.toString())
     });
   }
 

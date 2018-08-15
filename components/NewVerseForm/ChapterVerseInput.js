@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { View, Text, StyleSheet, Picker } from "react-native";
 import { intArray } from "../../util/util";
 
-const chapterNumbers = intArray(150);
-const verseNumbers = intArray(200);
+const chapterNumbers = intArray(1, 150);
+const verseNumbers = intArray(1, 200);
 
 export default function ChapterVerseInput(props) {
   return (

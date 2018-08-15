@@ -1,5 +1,9 @@
 export default {
+  AddEndVerse: "Add end verse",
   Book: "Book",
+  ChangeEndVerse: "Change end verse",
+  ChangeStartChapter: "Change chapter",
+  ChangeStartVerse: "Change verse",
   Chapter: "Chapter",
   ChooseBible: "Bible Version",
   Done: "Done",
@@ -13,6 +17,7 @@ export default {
   MarkUnlearned: "Mark Unlearned",
   NewVerse: "New Verse",
   Practice: "Practice",
+  RemoveEndVerse: "Remove end verse",
   Reviewing: "Reviewing",
   ReviewVerses: "Review Verses",
   Save: "Save",

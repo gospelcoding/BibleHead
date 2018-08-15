@@ -9,11 +9,11 @@ export default function PickerList(props) {
     <FlatList
       data={props.data}
       keyExtractor={props.keyExtractor}
-      renderItem={({ item }) => {
+      renderItem={({ item, index }) => {
         return (
           <XPlatformTouchable
             onPress={() => {
-              props.itemPress(item);
+              props.itemPress(item, index);
             }}
           >
             <Text style={CommonStyles.listItem}>{props.itemText(item)}</Text>
@@ -25,7 +25,7 @@ export default function PickerList(props) {
 }
 
 PickerList.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
   keyExtractor: PropTypes.func.isRequired,
   itemPress: PropTypes.func.isRequired,
   itemText: PropTypes.func.isRequired

@@ -85,7 +85,7 @@ export default class BibleGateway extends React.PureComponent {
     };
     const addVerse = this.props.navigation.getParam("addVerse");
     addVerse(verse);
-    this.props.navigation.goBack();
+    this.props.navigation.navigate("VerseList");
   };
 
   render() {

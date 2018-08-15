@@ -24,10 +24,10 @@ export function shuffle(array) {
   }
 }
 
-export function intArray(max) {
-  let array = new Array(max);
-  for (let i = 1; i <= max; ++i) {
-    array[i - 1] = i;
+export function intArray(min, max) {
+  let array = new Array(max - min + 1);
+  for (let i = min; i <= max; ++i) {
+    array[i - min] = i;
   }
   return array;
 }
