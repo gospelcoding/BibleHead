@@ -37,7 +37,6 @@ export default function ListItem(props) {
                 props.practiceVerse(props.verse);
               }}
               title={I18n.t("Practice")}
-              color={ThemeColors.blue}
             />
           </View>
         </View>

@@ -1,10 +1,12 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, Text } from "react-native";
+import { SafeAreaView, StyleSheet, Text, Platform } from "react-native";
 import PropTypes from "prop-types";
 import ShowWordsGame from "./ShowWordsGame";
 import Verse from "../../models/Verse";
 import I18n from "../../i18n/i18n";
 import CommonStyles from "../../util/CommonStyles";
+
+// const isIOS = Platform.OS == "ios";
 
 export default class VerseReview extends React.PureComponent {
   constructor(props) {

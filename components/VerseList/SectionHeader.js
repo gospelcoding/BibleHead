@@ -1,9 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Platform } from "react-native";
 import PropTypes from "prop-types";
 import I18n from "../../i18n/i18n";
 import ThemeColors from "../../util/ThemeColors";
 import BHButton from "../shared/BHButton";
+
+const isIOS = Platform.OS == "ios";
 
 export default function SectionHeader(props) {
   return (
@@ -20,11 +22,7 @@ export default function SectionHeader(props) {
       </Text>
       {props.reviewButton && (
         <View style={{ margin: 8 }}>
-          <BHButton
-            color={ThemeColors.blue}
-            onPress={props.doReview}
-            title={I18n.t("ReviewVerses")}
-          />
+          <BHButton onPress={props.doReview} title={I18n.t("ReviewVerses")} />
         </View>
       )}
     </View>

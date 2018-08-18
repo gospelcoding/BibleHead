@@ -52,14 +52,14 @@ const styles = StyleSheet.create({
   button: Platform.select({
     ios: {},
     android: {
-      backgroundColor: ThemeColors.blue,
+      backgroundColor: ThemeColors.buttonBlue,
       elevation: 4,
       borderRadius: 2
     }
   }),
   text: Platform.select({
     ios: {
-      color: ThemeColors.blue,
+      color: ThemeColors.buttonBlue,
       textAlign: "center",
       padding: 8,
       fontSize: 18

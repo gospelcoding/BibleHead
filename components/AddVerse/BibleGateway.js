@@ -155,7 +155,7 @@ export default class BibleGateway extends React.PureComponent {
               >
                 <BHButton
                   title={I18n.t("Save")}
-                  color={ThemeColors.green}
+                  color={ThemeColors.buttonGreen}
                   onPress={this.saveVerse}
                   buttonStyle={Platform.OS == "android" ? { padding: 8 } : {}}
                 />

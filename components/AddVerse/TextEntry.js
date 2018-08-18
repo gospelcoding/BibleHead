@@ -168,7 +168,7 @@ export default class TextEntry extends React.PureComponent {
               <BHButton
                 title={I18n.t("Save")}
                 onPress={this.saveVerse}
-                color={ThemeColors.green}
+                color={ThemeColors.buttonGreen}
               />
             </View>
           )}

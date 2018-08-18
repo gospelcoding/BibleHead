@@ -18,7 +18,8 @@ function icons(name) {
       replay: "ios-refresh",
       home: "ios-home",
       check: "ios-checkmark",
-      pencil: "ios-create"
+      pencil: "ios-create",
+      x: "ios-close"
     },
     android: {
       add: "add",
@@ -26,7 +27,8 @@ function icons(name) {
       replay: "replay",
       home: "home",
       check: "check",
-      pencil: "create"
+      pencil: "create",
+      x: "close"
     }
   })[name];
 }

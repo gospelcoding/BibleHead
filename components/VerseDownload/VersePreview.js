@@ -138,7 +138,7 @@ export default class VersePreview extends React.Component {
             <BHButton
               title="Save"
               onPress={this.props.navigation.getParam("addVerse")}
-              color={ThemeColors.green}
+              color={ThemeColors.buttonGreen}
               textStyle={{ fontSize: 20 }}
             />
           </View>
