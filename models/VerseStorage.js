@@ -14,6 +14,10 @@ export default class VerseStorage {
   static async updateVerse(verse, mergeVerse) {
     return await updateVerse(verse, mergeVerse);
   }
+
+  static async deleteVerse(id) {
+    return await deleteVerse(id);
+  }
 }
 
 async function createVerse(verse) {
@@ -21,7 +25,7 @@ async function createVerse(verse) {
   verse.createdAt = new Date().getTime();
   await Promise.all([
     AsyncStorage.setItem(`bh.verse.${verse.id}`, JSON.stringify(verse)),
-    addVerseToIndex(verse)
+    addVerseToIndexAndSave(verse)
   ]);
   return verse;
 }
@@ -42,9 +46,9 @@ async function nextVerseId() {
   return parseInt(idStr) || 1;
 }
 
-async function getAllVerses() {
-  const vindex = await getVerseIndex();
-  const verseKeys = vindex.map(id => {
+async function getAllVerses(index) {
+  index = index ? index : await getVerseIndex();
+  const verseKeys = index.map(id => {
     return `bh.verse.${id}`;
   });
   const keyDataPairs = await AsyncStorage.multiGet(verseKeys);
@@ -53,15 +57,23 @@ async function getAllVerses() {
   });
 }
 
-async function addVerseToIndex(verse) {
-  let vindex = await getVerseIndex();
-  const versesData = await getAllVerses();
+async function addVerseToIndex(index, verse) {
+  const versesData = await getAllVerses(index);
   let position = versesData.findIndex(compareVerse => {
     return Verse.compare(verse, compareVerse) < 0;
   });
-  if (position == -1) position = vindex.length;
-  vindex.splice(position, 0, verse.id);
-  await AsyncStorage.setItem("bh.verseIndex", JSON.stringify(vindex));
+  if (position == -1) position = index.length;
+  index.splice(position, 0, verse.id);
+  return index;
+}
+
+async function addVerseToIndexAndSave(verse) {
+  const newIndex = await addVerseToIndex(await getVerseIndex(), verse);
+  await saveVerseIndex(newIndex);
+}
+
+async function saveVerseIndex(index) {
+  await AsyncStorage.setItem("bh.verseIndex", JSON.stringify(index));
 }
 
 async function getVerseIndex() {
@@ -69,8 +81,40 @@ async function getVerseIndex() {
   return vIndexJson ? JSON.parse(vIndexJson) : [];
 }
 
-// We might have to update the index!
 async function updateVerse(verse, mergeVerse) {
   const newVerse = update(verse, { $merge: mergeVerse });
   AsyncStorage.setItem(`bh.verse.${newVerse.id}`, JSON.stringify(newVerse));
+  if (needToMoveVerseInIndex(mergeVerse)) await moveVerseInIndex(newVerse);
+}
+
+function needToMoveVerseInIndex(mergeVerse) {
+  return mergeVerse.bookId || mergeVerse.startChapter || mergeVerse.startVerse;
+}
+
+async function moveVerseInIndex(verse) {
+  let index = await getVerseIndex();
+  index = removeVerseFromIndex(index, verse.id);
+  index = await addVerseToIndex(index, verse);
+  await saveVerseIndex(index);
+}
+
+async function deleteVerse(id) {
+  const verse = await AsyncStorage.getItem(`bh.verse.${id}`);
+  await AsyncStorage.setItem(`bh.deletedVerse.${id}`, verse);
+  let deletedVerses = await AsyncStorage.getItem(`bh.deletedVerses`);
+  deletedVerses = deletedVerses ? JSON.parse(deletedVerses) : [];
+  deletedVerses.push(id);
+  await AsyncStorage.setItem("bh.deletedVerses", JSON.stringify(deletedVerses));
+  await removeVerseFromIndexAndSave(id);
+}
+
+function removeVerseFromIndex(index, id) {
+  const removeAt = index.indexOf(id);
+  if (removeAt >= 0) index.splice(removeAt, 1);
+  return index;
+}
+
+async function removeVerseFromIndexAndSave(id) {
+  const newIndex = removeVerseFromIndex(await getVerseIndex(), id);
+  await saveVerseIndex(newIndex);
 }

@@ -23,7 +23,7 @@ export default class VersePicker extends React.PureComponent {
           itemText={v => v.toString()}
           itemPress={v => {
             this.props.navigation.navigate("TextEntry", {
-              addVerse: this.props.navigation.getParam("addVerse"),
+              saveVerse: this.props.navigation.getParam("addVerse"),
               verse: {
                 ...this.props.navigation.getParam("verse"),
                 startVerse: v

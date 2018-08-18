@@ -50,6 +50,13 @@ export default class VerseList extends React.PureComponent {
     });
   };
 
+  editVerse = verse => {
+    this.props.navigation.navigate("TextEntry", {
+      verse: verse,
+      saveVerse: mergeVerse => this.updateVerseAndSave(verse, mergeVerse)
+    });
+  };
+
   doReview = () => {
     const versesToReview = Verse.selectReviewVerses(
       this.state.reviewingList,
@@ -137,6 +144,11 @@ export default class VerseList extends React.PureComponent {
     });
   };
 
+  removeVerseAndSave = verse => {
+    this.removeVerse(verse);
+    VerseStorage.deleteVerse(verse.id);
+  };
+
   updateVerseAndSave = (verse, mergeVerse) => {
     this.updateVerse(verse, mergeVerse);
     VerseStorage.updateVerse(verse, mergeVerse);
@@ -189,6 +201,8 @@ export default class VerseList extends React.PureComponent {
                 selected={verse.id == this.state.selectedId}
                 toggleSelect={this.toggleSelect}
                 updateVerse={this.updateVerseAndSave}
+                removeVerse={this.removeVerseAndSave}
+                editVerse={this.editVerse}
                 practiceVerse={this.practiceVerse}
               />
             );

@@ -1,31 +1,58 @@
 import React from "react";
-import { Text, StyleSheet, View, Platform } from "react-native";
+import { Text, StyleSheet, View, Platform, ScrollView } from "react-native";
 import Verse from "../../models/Verse";
 import LearnedToggleButton from "./LearnedToggleButton";
 import XPlatformTouchable from "../shared/XPlatformTouchable";
 import I18n from "../../i18n/i18n";
 import ThemeColors from "../../util/ThemeColors";
 import BHButton from "../shared/BHButton";
+import BHActionButton from "../shared/BHActionButton";
+
+const isIOS = Platform.OS == "ios";
 
 export default function ListItem(props) {
   return (
     <View style={styles.item}>
-      <XPlatformTouchable
-        onPress={() => {
-          props.toggleSelect(props.verse);
-        }}
-      >
-        <View style={styles.headerView}>
-          <Text
-            style={props.selected ? styles.selectedRefText : styles.refText}
+      <View style={{ flexDirection: "row" }}>
+        <View style={{ flex: 1 }}>
+          <XPlatformTouchable
+            onPress={() => {
+              props.toggleSelect(props.verse);
+            }}
           >
-            {Verse.refText(props.verse)}
-          </Text>
+            <View style={styles.headerView}>
+              <Text
+                style={props.selected ? styles.selectedRefText : styles.refText}
+              >
+                {Verse.refText(props.verse)}
+              </Text>
+            </View>
+          </XPlatformTouchable>
         </View>
-      </XPlatformTouchable>
+        {props.selected && (
+          <View style={{ flexDirection: "row" }}>
+            <BHActionButton
+              name="pencil"
+              color={ThemeColors.yellow}
+              onPress={() => {
+                props.editVerse(props.verse);
+              }}
+            />
+            <BHActionButton
+              name="trash"
+              color={ThemeColors.red}
+              onPress={() => {
+                props.removeVerse(props.verse);
+              }}
+            />
+          </View>
+        )}
+      </View>
       {props.selected && (
         <View style={styles.selectedView}>
-          <Text style={styles.verseText}>{props.verse.text}</Text>
+          <ScrollView style={styles.verseTextScroll}>
+            <Text style={styles.verseText}>{props.verse.text}</Text>
+          </ScrollView>
           <View style={styles.buttonRow}>
             <LearnedToggleButton
               verse={props.verse}
@@ -48,7 +75,7 @@ export default function ListItem(props) {
 const styles = StyleSheet.create({
   item: {
     backgroundColor: "white",
-    marginBottom: Platform.OS == "ios" ? 1 : 2
+    marginBottom: isIOS ? 1 : 2
   },
   headerView: {
     padding: 8
@@ -68,6 +95,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: "black",
     fontWeight: "bold"
+  },
+  verseTextScroll: {
+    marginBottom: isIOS ? 0 : 8,
+    maxHeight: 186
   },
   verseText: {
     fontSize: 18

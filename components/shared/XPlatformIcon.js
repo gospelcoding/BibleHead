@@ -19,7 +19,8 @@ function icons(name) {
       home: "ios-home",
       check: "ios-checkmark",
       pencil: "ios-create",
-      x: "ios-close"
+      x: "ios-close",
+      trash: "ios-trash"
     },
     android: {
       add: "add",
@@ -28,7 +29,8 @@ function icons(name) {
       home: "home",
       check: "check",
       pencil: "create",
-      x: "close"
+      x: "close",
+      trash: "delete"
     }
   })[name];
 }

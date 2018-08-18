@@ -106,8 +106,8 @@ export default class TextEntry extends React.PureComponent {
   };
 
   saveVerse = () => {
-    const addVerse = this.props.navigation.getParam("addVerse");
-    addVerse(this.state.verse);
+    const saveVerse = this.props.navigation.getParam("saveVerse");
+    saveVerse(this.state.verse);
     this.props.navigation.navigate("VerseList");
   };
 

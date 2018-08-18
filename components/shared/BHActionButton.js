@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import BHIconButton from "./BHIconButton";
 
 export default function BHActionButton(props) {
-  const { textStyle, buttonStyle, ...otherProps } = props;
+  const { textStyle, buttonStyle, color, ...otherProps } = props;
   const abTextStyle = [
     {
-      color: "#ffffff"
+      color: color || "#ffffff"
     },
     textStyle
   ];
