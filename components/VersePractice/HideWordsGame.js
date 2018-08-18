@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, Button, Platform, StyleSheet } from "react-native";
+import { Text, View, Platform, StyleSheet, ScrollView } from "react-native";
 import { shuffle } from "../../util/util";
 import ButtonRow from "./ButtonRow";
 import PropTypes from "prop-types";
@@ -50,11 +50,11 @@ export default class HideWordsGame extends React.PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
           <Text style={styles.hideWordsText}>
             {this.state.peek ? this.props.verse.text : this.state.gameText}
           </Text>
-        </View>
+        </ScrollView>
         <ButtonRow
           game="HideWords"
           done={this.state.done}
