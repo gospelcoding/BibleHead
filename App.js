@@ -1,4 +1,5 @@
 import React from "react";
+import { Platform } from "react-native";
 import NewVerseForm from "./components/NewVerseForm/NewVerseForm";
 import VerseList from "./components/VerseList/VerseList";
 import { createStackNavigator } from "react-navigation";
@@ -20,13 +21,21 @@ import TextEntry from "./components/AddVerse/TextEntry";
 import checkVersionAndDoUpdates from "./util/checkVersionAndDoUpdates";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 
+const isIOS = Platform.OS == "ios";
+const uriPrefix = isIOS ? "biblehead://" : "biblehead://biblehead/";
+
 const RootStack = createStackNavigator(
   {
     Experiment: Experiment,
-    VerseList: VerseList,
+    VerseList: {
+      screen: VerseList,
+      path: "list/:action"
+    },
     NewVerseForm: NewVerseForm,
     VersePractice: VersePractice,
-    VerseReview: VerseReview,
+    VerseReview: {
+      screen: VerseReview
+    },
     AddVerseMenu: AddVerseMenu,
     BibleGateway: BibleGateway,
     BookPicker: BookPicker,
@@ -59,6 +68,10 @@ export default class App extends React.PureComponent {
   }
 
   render() {
-    return this.state.loaded ? <RootStack /> : <LoadingScreen />;
+    return this.state.loaded ? (
+      <RootStack uriPrefix={uriPrefix} />
+    ) : (
+      <LoadingScreen />
+    );
   }
 }

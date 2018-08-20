@@ -1,6 +1,10 @@
 package com.biblehead;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.graphics.Color;
+import android.os.Build;
 
 import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -45,5 +49,22 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    setupNotificationChannel();
+    AlarmManager.setAlarm(getApplicationContext());
+  }
+
+  public static final String NOTIFICATION_CHANNEL = "daily_review_reminder";
+  private void setupNotificationChannel(){
+    if (Build.VERSION.SDK_INT < 26)
+      return;
+    NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    String id = NOTIFICATION_CHANNEL;
+    CharSequence name = getString(R.string.app_name);
+    String description = getString(R.string.channel_description);
+    NotificationChannel mChannel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_LOW);
+    mChannel.setDescription(description);
+    mChannel.enableLights(true);
+    mChannel.setLightColor(Color.WHITE);
+    mNotificationManager.createNotificationChannel(mChannel);
   }
 }

@@ -27,20 +27,21 @@ export default class VerseList extends React.PureComponent {
     };
   }
 
-  getVerses = () => {
-    VerseStorage.getAllVerses().then(verseList => {
-      const lists = Verse.getLearningAndReviewingLists(verseList);
-      this.setState({
-        learningList: lists.learning,
-        reviewingList: lists.reviewing,
-        loading: false
-      });
+  getVerses = async () => {
+    const verseList = await VerseStorage.getAllVerses();
+    const lists = Verse.getLearningAndReviewingLists(verseList);
+    this.setState({
+      learningList: lists.learning,
+      reviewingList: lists.reviewing,
+      loading: false
     });
+    return lists;
   };
 
-  componentDidMount() {
-    this.getVerses();
+  async componentDidMount() {
     this.props.navigation.setParams({ addVerse: this.addVerseAndSave });
+    const lists = await this.getVerses();
+    if (this.props.navigation.getParam("action") == "review") this.doReview();
   }
 
   practiceVerse = verse => {
