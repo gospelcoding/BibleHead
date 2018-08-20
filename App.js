@@ -17,6 +17,8 @@ import AddVerseMenu from "./components/AddVerse/AddVerseMenu";
 import BookPicker from "./components/AddVerse/BookPicker";
 import ChapterPicker from "./components/AddVerse/ChapterPicker";
 import TextEntry from "./components/AddVerse/TextEntry";
+import checkVersionAndDoUpdates from "./util/checkVersionAndDoUpdates";
+import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 
 const RootStack = createStackNavigator(
   {
@@ -44,7 +46,19 @@ const RootStack = createStackNavigator(
 );
 
 export default class App extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false
+    };
+  }
+
+  async componentDidMount() {
+    await checkVersionAndDoUpdates();
+    this.setState({ loaded: true });
+  }
+
   render() {
-    return <RootStack />;
+    return this.state.loaded ? <RootStack /> : <LoadingScreen />;
   }
 }

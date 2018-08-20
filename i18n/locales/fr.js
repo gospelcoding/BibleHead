@@ -11,6 +11,8 @@ export default {
   EnterReference: "< Référence",
   EnterText: "Texte >",
   GettingVerse: "Téléchargement...",
+  Heb412:
+    "En effet, la parole de Dieu est vivante et efficace, plus tranchante que toute épée à deux tranchants, pénétrante jusqu’à séparer âme et esprit, jointures et moelles; elle juge les sentiments et les pensées du cœur.",
   Lang: "Français",
   Language: "Langue",
   Learned: "Appris",

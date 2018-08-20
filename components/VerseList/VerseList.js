@@ -154,6 +154,22 @@ export default class VerseList extends React.PureComponent {
     VerseStorage.updateVerse(verse, mergeVerse);
   };
 
+  getSections = () => {
+    let sections = [];
+    if (this.state.learningList.length > 0)
+      sections.push({
+        title: I18n.t("Learning"),
+        data: this.state.learningList
+      });
+    if (this.state.reviewingList.length > 0)
+      sections.push({
+        title: I18n.t("Reviewing"),
+        reviewButton: true,
+        data: this.state.reviewingList
+      });
+    return sections;
+  };
+
   static navigationOptions = ({ navigation }) => {
     return {
       ...CommonStyles.headerOptions,
@@ -178,14 +194,7 @@ export default class VerseList extends React.PureComponent {
         {this.state.loading && <Text>Loading...</Text>}
         <SectionList
           style={styles.list}
-          sections={[
-            { title: I18n.t("Learning"), data: this.state.learningList },
-            {
-              title: I18n.t("Reviewing"),
-              reviewButton: true,
-              data: this.state.reviewingList
-            }
-          ]}
+          sections={this.getSections()}
           keyExtractor={verse => `${verse.id}`}
           renderSectionHeader={({ section: { title, reviewButton } }) => (
             <SectionHeader
