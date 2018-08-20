@@ -9,12 +9,11 @@ import java.util.Calendar;
 
 
 public class AlarmManager {
-    public static void setAlarm(Context context){
-        Intent intent = new Intent(context, ReviewNotifier.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+    public static void setAlarm(Context context, int hour, int minute){
+        PendingIntent alarmIntent = alarmIntent(context);
         android.app.AlarmManager alarmManager = (android.app.AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        
-        Calendar alarmCal = nextCalendarAtTime(6, 30);
+
+        Calendar alarmCal = nextCalendarAtTime(hour, minute);
         alarmManager.setInexactRepeating(android.app.AlarmManager.RTC_WAKEUP,
                 alarmCal.getTimeInMillis(),
                 android.app.AlarmManager.INTERVAL_DAY,
@@ -28,6 +27,12 @@ public class AlarmManager {
 //        Log.d("BH Alarm", "Set Alarm for " + time);
     }
 
+    public static void cancelAlarm(Context context) {
+        android.app.AlarmManager alarmManager = (android.app.AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(alarmIntent(context));
+        Log.d("BH Alarm", "Cancelled alarm");
+    }
+
     private static Calendar nextCalendarAtTime(int hour, int minute){
         Calendar now = Calendar.getInstance();
         Calendar rVal = Calendar.getInstance();
@@ -36,5 +41,10 @@ public class AlarmManager {
         if(now.getTimeInMillis() > rVal.getTimeInMillis())
             rVal.add(Calendar.DAY_OF_MONTH, 1);
         return rVal;
+    }
+
+    private static PendingIntent alarmIntent(Context context) {
+        Intent intent = new Intent(context, ReviewNotifier.class);
+        return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
 }

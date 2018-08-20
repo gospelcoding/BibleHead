@@ -1,19 +1,24 @@
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, NativeModules, Platform } from "react-native";
 import VerseStorage from "../models/VerseStorage";
 import BibleBook from "../models/BibleBook";
 import I18n from "../i18n/i18n";
 
 const currentVersion = "2.0";
 const storageKey = "bh.version";
+const AlarmModule = NativeModules.AlarmModule;
+const isIOS = Platform.OS == "ios";
 
 export default async function checkVersionAndDoUpdates() {
   const lastVersion = await AsyncStorage.getItem(storageKey);
   switch (lastVersion) {
     case null:
       await addFirstVerse();
-      break;
+      if (!isIOS) AlarmModule.setupNotificationChannel();
   }
-  await AsyncStorage.setItem(storageKey, currentVersion);
+
+  // Always
+  if (!isIOS) AlarmModule.setAlarmTime("6:45");
+  AsyncStorage.setItem(storageKey, currentVersion);
   return 0;
 }
 

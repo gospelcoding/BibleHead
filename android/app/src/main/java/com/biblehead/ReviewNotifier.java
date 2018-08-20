@@ -11,13 +11,14 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 public class ReviewNotifier extends BroadcastReceiver {
+    public static final String NOTIFICATION_CHANNEL = "daily_review_reminder";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("BH Alarm", "Alarm fired");
 
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context, MainApplication.NOTIFICATION_CHANNEL)
+                new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL)
                         .setSmallIcon(R.drawable.ic_stat_biblehead_notification)
                         .setContentTitle(context.getString(R.string.notification_title))
                         .setContentText(context.getString(R.string.notification_text))
