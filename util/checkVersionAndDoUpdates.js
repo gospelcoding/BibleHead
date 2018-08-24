@@ -17,7 +17,7 @@ export default async function checkVersionAndDoUpdates() {
   }
 
   // Always
-  if (!isIOS) AlarmModule.setAlarmTime("6:45");
+  AlarmModule.setAlarmTime("6:45");
   AsyncStorage.setItem(storageKey, currentVersion);
   return 0;
 }

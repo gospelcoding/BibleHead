@@ -4,7 +4,9 @@ import {
   Text,
   SectionList,
   StyleSheet,
-  Platform
+  Platform,
+  NativeModules,
+  NativeEventEmitter
 } from "react-native";
 import VerseStorage from "../../models/VerseStorage";
 import Verse from "../../models/Verse";
@@ -15,6 +17,9 @@ import I18n from "../../i18n/i18n";
 import BHStatusBar from "../shared/BHStatusBar";
 import CommonStyles from "../../util/CommonStyles";
 import BHActionButton from "../shared/BHActionButton";
+
+const { AlarmModule } = NativeModules;
+const alarmModuleEmitter = new NativeEventEmitter(AlarmModule);
 
 export default class VerseList extends React.PureComponent {
   constructor(props) {
@@ -41,7 +46,11 @@ export default class VerseList extends React.PureComponent {
   async componentDidMount() {
     this.props.navigation.setParams({ addVerse: this.addVerseAndSave });
     const lists = await this.getVerses();
-    if (this.props.navigation.getParam("action") == "review") this.doReview();
+    if (this.props.navigation.getParam("action") == "review")
+      this.doReview(lists.reviewing);
+    this.subscription = alarmModuleEmitter.addListener("DoReview", () => {
+      this.doReview(lists.reviewing);
+    });
   }
 
   practiceVerse = verse => {
@@ -58,9 +67,9 @@ export default class VerseList extends React.PureComponent {
     });
   };
 
-  doReview = () => {
+  doReview = reviewingList => {
     const versesToReview = Verse.selectReviewVerses(
-      this.state.reviewingList,
+      this.state.reviewingList || reviewingList,
       5
     );
     this.props.navigation.navigate("VerseReview", {

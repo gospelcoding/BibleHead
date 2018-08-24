@@ -9,6 +9,8 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <UserNotifications/UserNotifications.h>
+#import "BHNotificationManager.h"
 
 @implementation AppDelegate
 
@@ -29,7 +31,36 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  // BibleHead Stuff
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  [center requestAuthorizationWithOptions:UNAuthorizationOptionNone completionHandler:^(BOOL granted, NSError * _Nullable error) {
+    if (granted) {
+      NSLog(@"Permission Granted!");
+    }
+  }];
+  
+//  UNNotificationAction *snoozeAction = [UNNotificationAction actionWithIdentifier:@"BHSnoozeAction" title:@"Snooze" options:UNNotificationActionOptionNone];
+//  UNNotificationAction *reviewAction = [UNNotificationAction actionWithIdentifier:@"BHReviewAction" title:@"Review" options:UNNotificationActionOptionNone];
+//  UNNotificationCategory *category = [UNNotificationCategory categoryWithIdentifier:@"BHReviewNotificationCategory" actions:@[snoozeAction,reviewAction] intentIdentifiers:@[] options:UNNotificationCategoryOptionNone];
+//  NSSet *categories = [NSSet setWithObject:category];
+//  [center setNotificationCategories:categories];
+  
+  center.delegate = self;
+  
   return YES;
 }
 
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler
+{
+  NSLog(@"userNotificationCenter willPresentNotification called...:)");
+  completionHandler(UNNotificationPresentationOptionAlert);
+}
+
+- (void)userNotificationCenter: (UNUserNotificationCenter *)center didReceiveNotificationResponse:(nonnull UNNotificationResponse *)response withCompletionHandler:(nonnull void (^)(void))completionHandler
+{
+  NSLog(@"Time to do a review...");
+  [BHNotificationManager doReviewWhenReady];
+  completionHandler();
+}
 @end
