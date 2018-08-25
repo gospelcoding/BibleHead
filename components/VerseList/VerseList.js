@@ -47,9 +47,9 @@ export default class VerseList extends React.PureComponent {
     this.props.navigation.setParams({ addVerse: this.addVerseAndSave });
     const lists = await this.getVerses();
     if (this.props.navigation.getParam("action") == "review")
-      this.doReview(lists.reviewing);
+      this.doReview(lists.reviewing, lists.learning);
     this.subscription = alarmModuleEmitter.addListener("DoReview", () => {
-      this.doReview(lists.reviewing);
+      this.doReview(lists.reviewing, lists.learning);
     });
   }
 
@@ -67,15 +67,23 @@ export default class VerseList extends React.PureComponent {
     });
   };
 
-  doReview = reviewingList => {
+  doReview = (reviewingList, learningList) => {
     const versesToReview = Verse.selectReviewVerses(
       this.state.reviewingList || reviewingList,
-      5
+      4
     );
-    this.props.navigation.navigate("VerseReview", {
-      verses: versesToReview,
+    const verseToLearn = Verse.selectLearningVerse(
+      this.state.learningList || learningList
+    );
+    const navParams = {
+      reviewVerses: versesToReview,
+      learningVerse: verseToLearn,
       updateVerse: this.updateVerseAndSave
-    });
+    };
+    if (versesToReview.length > 0)
+      this.props.navigation.navigate("VerseReview", navParams);
+    else if (verseToLearn)
+      this.props.navigation.navigate("VersePractice", navParams);
   };
 
   toggleSelect = verse => {

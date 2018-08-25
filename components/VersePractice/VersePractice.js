@@ -12,31 +12,43 @@ export default class VersePractice extends React.PureComponent {
     };
   }
 
+  componentDidMount() {
+    const updateVerse = this.props.navigation.getParam("updateVerse");
+    updateVerse(this.verse(), { lastPracticed: new Date().getTime() });
+  }
+
+  verse = () => {
+    return (
+      this.props.navigation.getParam("verse") ||
+      this.props.navigation.getParam("learningVerse")
+    );
+  };
+
   markLearned = () => {
     const updateVerse = this.props.navigation.getParam("updateVerse", () => {});
-    const verse = this.props.navigation.getParam("verse", {});
+    const verse = this.verse();
     updateVerse(verse, { learned: true });
-    this.props.navigation.goBack();
+    this.props.navigation.navigate("VerseList");
   };
 
   goHome = () => {
-    this.props.navigation.goBack();
+    this.props.navigation.navigate("VerseList");
   };
 
   static navigationOptions = ({ navigation }) => {
+    const verse =
+      navigation.getParam("verse") || navigation.getParam("learningVerse");
     return {
-      ...CommonStyles.headerOptions,
-      headerTitle: Verse.refText(navigation.getParam("verse", {}))
+      headerTitle: Verse.refText(verse)
     };
   };
 
   render() {
-    const verse = this.props.navigation.getParam("verse", {});
     return (
       <SafeAreaView style={CommonStyles.screenRoot}>
         {this.state.game == "HideWords" && (
           <HideWordsGame
-            verse={verse}
+            verse={this.verse()}
             goHome={this.goHome}
             markLearned={this.markLearned}
           />

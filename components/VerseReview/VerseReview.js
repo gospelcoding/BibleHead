@@ -22,9 +22,9 @@ export default class VerseReview extends React.PureComponent {
 
   nextVerse = () => {
     const nextVerseNumber = this.verseNumber() + 1;
-    const verses = this.props.navigation.getParam("verses");
+    const verses = this.props.navigation.getParam("reviewVerses");
     if (nextVerseNumber == verses.length) {
-      this.props.navigation.navigate("VerseList");
+      this.endOfReviewVerses();
     } else {
       let params = this.props.navigation.state.params;
       params.verseNumber = nextVerseNumber;
@@ -32,12 +32,21 @@ export default class VerseReview extends React.PureComponent {
     }
   };
 
+  endOfReviewVerses = () => {
+    if (this.props.navigation.getParam("learningVerse"))
+      this.props.navigation.navigate(
+        "VersePractice",
+        this.props.navigation.state.params
+      );
+    else this.props.navigation.navigate("VerseList");
+  };
+
   setSplitIndex = splitIndex => {
     this.setState({ splitIndex: splitIndex });
   };
 
   static navigationOptions = ({ navigation }) => {
-    const verses = navigation.getParam("verses");
+    const verses = navigation.getParam("reviewVerses");
     const verseNumber = navigation.getParam("verseNumber", 0);
     return {
       title: Verse.refText(verses[verseNumber]),
@@ -50,7 +59,9 @@ export default class VerseReview extends React.PureComponent {
   };
 
   render() {
-    const verse = this.props.navigation.getParam("verses")[this.verseNumber()];
+    const verse = this.props.navigation.getParam("reviewVerses")[
+      this.verseNumber()
+    ];
     return (
       <SafeAreaView style={CommonStyles.screenRoot}>
         <ShowWordsGame

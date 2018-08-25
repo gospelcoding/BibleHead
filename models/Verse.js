@@ -58,6 +58,22 @@ export default class Verse {
     });
   }
 
+  static selectLearningVerse(verses) {
+    let lastPracticedVerse;
+    let oldestVerse;
+    for (let verse of verses) {
+      if (
+        verse.lastPracticed &&
+        (!lastPracticedVerse ||
+          verse.lastPracticed > lastPracticedVerse.lastPracticed)
+      )
+        lastPracticedVerse = verse;
+      if (!oldestVerse || verse.createdAt < oldestVerse.createdAt)
+        oldestVerse = verse;
+    }
+    return lastPracticedVerse || oldestVerse;
+  }
+
   static compare(a, b) {
     return verseCompareVal(a) - verseCompareVal(b);
   }
