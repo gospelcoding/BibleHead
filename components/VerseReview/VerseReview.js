@@ -12,25 +12,24 @@ export default class VerseReview extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      verseNumber: 0,
       splitIndex: 0
     };
   }
 
+  verseNumber = () => {
+    return this.props.navigation.getParam("verseNumber", 0);
+  };
+
   nextVerse = () => {
-    this.setState((prevState, props) => {
-      const nextVerseNumber = prevState.verseNumber + 1;
-      const verses = props.navigation.getParam("verses");
-      if (nextVerseNumber == verses.length) {
-        props.navigation.goBack();
-      } else {
-        props.navigation.setParams({
-          title: Verse.refText(verses[nextVerseNumber]),
-          verseNumber: nextVerseNumber
-        });
-        return { verseNumber: nextVerseNumber, splitIndex: 0 };
-      }
-    });
+    const nextVerseNumber = this.verseNumber() + 1;
+    const verses = this.props.navigation.getParam("verses");
+    if (nextVerseNumber == verses.length) {
+      this.props.navigation.navigate("VerseList");
+    } else {
+      let params = this.props.navigation.state.params;
+      params.verseNumber = nextVerseNumber;
+      this.props.navigation.push("VerseReview", params);
+    }
   };
 
   setSplitIndex = splitIndex => {
@@ -39,22 +38,19 @@ export default class VerseReview extends React.PureComponent {
 
   static navigationOptions = ({ navigation }) => {
     const verses = navigation.getParam("verses");
-    const verseNumber = 1 + navigation.getParam("verseNumber", 0);
+    const verseNumber = navigation.getParam("verseNumber", 0);
     return {
-      ...CommonStyles.headerOptions,
-      title: navigation.getParam("title", Verse.refText(verses[0])),
+      title: Verse.refText(verses[verseNumber]),
       headerRight: (
         <Text style={styles.headerRight}>
-          {I18n.t("xOfY", { x: verseNumber, y: verses.length })}
+          {I18n.t("xOfY", { x: verseNumber + 1, y: verses.length })}
         </Text>
       )
     };
   };
 
   render() {
-    const verse = this.props.navigation.getParam("verses")[
-      this.state.verseNumber
-    ];
+    const verse = this.props.navigation.getParam("verses")[this.verseNumber()];
     return (
       <SafeAreaView style={CommonStyles.screenRoot}>
         <ShowWordsGame
