@@ -1,4 +1,4 @@
-package com.biblehead;
+package org.gospelcoding.biblehead;
 
 import com.facebook.react.ReactActivity;
 

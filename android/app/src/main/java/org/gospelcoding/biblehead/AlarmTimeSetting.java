@@ -1,4 +1,4 @@
-package com.biblehead;
+package org.gospelcoding.biblehead;
 
 import android.content.Context;
 import android.content.SharedPreferences;

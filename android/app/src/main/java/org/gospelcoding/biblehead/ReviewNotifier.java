@@ -1,8 +1,7 @@
-package com.biblehead;
+package org.gospelcoding.biblehead;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.Context;

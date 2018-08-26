@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.biblehead">
+    package="org.gospelcoding.biblehead">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
@@ -33,7 +33,7 @@
             android:name=".ReviewNotifier"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.biblehead.MakeNotification" />
+                <action android:name="org.gospelcoding.biblehead.MakeNotification" />
             </intent-filter>
         </receiver>
         <receiver
