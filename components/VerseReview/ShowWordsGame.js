@@ -35,7 +35,7 @@ export default function showWordsGame(props) {
 
   const bigStep = () => {
     // Newline or phrase punctuation followed by whitespace
-    const pattern = /\n|[.,;-]\s+/;
+    const pattern = /\n|[.,:;?!”’»)-]\s+/;
     props.setSplitIndex(nextSplitIndex(pattern, props));
     scroll();
   };

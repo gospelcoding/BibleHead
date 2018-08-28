@@ -76,7 +76,7 @@ export default class HideWordsGame extends React.PureComponent {
 }
 
 function getWordCoordinates(text) {
-  const pattern = /\w+/g;
+  const pattern = /([^.,:;?¿!¡"“”‘’«»()\s])+/g;
   let coordinates = [];
   let find;
   while ((find = pattern.exec(text)) !== null) {
