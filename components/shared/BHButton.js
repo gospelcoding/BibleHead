@@ -20,6 +20,7 @@ export default function BHButton(props) {
     textStyle,
     children,
     color,
+    hidden,
     ...otherProps
   } = props;
 
@@ -29,6 +30,11 @@ export default function BHButton(props) {
   if (color) {
     if (Platform.OS == "ios") textStyles.push({ color: color });
     else buttonStyles.push({ backgroundColor: color });
+  }
+
+  if (hidden) {
+    textStyles.push({ opacity: 0 });
+    buttonStyles.push({ opacity: 0 });
   }
 
   // Right now, I'm just using white to generate ripple color
@@ -78,5 +84,6 @@ BHButton.propTypes = {
   textStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   buttonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   children: PropTypes.object,
-  color: PropTypes.string
+  color: PropTypes.string,
+  hidden: PropTypes.bool
 };

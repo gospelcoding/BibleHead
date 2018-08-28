@@ -3,12 +3,13 @@ import { SafeAreaView } from "react-native";
 import Verse from "../../models/Verse";
 import HideWordsGame from "./HideWordsGame";
 import CommonStyles from "../../util/CommonStyles";
+import ShuffleWordsGame from "./ShuffleWordsGame";
 
 export default class VersePractice extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      game: "HideWords"
+      game: "ShuffleWords"
     };
   }
 
@@ -44,15 +45,15 @@ export default class VersePractice extends React.PureComponent {
   };
 
   render() {
+    const Game =
+      this.state.game == "HideWords" ? HideWordsGame : ShuffleWordsGame;
     return (
       <SafeAreaView style={CommonStyles.screenRoot}>
-        {this.state.game == "HideWords" && (
-          <HideWordsGame
-            verse={this.verse()}
-            goHome={this.goHome}
-            markLearned={this.markLearned}
-          />
-        )}
+        <Game
+          verse={this.verse()}
+          goHome={this.goHome}
+          markLearned={this.markLearned}
+        />
       </SafeAreaView>
     );
   }

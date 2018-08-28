@@ -6,7 +6,7 @@ export function isValidInteger(str, options) {
   return true;
 }
 
-function randInt(max) {
+export function randInt(max) {
   return Math.floor(Math.random() * max);
 }
 
@@ -19,7 +19,7 @@ function swap(array, i, j) {
 
 export function shuffle(array) {
   for (let i = array.length - 1; i > 0; --i) {
-    let swapIndex = randInt(i);
+    let swapIndex = randInt(i + 1);
     swap(array, i, swapIndex);
   }
 }
