@@ -27,7 +27,8 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
           new VectorIconsPackage(),
           new RNI18nPackage(),
-          new AlarmModulePackage()
+          new AlarmModulePackage(),
+          new VerseStorageConverterModulePackage()
       );
     }
 
