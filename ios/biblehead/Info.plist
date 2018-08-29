@@ -36,7 +36,9 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Bible Head does not use location services.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Bible Head does not use location services.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
