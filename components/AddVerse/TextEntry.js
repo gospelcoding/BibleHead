@@ -15,7 +15,7 @@ import Verse from "../../models/Verse";
 import update from "immutability-helper";
 import BHButton from "../shared/BHButton";
 import ThemeColors from "../../util/ThemeColors";
-import ModalDropdown from "react-native-modal-dropdown";
+import BHModalDropdown from "../shared/BHModalDropdown";
 import XPlatformIcon from "../shared/XPlatformIcon";
 import { intArray } from "../../util/util";
 import PickerModal from "./PickerModal";
@@ -119,9 +119,11 @@ export default class TextEntry extends React.PureComponent {
         navigation.getParam("title") ||
         Verse.refText(navigation.getParam("verse")),
       headerRight: (
-        <ModalDropdown
+        <BHModalDropdown
           style={{ margin: 8 }}
-          dropdownStyle={{ height: 41.5 * menuOptions.length }}
+          dropdownStyle={{
+            /*height: 41.5 * menuOptions.length,*/ elevation: 8
+          }}
           options={menuOptions}
           renderRow={option => (
             <Text style={styles.menuOption}>{I18n.t(option)}</Text>
@@ -133,7 +135,7 @@ export default class TextEntry extends React.PureComponent {
           }}
         >
           <XPlatformIcon name="pencil" color="white" />
-        </ModalDropdown>
+        </BHModalDropdown>
       )
     };
   };
