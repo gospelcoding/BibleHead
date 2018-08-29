@@ -11,6 +11,7 @@
 #import <React/RCTRootView.h>
 #import <UserNotifications/UserNotifications.h>
 #import "BHNotificationManager.h"
+#import "RNSplashScreen.h"
 
 @implementation AppDelegate
 
@@ -48,6 +49,7 @@
   
   center.delegate = self;
   
+  [RNSplashScreen show];
   return YES;
 }
 

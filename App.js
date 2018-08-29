@@ -20,6 +20,7 @@ import ChapterPicker from "./components/AddVerse/ChapterPicker";
 import TextEntry from "./components/AddVerse/TextEntry";
 import checkVersionAndDoUpdates from "./util/checkVersionAndDoUpdates";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
+import SplashScreen from "react-native-splash-screen";
 
 const isIOS = Platform.OS == "ios";
 const uriPrefix = isIOS ? "biblehead://" : "biblehead://biblehead/";
@@ -65,6 +66,7 @@ export default class App extends React.PureComponent {
   async componentDidMount() {
     await checkVersionAndDoUpdates();
     this.setState({ loaded: true });
+    SplashScreen.hide();
   }
 
   render() {
