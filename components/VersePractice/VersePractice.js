@@ -1,9 +1,10 @@
 import React from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, AsyncStorage } from "react-native";
 import Verse from "../../models/Verse";
 import HideWordsGame from "./HideWordsGame";
 import CommonStyles from "../../util/CommonStyles";
 import ShuffleWordsGame from "./ShuffleWordsGame";
+import SwitchGameButton from "./SwitchGameButton";
 
 export default class VersePractice extends React.PureComponent {
   constructor(props) {
@@ -13,10 +14,23 @@ export default class VersePractice extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const game =
+      (await AsyncStorage.getItem("bh.versePracticeGame")) || "HideWords";
+    this.setState({ game: game });
+    this.props.navigation.setParams({
+      game: game,
+      switchGame: this.switchGame
+    });
     const updateVerse = this.props.navigation.getParam("updateVerse");
     updateVerse(this.verse(), { lastPracticed: new Date().getTime() });
   }
+
+  switchGame = game => {
+    this.setState({ game: game });
+    this.props.navigation.setParams({ game: game });
+    AsyncStorage.setItem("bh.versePracticeGame", game);
+  };
 
   verse = () => {
     return (
@@ -44,16 +58,36 @@ export default class VersePractice extends React.PureComponent {
     };
   };
 
+  GameComponent = game => {
+    switch (game) {
+      case "HideWords":
+        return HideWordsGame;
+      case "ShuffleWords":
+        return ShuffleWordsGame;
+    }
+    return null;
+  };
+
+  static navigationOptions = ({ navigation }) => ({
+    headerRight: (
+      <SwitchGameButton
+        game={navigation.getParam("game")}
+        switchGame={navigation.getParam("switchGame", () => {})}
+      />
+    )
+  });
+
   render() {
-    const Game =
-      this.state.game == "HideWords" ? HideWordsGame : ShuffleWordsGame;
+    const Game = this.GameComponent(this.state.game);
     return (
       <SafeAreaView style={CommonStyles.screenRoot}>
-        <Game
-          verse={this.verse()}
-          goHome={this.goHome}
-          markLearned={this.markLearned}
-        />
+        {Game && (
+          <Game
+            verse={this.verse()}
+            goHome={this.goHome}
+            markLearned={this.markLearned}
+          />
+        )}
       </SafeAreaView>
     );
   }
