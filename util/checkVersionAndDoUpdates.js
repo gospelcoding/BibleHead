@@ -3,7 +3,7 @@ import VerseStorage from "../models/VerseStorage";
 import BibleBook from "../models/BibleBook";
 import I18n from "../i18n/i18n";
 
-const currentVersion = "2.1";
+const currentVersion = "2.2";
 const storageKey = "bh.version";
 const AlarmModule = NativeModules.AlarmModule;
 const VerseStorageConverterModule = NativeModules.VerseStorageConverterModule;
