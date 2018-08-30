@@ -18,6 +18,10 @@ export default class VerseStorage {
   static async deleteVerse(id) {
     return await deleteVerse(id);
   }
+
+  static async restoreDeleted(id) {
+    return await restoreDeleted(id);
+  }
 }
 
 async function createVerse(verse) {
@@ -98,13 +102,33 @@ async function moveVerseInIndex(verse) {
   await saveVerseIndex(index);
 }
 
-async function deleteVerse(id) {
-  const verse = await AsyncStorage.getItem(`bh.verse.${id}`);
-  await AsyncStorage.setItem(`bh.deletedVerse.${id}`, verse);
-  let deletedVerses = await AsyncStorage.getItem(`bh.deletedVerses`);
-  deletedVerses = deletedVerses ? JSON.parse(deletedVerses) : [];
+async function getDeletedIndex() {
+  const deletedVersesJSON = await AsyncStorage.getItem(`bh.deletedVerses`);
+  return deletedVersesJSON ? JSON.parse(deletedVersesJSON) : [];
+}
+
+async function saveDeletedIndex(index) {
+  await AsyncStorage.setItem("bh.deletedVerses", JSON.stringify(index));
+}
+
+async function addVerseToDeletedIndex(id) {
+  let deletedVerses = await getDeletedIndex();
   deletedVerses.push(id);
-  await AsyncStorage.setItem("bh.deletedVerses", JSON.stringify(deletedVerses));
+  await saveDeletedIndex(deletedVerses);
+}
+
+async function removeVerseFromDeletedIndex(id) {
+  let deletedVerses = await getDeletedIndex();
+  const index = deletedVerses.indexOf(id);
+  if (index >= 0) {
+    deletedVerses.splice(index, 1);
+    saveDeletedIndex(deletedVerses);
+  }
+}
+
+async function deleteVerse(id) {
+  await changeKey(`bh.verse.${id}`, `bh.deletedVerse.${id}`);
+  await addVerseToDeletedIndex(id);
   await removeVerseFromIndexAndSave(id);
 }
 
@@ -117,4 +141,19 @@ function removeVerseFromIndex(index, id) {
 async function removeVerseFromIndexAndSave(id) {
   const newIndex = removeVerseFromIndex(await getVerseIndex(), id);
   await saveVerseIndex(newIndex);
+}
+
+async function restoreDeleted(id) {
+  const verse = JSON.parse(
+    await changeKey(`bh.deletedVerse.${id}`, `bh.verse.${id}`)
+  );
+  await removeVerseFromDeletedIndex(id);
+  await addVerseToIndexAndSave(verse);
+}
+
+async function changeKey(oldKey, newKey) {
+  const item = await AsyncStorage.getItem(oldKey);
+  await AsyncStorage.setItem(newKey, item);
+  await AsyncStorage.removeItem(oldKey);
+  return item;
 }

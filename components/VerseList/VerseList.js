@@ -17,6 +17,7 @@ import I18n from "../../i18n/i18n";
 import BHStatusBar from "../shared/BHStatusBar";
 import CommonStyles from "../../util/CommonStyles";
 import BHActionButton from "../shared/BHActionButton";
+import UndoAlert from "../shared/UndoAlert";
 
 const { AlarmModule } = NativeModules;
 const alarmModuleEmitter = new NativeEventEmitter(AlarmModule);
@@ -165,6 +166,23 @@ export default class VerseList extends React.PureComponent {
   removeVerseAndSave = verse => {
     this.removeVerse(verse);
     VerseStorage.deleteVerse(verse.id);
+    const undoTimerId = new Date().getTime();
+    this.setState({ deletedVerse: verse, undoTimerId: undoTimerId });
+    setTimeout(() => {
+      this.setState(prevState => {
+        return prevState.undoTimerId == undoTimerId
+          ? { deletedVerse: undefined }
+          : {};
+      });
+    }, 30000);
+  };
+
+  undoDelete = () => {
+    const verse = this.state.deletedVerse;
+    if (!verse) return;
+    VerseStorage.restoreDeleted(verse.id);
+    this.addVerse(verse);
+    this.setState({ deletedVerse: undefined });
   };
 
   updateVerseAndSave = (verse, mergeVerse) => {
@@ -209,7 +227,6 @@ export default class VerseList extends React.PureComponent {
     return (
       <SafeAreaView style={CommonStyles.screenRoot}>
         <BHStatusBar />
-        {this.state.loading && <Text>Loading...</Text>}
         <SectionList
           style={styles.list}
           sections={this.getSections()}
@@ -235,6 +252,14 @@ export default class VerseList extends React.PureComponent {
             );
           }}
         />
+        {this.state.deletedVerse && (
+          <UndoAlert
+            message={I18n.t("VerseDeleted", {
+              ref: Verse.refText(this.state.deletedVerse)
+            })}
+            undoAction={this.undoDelete}
+          />
+        )}
       </SafeAreaView>
     );
   }
