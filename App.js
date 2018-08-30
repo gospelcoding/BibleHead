@@ -50,7 +50,8 @@ const RootStack = createStackNavigator(
       headerStyle: {
         backgroundColor: ThemeColors.blue
       },
-      headerTintColor: "white"
+      headerTintColor: "white",
+      headerTruncatedBackTitle: ""
     }
   }
 );

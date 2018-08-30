@@ -54,7 +54,13 @@ export default class VersePractice extends React.PureComponent {
     const verse =
       navigation.getParam("verse") || navigation.getParam("learningVerse");
     return {
-      headerTitle: Verse.refText(verse)
+      headerTitle: Verse.refText(verse),
+      headerRight: (
+        <SwitchGameButton
+          game={navigation.getParam("game")}
+          switchGame={navigation.getParam("switchGame", () => {})}
+        />
+      )
     };
   };
 
@@ -67,15 +73,6 @@ export default class VersePractice extends React.PureComponent {
     }
     return null;
   };
-
-  static navigationOptions = ({ navigation }) => ({
-    headerRight: (
-      <SwitchGameButton
-        game={navigation.getParam("game")}
-        switchGame={navigation.getParam("switchGame", () => {})}
-      />
-    )
-  });
 
   render() {
     const Game = this.GameComponent(this.state.game);

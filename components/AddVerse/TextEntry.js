@@ -142,7 +142,7 @@ export default class TextEntry extends React.PureComponent {
 
   render() {
     return (
-      <SafeAreaView style={CommonStyles.screenRoot}>
+      <SafeAreaView style={styles.container}>
         <PickerModal
           visible={!!this.state.modalData}
           data={this.state.modalData}
@@ -170,7 +170,9 @@ export default class TextEntry extends React.PureComponent {
               <BHButton
                 title={I18n.t("Save")}
                 onPress={this.saveVerse}
-                color={ThemeColors.buttonGreen}
+                color={
+                  isAndroid ? ThemeColors.buttonGreen : ThemeColors.buttonBlue
+                }
               />
             </View>
           )}
@@ -182,8 +184,9 @@ export default class TextEntry extends React.PureComponent {
 }
 
 const styles = StyleSheet.create({
-  label: {
-    fontSize: 18
+  container: {
+    flex: 1,
+    backgroundColor: isAndroid ? ThemeColors.grey : "white"
   },
   textInput: {
     flex: 1,
