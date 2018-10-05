@@ -10,7 +10,8 @@ export default class VersePractice extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      game: "ShuffleWords"
+      game: "ShuffleWords",
+      practiceParams: Verse.practiceParams(this.verse())
     };
   }
 
@@ -20,7 +21,8 @@ export default class VersePractice extends React.PureComponent {
     this.setState({ game: game });
     this.props.navigation.setParams({
       game: game,
-      switchGame: this.switchGame
+      switchGame: this.switchGame,
+      practiceParams: this.state.practiceParams
     });
     const updateVerse = this.props.navigation.getParam("updateVerse");
     updateVerse(this.verse(), { lastPracticed: new Date().getTime() });
@@ -42,7 +44,7 @@ export default class VersePractice extends React.PureComponent {
   markLearned = () => {
     const updateVerse = this.props.navigation.getParam("updateVerse", () => {});
     const verse = this.verse();
-    updateVerse(verse, { learned: true });
+    updateVerse(verse, Verse.markLearnedParams(verse));
     this.props.navigation.navigate("VerseList");
   };
 
@@ -53,8 +55,11 @@ export default class VersePractice extends React.PureComponent {
   static navigationOptions = ({ navigation }) => {
     const verse =
       navigation.getParam("verse") || navigation.getParam("learningVerse");
+    const splitProgress = navigation.getParam("practiceParams", {
+      progress: ""
+    }).progress;
     return {
-      headerTitle: Verse.refText(verse),
+      headerTitle: Verse.refText(verse) + " " + splitProgress,
       headerRight: (
         <SwitchGameButton
           game={navigation.getParam("game")}
@@ -83,6 +88,7 @@ export default class VersePractice extends React.PureComponent {
             verse={this.verse()}
             goHome={this.goHome}
             markLearned={this.markLearned}
+            practiceParams={this.state.practiceParams}
           />
         )}
       </SafeAreaView>

@@ -21,6 +21,7 @@ export default {
   MarkLearned: "Appris",
   MarkUnlearned: "Pas appris",
   NewVerse: "Nouveau verset",
+  Part: "Partie",
   Practice: "Pratiquer",
   RemoveEndVerse: "Enlever verset finale",
   Reviewing: "À revoir",

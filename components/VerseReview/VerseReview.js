@@ -66,6 +66,7 @@ export default class VerseReview extends React.PureComponent {
       <SafeAreaView style={CommonStyles.screenRoot}>
         <ShowWordsGame
           verse={verse}
+          verseText={reviewText(verse)}
           splitIndex={this.state.splitIndex}
           setSplitIndex={this.setSplitIndex}
           nextVerse={this.nextVerse}
@@ -89,3 +90,9 @@ VerseReview.propTypes = {
     getParam: PropTypes.func.isRequired
   }).isRequired
 };
+
+function reviewText(verse) {
+  return verse.learned
+    ? verse.text
+    : verse.text.slice(0, verse.splitIndices[verse.currentSplit]);
+}

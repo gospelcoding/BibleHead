@@ -21,6 +21,7 @@ import TextEntry from "./components/AddVerse/TextEntry";
 import checkVersionAndDoUpdates from "./util/checkVersionAndDoUpdates";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 import SplashScreen from "react-native-splash-screen";
+import PassageSplitter from "./components/PassageSplitter/PassageSplitter";
 
 const isIOS = Platform.OS == "ios";
 const uriPrefix = isIOS ? "biblehead://" : "biblehead://biblehead/";
@@ -42,7 +43,8 @@ const RootStack = createStackNavigator(
     BookPicker: BookPicker,
     ChapterPicker: ChapterPicker,
     VersePicker: VersePicker,
-    TextEntry: TextEntry
+    TextEntry: TextEntry,
+    PassageSplitter: PassageSplitter
   },
   {
     initialRouteName: "VerseList",

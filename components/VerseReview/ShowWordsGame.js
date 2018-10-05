@@ -7,17 +7,17 @@ import Verse from "../../models/Verse";
 const isIOS = Platform.OS == "ios";
 
 function gameText(props) {
-  return props.verse.text.slice(0, props.splitIndex);
+  return props.verseText.slice(0, props.splitIndex);
 }
 
 function remainderText(props) {
-  return props.verse.text.slice(props.splitIndex);
+  return props.verseText.slice(props.splitIndex);
 }
 
 function nextSplitIndex(pattern, props) {
   const match = pattern.exec(remainderText(props));
   return match === null
-    ? props.verse.text.length
+    ? props.verseText.length
     : match[0].length + match.index + props.splitIndex;
 }
 
@@ -41,7 +41,7 @@ export default function showWordsGame(props) {
   };
 
   const stepToEnd = () => {
-    props.setSplitIndex(props.verse.text.length);
+    props.setSplitIndex(props.verseText.length);
     scroll();
   };
 
@@ -68,7 +68,7 @@ export default function showWordsGame(props) {
       </ScrollView>
       <ButtonRow
         review={true}
-        done={props.splitIndex == props.verse.text.length}
+        done={props.splitIndex == props.verseText.length}
         normalStep={normalStep}
         bigStep={bigStep}
         stepToEnd={stepToEnd}

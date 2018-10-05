@@ -69,21 +69,14 @@ export default class VerseList extends React.PureComponent {
   };
 
   doReview = (reviewingList, learningList) => {
-    const versesToReview = Verse.selectReviewVerses(
+    let navParams = Verse.selectReviewVersesAndLearningVerse(
       this.state.reviewingList || reviewingList,
-      4
-    );
-    const verseToLearn = Verse.selectLearningVerse(
       this.state.learningList || learningList
     );
-    const navParams = {
-      reviewVerses: versesToReview,
-      learningVerse: verseToLearn,
-      updateVerse: this.updateVerseAndSave
-    };
-    if (versesToReview.length > 0)
+    navParams.updateVerse = this.updateVerseAndSave;
+    if (navParams.reviewVerses.length > 0)
       this.props.navigation.navigate("VerseReview", navParams);
-    else if (verseToLearn)
+    else if (navParams.learningVerse)
       this.props.navigation.navigate("VersePractice", navParams);
   };
 
@@ -190,6 +183,13 @@ export default class VerseList extends React.PureComponent {
     VerseStorage.updateVerse(verse, mergeVerse);
   };
 
+  openPassageSplitter = verse => {
+    this.props.navigation.navigate("PassageSplitter", {
+      verse: verse,
+      updateVerse: this.updateVerseAndSave
+    });
+  };
+
   getSections = () => {
     let sections = [];
     if (this.state.learningList.length > 0)
@@ -248,6 +248,7 @@ export default class VerseList extends React.PureComponent {
                 removeVerse={this.removeVerseAndSave}
                 editVerse={this.editVerse}
                 practiceVerse={this.practiceVerse}
+                openPassageSplitter={this.openPassageSplitter}
               />
             );
           }}

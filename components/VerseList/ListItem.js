@@ -1,5 +1,12 @@
 import React from "react";
-import { Text, StyleSheet, View, Platform, ScrollView } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  Platform,
+  ScrollView,
+  Image
+} from "react-native";
 import Verse from "../../models/Verse";
 import LearnedToggleButton from "./LearnedToggleButton";
 import XPlatformTouchable from "../shared/XPlatformTouchable";
@@ -31,6 +38,18 @@ export default function ListItem(props) {
         </View>
         {props.selected && (
           <View style={{ flexDirection: "row" }}>
+            <XPlatformTouchable
+              onPress={() => props.openPassageSplitter(props.verse)}
+            >
+              <View
+                style={{
+                  padding: 8,
+                  marginTop: isIOS ? 2 : 0
+                }}
+              >
+                <Image source={require("./split.png")} />
+              </View>
+            </XPlatformTouchable>
             <BHActionButton
               name="pencil"
               color={ThemeColors.yellow}

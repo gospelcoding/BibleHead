@@ -13,11 +13,11 @@ const numberOfButtons = 12;
 export default class ShuffleWordsGame extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = this.freshState(props.verse);
+    this.state = this.freshState(props);
   }
 
-  freshState = verse => {
-    let state = makeShuffleWordsGame(verse);
+  freshState = props => {
+    let state = makeShuffleWordsGame(props.practiceParams.text);
     state.step = 0;
     state.gameText = "";
     state.redButtons = [];
@@ -45,11 +45,11 @@ export default class ShuffleWordsGame extends React.PureComponent {
       if (nextStep == prevState.wordsWithIndices.length)
         return {
           done: true,
-          gameText: this.props.verse.text
+          gameText: this.props.practiceParams.text
         };
       let nextState = {
         step: nextStep,
-        gameText: this.props.verse.text.slice(
+        gameText: this.props.practiceParams.text.slice(
           0,
           prevState.wordsWithIndices[nextStep].index
         ),
@@ -73,6 +73,11 @@ export default class ShuffleWordsGame extends React.PureComponent {
     return (
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }} containerContentStyle={{ flexGrow: 1 }}>
+          {this.props.practiceParams.prompt && (
+            <Text style={styles.promptText}>
+              {this.props.practiceParams.prompt}
+            </Text>
+          )}
           <Text style={[CommonStyles.textView]}>{this.state.gameText}</Text>
         </ScrollView>
         {this.state.done ? (
@@ -96,8 +101,8 @@ export default class ShuffleWordsGame extends React.PureComponent {
   }
 }
 
-function makeShuffleWordsGame(verse) {
-  const wordsWithIndices = getWords(verse);
+function makeShuffleWordsGame(text) {
+  const wordsWithIndices = getWords(text);
   const shuffledWords = shuffle(wordsWithIndices);
   const buttonWords = shuffledWords.slice(0, numberOfButtons);
   return {
@@ -107,11 +112,11 @@ function makeShuffleWordsGame(verse) {
   };
 }
 
-function getWords(verse) {
+function getWords(text) {
   const pattern = /\S+/g;
   let wordsWithIndices = [];
   let find;
-  while ((find = pattern.exec(verse.text)) !== null) {
+  while ((find = pattern.exec(text)) !== null) {
     wordsWithIndices.push({
       word: find[0],
       index: find.index
@@ -145,5 +150,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: isIOS ? "white" : undefined
+  },
+  promptText: {
+    fontSize: 18,
+    padding: 8,
+    marginHorizontal: isIOS ? 0 : 8
   }
 });
