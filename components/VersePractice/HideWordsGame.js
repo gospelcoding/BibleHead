@@ -56,7 +56,7 @@ export default class HideWordsGame extends React.PureComponent {
     return (
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
-          {this.props.practiceParams.prompt && (
+          {!!this.props.practiceParams.prompt && (
             <Text style={styles.promptText}>
               {this.props.practiceParams.prompt}
             </Text>

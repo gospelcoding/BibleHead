@@ -60,11 +60,11 @@ export default class Verse {
   }
 
   static practiceParams(verse) {
-    if (!Verse.isDivided(verse))
+    if (!Verse.isDivided(verse) || verse.learned)
       return {
         text: verse.text,
         progress: "",
-        prompt: null
+        prompt: ""
       };
     return {
       text: Verse.currentLearningText(verse),
