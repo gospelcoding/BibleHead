@@ -11,6 +11,7 @@ export default {
   EnterReference: "< Reference",
   EnterText: "Text >",
   GettingVerse: "Getting verse...",
+  GotIt: "Got it",
   Heb412:
     "For the word of God is living and active, sharper than any two-edged sword, piercing to the division of soul and of spirit, of joints and of marrow, and discerning the thoughts and intentions of the heart.",
   Lang: "English",
@@ -22,6 +23,9 @@ export default {
   MarkUnlearned: "Not Learned",
   NewVerse: "New Verse",
   Part: "Part",
+  PassageSplitter: "Passage Splitter:",
+  PassageSplitterHelp:
+    "Break your long passage up into smaller parts. Press on a word to make a new split. Press on the first word of a section to recombine it with the previous section.",
   Practice: "Practice",
   RemoveEndVerse: "Remove end verse",
   Reviewing: "Reviewing",

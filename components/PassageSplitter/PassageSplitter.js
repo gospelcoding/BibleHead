@@ -1,5 +1,13 @@
 import React from "react";
-import { SafeAreaView, Text, ScrollView, View, StyleSheet } from "react-native";
+import {
+  SafeAreaView,
+  Text,
+  ScrollView,
+  View,
+  StyleSheet,
+  Platform,
+  AsyncStorage
+} from "react-native";
 import CommonStyles from "../../util/CommonStyles";
 import XPlatformTouchable from "../shared/XPlatformTouchable";
 import update from "immutability-helper";
@@ -7,6 +15,9 @@ import Verse from "../../models/Verse";
 import BHActionButton from "../shared/BHActionButton";
 import i18n from "../../i18n/i18n";
 import CheckBox from "react-native-checkbox";
+import HelpText from "../shared/HelpText";
+
+const isIOS = Platform.OS == "ios";
 
 export default class PassageSplitter extends React.PureComponent {
   constructor(props) {
@@ -23,6 +34,7 @@ export default class PassageSplitter extends React.PureComponent {
     this.props.navigation.setParams({
       save: this.save
     });
+    this.setHelpText();
   }
 
   verse = () => {
@@ -70,11 +82,34 @@ export default class PassageSplitter extends React.PureComponent {
     });
   };
 
+  setHelpText = async () => {
+    const alreadySeen = await AsyncStorage.getItem(
+      "bh.passageSplitter.helpTextSeen"
+    );
+    if (!alreadySeen)
+      this.setState({
+        helpText: i18n.t("PassageSplitterHelp"),
+        helpTextHeader: i18n.t("PassageSplitter")
+      });
+  };
+
+  dismissHelpText = () => {
+    this.setState({
+      helpText: null,
+      helpTextHeader: null
+    });
+    AsyncStorage.setItem("bh.passageSplitter.helpTextSeen", "True");
+  };
+
   static navigationOptions = ({ navigation }) => {
     return {
       title: Verse.refText(navigation.getParam("verse")),
       headerRight: (
-        <BHActionButton onPress={navigation.getParam("save")} name="check" />
+        <BHActionButton
+          onPress={navigation.getParam("save")}
+          name="check"
+          size={isIOS ? 36 : 28}
+        />
       )
     };
   };
@@ -119,6 +154,11 @@ export default class PassageSplitter extends React.PureComponent {
             </View>
           ))}
         </ScrollView>
+        <HelpText
+          text={this.state.helpText}
+          header={this.state.helpTextHeader}
+          onDismiss={this.dismissHelpText}
+        />
       </SafeAreaView>
     );
   }
@@ -126,7 +166,8 @@ export default class PassageSplitter extends React.PureComponent {
 
 const styles = StyleSheet.create({
   split: {
-    padding: 8
+    paddingVertical: 8,
+    paddingHorizontal: isIOS ? 0 : 8
   },
   splitHeader: {
     flexDirection: "row",
@@ -150,7 +191,6 @@ const styles = StyleSheet.create({
 });
 
 function generateSplits(verse) {
-  // if (!verse.splitIndices) splitIndices = [0];
   const splitIndices = verse.splitIndices ? verse.splitIndices : [0];
   return splitIndices.map((index, split) => {
     let splitText =
