@@ -22,6 +22,9 @@ export default {
   MarkLearned: "Appris",
   MarkUnlearned: "Pas appris",
   NewVerse: "Nouveau verset",
+  NotificationChannelDescription: "Rappel de revoir les versets",
+  NotificationText: "Revoir vos versets mémorisés",
+  NotificationTitle: "Revue Quotidienne",
   Part: "Partie",
   PassageSplitter: "Division des passages :",
   PassageSplitterHelp:

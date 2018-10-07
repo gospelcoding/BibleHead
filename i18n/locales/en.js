@@ -22,6 +22,9 @@ export default {
   MarkLearned: "Learned",
   MarkUnlearned: "Not Learned",
   NewVerse: "New Verse",
+  NotificationChannelDescription: "Daily Review Reminder",
+  NotificationText: "Review your memory verses.",
+  NotificationTitle: "Daily Review",
   Part: "Part",
   PassageSplitter: "Passage Splitter:",
   PassageSplitterHelp:

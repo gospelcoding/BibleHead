@@ -25,14 +25,13 @@ public class AlarmModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setupNotificationChannel() {
+    public void setupNotificationChannel(String description) {
         Log.d("BH Alarm", "Setup Notification Channel called...");
         if (Build.VERSION.SDK_INT < 26)
             return;
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String id = ReviewNotifier.NOTIFICATION_CHANNEL;
         CharSequence name = context.getString(R.string.app_name);
-        String description = context.getString(R.string.channel_description);
         NotificationChannel mChannel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_LOW);
         mChannel.setDescription(description);
         mChannel.enableLights(true);
@@ -42,10 +41,10 @@ public class AlarmModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setAlarmTime(String alarmTime) {
+    public void setAlarmTime(String alarmTime, String notificationTitle, String notificationText) {
         int[] hourMinute = AlarmTimeSetting.parseTime(alarmTime);
         AlarmManager.setAlarm(context, hourMinute[0], hourMinute[1]);
-        AlarmTimeSetting.setAlarmTime(context, alarmTime);
+        AlarmTimeSetting.setAll(context, alarmTime, notificationTitle, notificationText);
     }
 
     @ReactMethod

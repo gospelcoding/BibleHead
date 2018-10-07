@@ -16,11 +16,15 @@ public class ReviewNotifier extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d("BH Alarm", "Alarm fired");
 
+        String[] notificationParams = AlarmTimeSetting.getNotificationParams(context);
+        String notificationTitle = notificationParams[0];
+        String notificationText = notificationParams[1];
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL)
                         .setSmallIcon(R.drawable.ic_stat_biblehead_notification)
-                        .setContentTitle(context.getString(R.string.notification_title))
-                        .setContentText(context.getString(R.string.notification_text))
+                        .setContentTitle(notificationTitle)
+                        .setContentText(notificationText)
                         .setAutoCancel(true);
 
         Intent reviewActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("biblehead://biblehead/list/review"));

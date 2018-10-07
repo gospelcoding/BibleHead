@@ -24,13 +24,13 @@ static BHNotificationManager *sharedInstance = nil;
   return sharedInstance;
 }
 
-RCT_EXPORT_METHOD(setAlarmTime: (NSString *)time)
+RCT_EXPORT_METHOD(setAlarmTime: (NSString *)time withTitle: (NSString *)title withText: (NSString *)text)
 {
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   
   UNMutableNotificationContent *content = [UNMutableNotificationContent new];
-  content.title = @"Daily Review";
-  content.body = @"Review your memory verses.";
+  content.title = title;
+  content.body = text;
   // content.categoryIdentifier = @"BHReviewNotificationCategory";
   
 //  UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:wait repeats:false];

@@ -18,15 +18,20 @@ export default async function checkVersionAndDoUpdates() {
   }
 
   // Always
-  AlarmModule.setAlarmTime("6:45");
+  AlarmModule.setAlarmTime(
+    "6:45",
+    I18n.t("NotificationTitle"),
+    I18n.t("NotificationText")
+  );
   AsyncStorage.setItem(storageKey, currentVersion);
   return 0;
 }
 
 async function androidFirstRun() {
-  AlarmModule.setupNotificationChannel();
+  AlarmModule.setupNotificationChannel(
+    I18n.t("NotificationChannelDescription")
+  );
   const existingVersesJSON = await VerseStorageConverterModule.importExistingVerses();
-  // console.warn(existingVersesJSON);
   const existingVerses = JSON.parse(existingVersesJSON);
   if (existingVerses.length > 0) {
     for (let verse of existingVerses) await VerseStorage.createVerse(verse);

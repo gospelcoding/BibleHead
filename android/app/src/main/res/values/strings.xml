@@ -1,6 +1,3 @@
 <resources>
     <string name="app_name">Bible Head</string>
-    <string name="channel_description">Daily Review Reminder</string>
-    <string name="notification_title">Daily Review</string>
-    <string name="notification_text">Review your memory verses.</string>
 </resources>
