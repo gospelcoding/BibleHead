@@ -64,7 +64,9 @@ export default function showWordsGame(props) {
         style={{ flex: 1 }}
         contentContainerStyle={{ flexGrow: 1 }}
       >
-        <Text style={styles.gameText}>{gameText(props)}</Text>
+        <Text style={styles.gameText} textBreakStrategy="simple">
+          {gameText(props)}
+        </Text>
       </ScrollView>
       <ButtonRow
         review={true}

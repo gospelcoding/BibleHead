@@ -14,8 +14,9 @@ export default class HideWordsGame extends React.PureComponent {
   }
 
   freshState = () => {
-    const verseText = this.props.practiceParams.text;
+    const verseText = nonBreakingHyphenize(this.props.practiceParams.text);
     return {
+      verseText: verseText,
       gameText: verseText,
       coordinates: getWordCoordinates(verseText),
       step: 0,
@@ -28,7 +29,7 @@ export default class HideWordsGame extends React.PureComponent {
       if (prevState.step >= prevState.coordinates.length) {
         return {
           done: true,
-          gameText: props.practiceParams.text
+          gameText: prevState.verseText
         };
       }
       return calculateStep(
@@ -61,10 +62,8 @@ export default class HideWordsGame extends React.PureComponent {
               {this.props.practiceParams.prompt}
             </Text>
           )}
-          <Text style={styles.hideWordsText}>
-            {this.state.peek
-              ? this.props.practiceParams.text
-              : this.state.gameText}
+          <Text style={styles.hideWordsText} textBreakStrategy="simple">
+            {this.state.peek ? this.state.verseText : this.state.gameText}
           </Text>
         </ScrollView>
         <ButtonRow
@@ -85,6 +84,12 @@ export default class HideWordsGame extends React.PureComponent {
       </View>
     );
   }
+}
+
+function nonBreakingHyphenize(text) {
+  const pattern = /(\S)-(\S)/g;
+  const nonBreakingHyphen = "‑";
+  return text.replace(pattern, "$1" + nonBreakingHyphen + "$2");
 }
 
 function getWordCoordinates(text) {
