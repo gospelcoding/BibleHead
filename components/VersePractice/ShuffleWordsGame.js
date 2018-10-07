@@ -27,7 +27,7 @@ export default class ShuffleWordsGame extends React.PureComponent {
   };
 
   replay = () => {
-    this.setState(this.freshState(this.props.verse));
+    this.setState(this.freshState(this.props));
   };
 
   buttonWordPress = (word, buttonWordIndex) => {
