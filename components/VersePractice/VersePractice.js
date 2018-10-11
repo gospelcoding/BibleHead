@@ -5,6 +5,7 @@ import HideWordsGame from "./HideWordsGame";
 import CommonStyles from "../../util/CommonStyles";
 import ShuffleWordsGame from "./ShuffleWordsGame";
 import SwitchGameButton from "./SwitchGameButton";
+import BHActionButton from "../shared/BHActionButton";
 
 export default class VersePractice extends React.PureComponent {
   constructor(props) {
@@ -64,6 +65,14 @@ export default class VersePractice extends React.PureComponent {
         <SwitchGameButton
           game={navigation.getParam("game")}
           switchGame={navigation.getParam("switchGame", () => {})}
+        />
+      ),
+      headerLeft: (
+        <BHActionButton
+          name="arrowBack"
+          onPress={() => {
+            navigation.navigate("VerseList");
+          }}
         />
       )
     };

@@ -69,7 +69,7 @@ export default function ListItem(props) {
       </View>
       {props.selected && (
         <View style={styles.selectedView}>
-          <ScrollView style={styles.verseTextScroll}>
+          <ScrollView style={styles.verseTextScroll} nestedScrollEnabled={true}>
             <Text style={styles.verseText}>{props.verse.text}</Text>
           </ScrollView>
           <View style={styles.buttonRow}>

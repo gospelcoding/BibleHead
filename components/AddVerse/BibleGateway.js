@@ -88,13 +88,17 @@ export default class BibleGateway extends React.PureComponent {
     this.props.navigation.navigate("VerseList");
   };
 
+  static navigationOptions = ({ navigation }) => ({
+    headerTitle: I18n.t("VerseDownload")
+  });
+
   render() {
     return (
       <SafeAreaView style={CommonStyles.screenRoot}>
         <WebView
           style={{ flex: 1 }}
           ref={ref => (this.webview = ref)}
-          source={{ uri: "https://www.biblegateway.com/passage/" }}
+          source={{ uri: "http://www.biblegateway.com/passage/" }}
           onLoadStart={this.onPageLoadStart}
           onLoad={this.onPageLoad}
           injectedJavaScript={patchPostMessageJsCode}

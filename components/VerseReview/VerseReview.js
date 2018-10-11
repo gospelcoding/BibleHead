@@ -5,6 +5,8 @@ import ShowWordsGame from "./ShowWordsGame";
 import Verse from "../../models/Verse";
 import I18n from "../../i18n/i18n";
 import CommonStyles from "../../util/CommonStyles";
+import XPlatformTouchable from "../shared/XPlatformTouchable";
+import BHActionButton from "../shared/BHActionButton";
 
 // const isIOS = Platform.OS == "ios";
 
@@ -28,7 +30,7 @@ export default class VerseReview extends React.PureComponent {
     } else {
       let params = this.props.navigation.state.params;
       params.verseNumber = nextVerseNumber;
-      this.props.navigation.push("VerseReview", params);
+      this.props.navigation.navigate("VerseReview", params);
     }
   };
 
@@ -52,8 +54,16 @@ export default class VerseReview extends React.PureComponent {
       title: Verse.refText(verses[verseNumber]),
       headerRight: (
         <Text style={styles.headerRight}>
-          {I18n.t("xOfY", { x: verseNumber + 1, y: verses.length })}
+          {I18n.t("xOfY", { x: verseNumber + 1, y: 5 })}
         </Text>
+      ),
+      headerLeft: (
+        <BHActionButton
+          name="arrowBack"
+          onPress={() => {
+            navigation.navigate("VerseList");
+          }}
+        />
       )
     };
   };

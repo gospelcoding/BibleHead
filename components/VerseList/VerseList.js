@@ -273,7 +273,7 @@ export default class VerseList extends React.PureComponent {
 
 const styles = StyleSheet.create({
   list: {
-    margin: Platform.OS == "ios" ? 0 : 8
+    paddingHorizontal: Platform.OS == "ios" ? 0 : 8
   }
 });
 

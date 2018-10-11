@@ -21,7 +21,8 @@ function icons(name) {
       pencil: "ios-create",
       x: "ios-close",
       trash: "ios-trash",
-      settings: "ios-settings"
+      settings: "ios-settings",
+      arrowBack: "ios-arrow-back"
     },
     android: {
       add: "add",
@@ -32,7 +33,8 @@ function icons(name) {
       pencil: "create",
       x: "close",
       trash: "delete",
-      more: "more-vert"
+      more: "more-vert",
+      arrowBack: "arrow-back"
     }
   })[name];
 }
