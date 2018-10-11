@@ -6,13 +6,8 @@ import { createStackNavigator } from "react-navigation";
 import VersePractice from "./components/VersePractice/VersePractice";
 import VerseReview from "./components/VerseReview/VerseReview";
 import Experiment from "./components/experiment/Experiment";
-import LanguageList from "./components/VerseDownload/LanguageList";
 import ThemeColors from "./util/ThemeColors";
-import BookList from "./components/VerseDownload/BookList";
-import ChapterList from "./components/VerseDownload/ChapterList";
 import VersePicker from "./components/AddVerse/VersePicker";
-import VersePreview from "./components/VerseDownload/VersePreview";
-import VersionList from "./components/VerseDownload/VersionList";
 import BibleGateway from "./components/AddVerse/BibleGateway";
 import AddVerseMenu from "./components/AddVerse/AddVerseMenu";
 import BookPicker from "./components/AddVerse/BookPicker";
@@ -22,6 +17,7 @@ import checkVersionAndDoUpdates from "./util/checkVersionAndDoUpdates";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 import SplashScreen from "react-native-splash-screen";
 import PassageSplitter from "./components/PassageSplitter/PassageSplitter";
+import SettingsView from "./components/SettingsView/SettingsView";
 
 const isIOS = Platform.OS == "ios";
 const uriPrefix = isIOS ? "biblehead://" : "biblehead://biblehead/";
@@ -44,7 +40,8 @@ const RootStack = createStackNavigator(
     ChapterPicker: ChapterPicker,
     VersePicker: VersePicker,
     TextEntry: TextEntry,
-    PassageSplitter: PassageSplitter
+    PassageSplitter: PassageSplitter,
+    SettingsView: SettingsView
   },
   {
     initialRouteName: "VerseList",

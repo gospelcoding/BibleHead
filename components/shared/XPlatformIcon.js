@@ -20,7 +20,8 @@ function icons(name) {
       check: "ios-checkmark",
       pencil: "ios-create",
       x: "ios-close",
-      trash: "ios-trash"
+      trash: "ios-trash",
+      settings: "ios-settings"
     },
     android: {
       add: "add",
@@ -30,7 +31,8 @@ function icons(name) {
       check: "check",
       pencil: "create",
       x: "close",
-      trash: "delete"
+      trash: "delete",
+      more: "more-vert"
     }
   })[name];
 }

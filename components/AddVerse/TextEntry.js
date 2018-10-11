@@ -18,7 +18,7 @@ import ThemeColors from "../../util/ThemeColors";
 import BHModalDropdown from "../shared/BHModalDropdown";
 import XPlatformIcon from "../shared/XPlatformIcon";
 import { intArray } from "../../util/util";
-import PickerModal from "./PickerModal";
+import PickerModal from "../shared/PickerModal";
 
 const isAndroid = Platform.OS == "android";
 

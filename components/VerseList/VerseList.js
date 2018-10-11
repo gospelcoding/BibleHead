@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Platform,
   NativeModules,
-  NativeEventEmitter
+  NativeEventEmitter,
+  View
 } from "react-native";
 import VerseStorage from "../../models/VerseStorage";
 import Verse from "../../models/Verse";
@@ -18,6 +19,8 @@ import BHStatusBar from "../shared/BHStatusBar";
 import CommonStyles from "../../util/CommonStyles";
 import BHActionButton from "../shared/BHActionButton";
 import UndoAlert from "../shared/UndoAlert";
+import SettingsAccess from "./SettingsAccess";
+import Settings from "../../util/Settings";
 
 const { AlarmModule } = NativeModules;
 const alarmModuleEmitter = new NativeEventEmitter(AlarmModule);
@@ -208,17 +211,19 @@ export default class VerseList extends React.PureComponent {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      ...CommonStyles.headerOptions,
       headerTitle: I18n.t("MyVerses"),
       headerRight: (
-        <BHActionButton
-          onPress={() => {
-            navigation.navigate("AddVerseMenu", {
-              addVerse: navigation.getParam("addVerse")
-            });
-          }}
-          name="add"
-        />
+        <View style={{ flexDirection: "row" }}>
+          <BHActionButton
+            onPress={() => {
+              goToAddVerse(navigation);
+            }}
+            name="add"
+          />
+          <SettingsAccess
+            goToSettings={() => navigation.navigate("SettingsView")}
+          />
+        </View>
       )
     };
   };
@@ -271,3 +276,14 @@ const styles = StyleSheet.create({
     margin: Platform.OS == "ios" ? 0 : 8
   }
 });
+
+async function goToAddVerse(navigation) {
+  const settings = await Settings.readSettings();
+  let screen = "AddVerseMenu";
+  if (settings.newVerseMethod == "DownloadFromBibleGateway")
+    screen = "BibleGateway";
+  if (settings.newVerseMethod == "ManualEntry") screen = "BookPicker";
+  navigation.navigate(screen, {
+    addVerse: navigation.getParam("addVerse")
+  });
+}
