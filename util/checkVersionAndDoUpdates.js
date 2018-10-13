@@ -5,7 +5,7 @@ import I18n from "../i18n/i18n";
 import Settings from "./Settings";
 import Notifications from "./Notifications";
 
-const currentVersion = "2.6";
+const currentVersion = "2.7";
 const storageKey = "bh.version";
 const VerseStorageConverterModule = NativeModules.VerseStorageConverterModule;
 const isIOS = Platform.OS == "ios";
