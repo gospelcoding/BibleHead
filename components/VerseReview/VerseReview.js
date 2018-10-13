@@ -30,7 +30,7 @@ export default class VerseReview extends React.PureComponent {
     } else {
       let params = this.props.navigation.state.params;
       params.verseNumber = nextVerseNumber;
-      this.props.navigation.navigate("VerseReview", params);
+      this.props.navigation.push("VerseReview", params);
     }
   };
 
