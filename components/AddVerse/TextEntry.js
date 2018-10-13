@@ -134,7 +134,7 @@ export default class TextEntry extends React.PureComponent {
             else navigation.getParam("showModal")(value);
           }}
         >
-          <XPlatformIcon name="pencil" color="white" />
+          <XPlatformIcon name="create" color="white" />
         </BHModalDropdown>
       )
     };

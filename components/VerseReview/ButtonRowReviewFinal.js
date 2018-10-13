@@ -11,7 +11,7 @@ export default function ButtonRowReviewFinal(props) {
     <View style={props.style}>
       <View style={props.buttonContainerStyle}>
         <BHIconButton
-          name="x"
+          name="close"
           size={isIOS ? 60 : 36}
           color={ThemeColors.red}
           buttonStyle={props.buttonStyle}
@@ -21,7 +21,7 @@ export default function ButtonRowReviewFinal(props) {
       </View>
       <View style={props.buttonContainerStyle}>
         <BHIconButton
-          name="check"
+          name="checkmark"
           size={isIOS ? 70 : 36}
           color={ThemeColors.buttonGreen}
           buttonStyle={props.buttonStyle}

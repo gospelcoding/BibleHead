@@ -69,7 +69,7 @@ export default class VersePractice extends React.PureComponent {
       ),
       headerLeft: (
         <BHActionButton
-          name="arrowBack"
+          name="arrow-back"
           onPress={() => {
             navigation.navigate("VerseList");
           }}

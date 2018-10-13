@@ -107,7 +107,7 @@ export default class PassageSplitter extends React.PureComponent {
       headerRight: (
         <BHActionButton
           onPress={navigation.getParam("save")}
-          name="check"
+          name="checkmark"
           size={isIOS ? 36 : 28}
         />
       )

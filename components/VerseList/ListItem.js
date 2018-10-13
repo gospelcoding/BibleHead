@@ -51,7 +51,7 @@ export default function ListItem(props) {
               </View>
             </XPlatformTouchable>
             <BHActionButton
-              name="pencil"
+              name="create"
               color={ThemeColors.yellow}
               onPress={() => {
                 props.editVerse(props.verse);

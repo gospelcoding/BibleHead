@@ -10,7 +10,7 @@ export default function ButtonRowFinal(props) {
     <View style={props.style}>
       <View style={props.buttonContainerStyle}>
         <BHIconButton
-          name="replay"
+          name="refresh"
           size={36}
           onPress={props.replay}
           buttonStyle={props.buttonStyle}

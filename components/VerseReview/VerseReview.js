@@ -59,7 +59,7 @@ export default class VerseReview extends React.PureComponent {
       ),
       headerLeft: (
         <BHActionButton
-          name="arrowBack"
+          name="arrow-back"
           onPress={() => {
             navigation.navigate("VerseList");
           }}
