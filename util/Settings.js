@@ -1,19 +1,19 @@
 import { AsyncStorage } from "react-native";
 
 const settingsKey = "bh.settings";
+const defaultSettings = {
+  notification: true,
+  notificationTime: "6:45",
+  newVerseMethod: "AlwaysAsk"
+};
 
 export default class Settings {
-  static async writeDefaultSettings() {
-    const defaults = {
-      notification: true,
-      notificationTime: "6:45",
-      newVerseMethod: "AlwaysAsk"
-    };
-    Settings.writeSettings(defaults);
-  }
-
   static async readSettings() {
     const settingsJSON = await AsyncStorage.getItem(settingsKey);
+    if (!settingsJSON) {
+      this.writeSettings(defaultSettings);
+      return defaultSettings;
+    }
     return JSON.parse(settingsJSON);
   }
 

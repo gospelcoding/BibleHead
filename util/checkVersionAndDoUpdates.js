@@ -2,7 +2,6 @@ import { AsyncStorage, NativeModules, Platform } from "react-native";
 import VerseStorage from "../models/VerseStorage";
 import BibleBook from "../models/BibleBook";
 import I18n from "../i18n/i18n";
-import Settings from "./Settings";
 import Notifications from "./Notifications";
 
 const currentVersion = "2.7";
@@ -16,7 +15,6 @@ export default async function checkVersionAndDoUpdates() {
     case null:
       if (isIOS) await addFirstVerse();
       else await androidFirstRun();
-      await Settings.writeDefaultSettings();
   }
 
   // Always
