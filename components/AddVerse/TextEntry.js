@@ -19,6 +19,7 @@ import BHModalDropdown from "../shared/BHModalDropdown";
 import XPlatformIcon from "../shared/XPlatformIcon";
 import { intArray } from "../../util/util";
 import PickerModal from "../shared/PickerModal";
+import BHActionButton from "../shared/BHActionButton";
 
 const isAndroid = Platform.OS == "android";
 
@@ -32,15 +33,19 @@ export default class TextEntry extends React.PureComponent {
 
   componentDidMount() {
     this.props.navigation.setParams({
-      showModal: whichModal => {
-        this.setState(this.modalState(whichModal));
-      },
-      removeEndVerse: () => {
-        this.updateVerse({ endVerse: null, endChapter: null });
-      },
-      verseRefMenuOptions: this.verseRefMenuOptions
+      title: Verse.refText(this.state.verse),
+      verseHasText: !!this.state.verse.text,
+      clickSave: this.saveVerse
     });
   }
+
+  showModal = whichModal => {
+    this.setState(this.modalState(whichModal));
+  };
+
+  removeEndVerse = () => {
+    this.updateVerse({ endVerse: null, endChapter: null });
+  };
 
   modalState = whichModal => {
     switch (whichModal) {
@@ -97,7 +102,8 @@ export default class TextEntry extends React.PureComponent {
     this.setState(prevState => {
       const newVerse = update(prevState.verse, { $merge: mergeVerse });
       this.props.navigation.setParams({
-        title: Verse.refText(newVerse)
+        title: Verse.refText(newVerse),
+        verseHasText: !!newVerse.text
       });
       return {
         verse: newVerse
@@ -112,30 +118,14 @@ export default class TextEntry extends React.PureComponent {
   };
 
   static navigationOptions = ({ navigation }) => {
-    const verseRefMenuOptions = navigation.getParam("verseRefMenuOptions");
-    const menuOptions = verseRefMenuOptions ? verseRefMenuOptions() : [];
     return {
-      title:
-        navigation.getParam("title") ||
-        Verse.refText(navigation.getParam("verse")),
-      headerRight: (
-        <BHModalDropdown
-          style={{ margin: 8 }}
-          dropdownStyle={{
-            /*height: 41.5 * menuOptions.length,*/ elevation: 8
-          }}
-          options={menuOptions}
-          renderRow={option => (
-            <Text style={styles.menuOption}>{I18n.t(option)}</Text>
-          )}
-          onSelect={(index, value) => {
-            if (value == "RemoveEndVerse")
-              navigation.getParam("removeEndVerse")();
-            else navigation.getParam("showModal")(value);
-          }}
-        >
-          <XPlatformIcon name="create" color="white" />
-        </BHModalDropdown>
+      title: navigation.getParam("title", ""),
+      headerRight: navigation.getParam("verseHasText") && (
+        <BHActionButton
+          name="checkmark"
+          color="white"
+          onPress={navigation.getParam("clickSave")}
+        />
       )
     };
   };
@@ -156,26 +146,39 @@ export default class TextEntry extends React.PureComponent {
           behavior={isAndroid ? undefined : "padding"}
           enabled
         >
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <Text style={styles.refHeader}>
+              {Verse.refText(this.state.verse)}
+            </Text>
+            <BHModalDropdown
+              style={{ margin: 8 }}
+              dropdownStyle={{
+                elevation: 8
+              }}
+              options={this.verseRefMenuOptions()}
+              renderRow={option => (
+                <Text style={styles.menuOption}>{I18n.t(option)}</Text>
+              )}
+              onSelect={(index, value) => {
+                if (value == "RemoveEndVerse") this.removeEndVerse();
+                else this.showModal(value);
+              }}
+            >
+              <XPlatformIcon name="create" color={ThemeColors.yellow} />
+            </BHModalDropdown>
+          </View>
           <TextInput
             style={styles.textInput}
             placeholder={I18n.t("VerseTextInputHint")}
-            multiline={true}
             value={this.state.verse.text}
+            multiline
+            autoFocus
             onChangeText={text => {
               this.updateVerse({ text: text });
             }}
           />
-          {!!this.state.verse.text && (
-            <View style={styles.buttonContainer}>
-              <BHButton
-                title={I18n.t("Save")}
-                onPress={this.saveVerse}
-                color={
-                  isAndroid ? ThemeColors.buttonGreen : ThemeColors.buttonBlue
-                }
-              />
-            </View>
-          )}
           {!isAndroid && <View style={{ height: 60 }} />}
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -188,6 +191,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: isAndroid ? ThemeColors.grey : "white"
   },
+  refHeader: {
+    fontSize: 24,
+    padding: 8,
+    color: "black"
+  },
   textInput: {
     flex: 1,
     backgroundColor: "white",
@@ -195,12 +203,6 @@ const styles = StyleSheet.create({
     padding: 8,
     margin: isAndroid ? 8 : 0,
     elevation: isAndroid ? 4 : 0
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    padding: 8,
-    paddingTop: isAndroid ? 0 : 8
   },
   menuOption: {
     fontSize: 18,

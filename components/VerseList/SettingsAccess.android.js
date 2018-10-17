@@ -16,7 +16,11 @@ export default function SettingsAccess(props) {
       )}
       onSelect={props.goToSettings}
     >
-      <XPlatformIcon name="more" color="white" />
+      <XPlatformIcon
+        name="more"
+        color="white"
+        style={{ paddingHorizontal: 8 }}
+      />
     </BHModalDropdown>
   );
 }
