@@ -49,6 +49,12 @@ RCT_EXPORT_METHOD(setAlarmTime: (NSString *)time withTitle: (NSString *)title wi
   }];
 }
 
+RCT_EXPORT_METHOD(cancelAlarm)
+{
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  [center removeAllPendingNotificationRequests];
+}
+
 - (NSDateComponents *)triggerDateFromTime: (NSString *)time
 {
   NSArray *hourMinute = [time componentsSeparatedByString:@":"];

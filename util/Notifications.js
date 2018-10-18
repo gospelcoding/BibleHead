@@ -8,7 +8,7 @@ export default class Notifications {
   static async updateNotificationSchedule() {
     const settings = await Settings.readSettings();
     if (settings.notification) scheduleNotifications(settings.notificationTime);
-    else cancelNotifications();
+    else AlarmModule.cancelAlarm();
   }
 
   static setupNotificationChannel() {
@@ -21,14 +21,6 @@ export default class Notifications {
 function scheduleNotifications(time) {
   AlarmModule.setAlarmTime(
     time,
-    I18n.t("NotificationTitle"),
-    I18n.t("NotificationText")
-  );
-}
-
-function cancelNotifications() {
-  AlarmModule.setAlarmTime(
-    "",
     I18n.t("NotificationTitle"),
     I18n.t("NotificationText")
   );
