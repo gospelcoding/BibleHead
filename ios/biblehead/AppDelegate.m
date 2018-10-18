@@ -34,8 +34,12 @@
   [self.window makeKeyAndVisible];
   
   // BibleHead Stuff
+  int authorizationOptions = UNAlertStyleNone;
+  if (@available(iOS 12.0, *)) {
+    authorizationOptions = UNAuthorizationOptionProvisional;
+  }
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-  [center requestAuthorizationWithOptions:UNAuthorizationOptionNone completionHandler:^(BOOL granted, NSError * _Nullable error) {
+  [center requestAuthorizationWithOptions:authorizationOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
     if (granted) {
       NSLog(@"Permission Granted!");
     }
