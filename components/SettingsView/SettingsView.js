@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, View, Switch, Text } from "react-native";
+import { SafeAreaView, StyleSheet, View, Text } from "react-native";
 import I18n from "../../i18n/i18n";
 import Settings from "../../util/Settings";
 import update from "immutability-helper";
@@ -7,6 +7,7 @@ import XPlatformTouchable from "../shared/XPlatformTouchable";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import Notifications from "../../util/Notifications";
 import PickerModal from "../shared/PickerModal";
+import BHSwitch from "../shared/BHSwitch";
 
 export default class SettingsView extends React.PureComponent {
   state = {
@@ -58,7 +59,7 @@ export default class SettingsView extends React.PureComponent {
           <Text style={styles.settingTitle}>
             {I18n.t("NotificationChannelDescription")}
           </Text>
-          <Switch
+          <BHSwitch
             value={this.state.settings.notification}
             onValueChange={value =>
               this.updateSettings({ notification: value })

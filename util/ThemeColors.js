@@ -18,5 +18,6 @@ export default {
   red: "#bb0a21",
   yellow: "#E6AF2E",
   buttonBlue: isIOS ? iosBlue : blue,
-  buttonGreen: isIOS ? "#8fd36e" /*"#95DB72"*/ : green
+  buttonGreen: isIOS ? "#8fd36e" /*"#95DB72"*/ : green,
+  buttonBlueOrGreen: isIOS ? iosBlue : green
 };

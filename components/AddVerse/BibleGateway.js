@@ -98,7 +98,7 @@ export default class BibleGateway extends React.PureComponent {
         <WebView
           style={{ flex: 1 }}
           ref={ref => (this.webview = ref)}
-          source={{ uri: "http://www.biblegateway.com/passage/" }}
+          source={{ uri: "https://www.biblegateway.com/passage/" }}
           onLoadStart={this.onPageLoadStart}
           onLoad={this.onPageLoad}
           injectedJavaScript={patchPostMessageJsCode}
@@ -159,7 +159,7 @@ export default class BibleGateway extends React.PureComponent {
               >
                 <BHButton
                   title={I18n.t("Save")}
-                  color={ThemeColors.buttonGreen}
+                  color={ThemeColors.buttonBlueOrGreen}
                   onPress={this.saveVerse}
                   buttonStyle={Platform.OS == "android" ? { padding: 8 } : {}}
                 />

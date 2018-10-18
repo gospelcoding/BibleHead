@@ -10,7 +10,7 @@ export default function LearnedToggleButton(props) {
   const buttonTitle = markLearned
     ? I18n.t("MarkLearned")
     : I18n.t("MarkUnlearned");
-  const color = markLearned ? ThemeColors.buttonGreen : ThemeColors.red;
+  const color = markLearned ? ThemeColors.buttonBlueOrGreen : ThemeColors.red;
   return (
     <BHButton
       onPress={() => {

@@ -30,7 +30,7 @@ export default function ButtonRowFinal(props) {
         {!props.verseLearned && (
           <BHButton
             title={I18n.t("Learned")}
-            color={ThemeColors.buttonGreen}
+            color={ThemeColors.buttonBlueOrGreen}
             onPress={props.markLearned}
             buttonStyle={props.buttonStyle}
             textStyle={[props.buttonTextStyle, { fontSize: 20 }]}
