@@ -41,10 +41,12 @@ export default function BHButton(props) {
   // It's more visible on my dark matte buttons
   // const androidButtonColor = color || defaultButtonColor;
 
+  let theTitle = title || "";
+  theTitle = Platform.OS == "ios" ? theTitle : theTitle.toUpperCase();
   const innerElement = children ? (
     <Text style={textStyles}>{children}</Text>
   ) : (
-    <Text style={textStyles}>{title.toUpperCase()}</Text>
+    <Text style={textStyles}>{theTitle}</Text>
   );
 
   return (

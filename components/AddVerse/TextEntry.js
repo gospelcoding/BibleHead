@@ -134,7 +134,7 @@ export default class TextEntry extends React.PureComponent {
     return (
       <SafeAreaView style={styles.container}>
         <PickerModal
-          visible={!!this.state.modalData}
+          isVisible={!!this.state.modalData}
           data={this.state.modalData}
           itemSelected={this.state.onModalSelect}
           dismissModal={() => {

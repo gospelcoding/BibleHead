@@ -16,17 +16,17 @@ export default {
     fontSize: 16,
     padding: 8
   },
-  listItem: {
-    backgroundColor: "white",
-    fontSize: 24,
-    marginBottom: 2,
-    padding: 8
-  },
   textView: {
     backgroundColor: "white",
     fontSize: 18,
     padding: 8,
     margin: isIOS ? 0 : 8,
     elevation: isIOS ? 0 : 4
+  },
+  androidDialogButton: {
+    text: {
+      color: ThemeColors.buttonBlue
+    },
+    button: { backgroundColor: "transparent", elevation: 0 }
   }
 };

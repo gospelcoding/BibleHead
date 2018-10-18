@@ -101,13 +101,13 @@ export default class SettingsView extends React.PureComponent {
           date={dateFromNotificationTime(this.state.settings.notificationTime)}
           onConfirm={this.setNotificationTime}
           onCancel={() => this.setState({ showingTimePicker: false })}
-          titleIOS={I18n.t("NotificationTime")}
+          titleIOS={I18n.t("ReviewTime")}
           confirmTextIOS={I18n.t("Confirm")}
           cancelTextIOS={I18n.t("Cancel")}
         />
 
         <PickerModal
-          visible={this.state.showingNewVerseMethodPicker}
+          isVisible={this.state.showingNewVerseMethodPicker}
           data={Settings.newVerseMethodSettings()}
           itemSelected={this.setNewVerseMethod}
           dismissModal={() =>

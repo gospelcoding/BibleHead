@@ -15,6 +15,7 @@
     "react-native": "0.56.0",
     "react-native-checkbox": "^2.0.0",
     "react-native-i18n": "^2.0.15",
+    "react-native-modal": "^6.5.0",
     "react-native-modal-datetime-picker": "^6.0.0",
     "react-native-splash-screen": "^3.1.1",
     "react-native-vector-icons": "^5.0.0",

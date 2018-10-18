@@ -4,6 +4,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
         <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem</item>
+        <!-- <item name="android:datePickerDialogTheme">@style/Dialog.Theme</item> -->
+        <item name="android:timePickerDialogTheme">@style/Dialog.Theme</item>
     </style>
 
     <style name="SpinnerItem" parent="Theme.AppCompat.Light.NoActionBar">>
@@ -20,6 +22,11 @@
 
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
+
+    <style name="Dialog.Theme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">#375e97</item>
+        <item name="android:textColorPrimary">#375e97</item>
     </style>
 
 </resources>
