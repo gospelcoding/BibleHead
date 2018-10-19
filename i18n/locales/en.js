@@ -1,6 +1,7 @@
 export default {
   AddEndVerse: "Add end verse",
   AlwaysAsk: "Always ask",
+  BibleGateway: "Bible Gateway",
   Book: "Book",
   Cancel: "Cancel",
   ChangeEndVerse: "Change end verse",

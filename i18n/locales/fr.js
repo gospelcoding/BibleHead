@@ -1,6 +1,7 @@
 export default {
   AddEndVerse: "Ajouter verset finale",
   AlwaysAsk: "Choisir chaque fois",
+  BibleGateway: "Bible Gateway",
   Book: "Livre",
   Cancel: "Annuler",
   ChangeEndVerse: "Changer verset finale",

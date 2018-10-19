@@ -3,10 +3,11 @@ import bookCodes from "./bibleCodes";
 
 export default function parsePassage(html) {
   const $ = cheerio.load(html);
-  const refText = $(".passage-display-bcv").text();
+  const passageTextDiv = $(".passage-text");
+  const refText = $(".passage-display-bcv", passageTextDiv).text();
   const ref = parseRefText(refText);
-  const bookId = getBookId($);
-  const pContents = $("p").contents();
+  const bookId = getBookId($, passageTextDiv);
+  const pContents = $("p", passageTextDiv).contents();
   let text = "";
   for (let i = 0; i < pContents.length; ++i) {
     let node = pContents[i];
@@ -24,9 +25,9 @@ export default function parsePassage(html) {
   };
 }
 
-function getBookId($) {
+function getBookId($, passageTextDiv) {
   try {
-    const node = $("span.text");
+    const node = $("span.text", passageTextDiv);
     // console.error(node);
     const pattern = /(\w+)-\d+-\d+/;
     const bookCode = node.attr("class").match(pattern)[1];
