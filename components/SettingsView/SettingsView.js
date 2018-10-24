@@ -8,6 +8,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import Notifications from "../../util/Notifications";
 import PickerModal from "../shared/PickerModal";
 import BHSwitch from "../shared/BHSwitch";
+import Backup from "../../util/Backups";
 
 export default class SettingsView extends React.PureComponent {
   state = {
@@ -17,6 +18,8 @@ export default class SettingsView extends React.PureComponent {
   async componentDidMount() {
     const settings = await Settings.readSettings();
     this.setState({ settings: settings });
+    const latestBackup = await Backup.latestBackupData();
+    this.setState({ latestBackup: latestBackup });
   }
 
   updateSettings = mergeSettings => {
@@ -43,6 +46,20 @@ export default class SettingsView extends React.PureComponent {
   setNewVerseMethod = method => {
     this.updateSettings({ newVerseMethod: method });
     this.setState({ showingNewVerseMethodPicker: false });
+  };
+
+  createBackup = async () => {
+    this.setState({ backingUp: true });
+    try {
+      const newLatestBackup = await Backup.createBackup();
+      this.setState({
+        latestBackup: newLatestBackup,
+        backingUp: false,
+        backupError: undefined
+      });
+    } catch (error) {
+      this.setState({ backupError: error, backingUp: false });
+    }
   };
 
   static navigationOptions = () => {
@@ -96,6 +113,15 @@ export default class SettingsView extends React.PureComponent {
           </View>
         </XPlatformTouchable>
 
+        <XPlatformTouchable onPress={this.createBackup}>
+          <View style={[styles.row, { flexDirection: "column" }]}>
+            <Text style={styles.settingTitle}>{I18n.t("BackupVersesNow")}</Text>
+            <Text style={styles.settingText}>
+              {backupDetailText(this.state)}
+            </Text>
+          </View>
+        </XPlatformTouchable>
+
         <DateTimePicker
           isVisible={this.state.showingTimePicker}
           mode="time"
@@ -130,6 +156,17 @@ function dateFromNotificationTime(timeStr) {
 
 function notificationTimeFromDate(date) {
   return `${date.getHours()}:${date.getMinutes()}`;
+}
+
+function backupDetailText(state) {
+  if (state.backingUp) return I18n.t("BackingUp");
+  if (state.backupError) return I18n.t(state.backupError);
+  if (state.latestBackup)
+    return I18n.t("LatestBackup", {
+      code: state.latestBackup.code,
+      datetime: new Date(state.latestBackup.datetime).toLocaleString()
+    });
+  return "";
 }
 
 const styles = StyleSheet.create({

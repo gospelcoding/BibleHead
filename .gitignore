@@ -58,7 +58,7 @@ buck-out/
 .vscode/.react/index.map
 
 # Secrets
-util/apiKey.js
+util/apiKeys.js
 
 debuggerWorker.js
 app-release.apk
