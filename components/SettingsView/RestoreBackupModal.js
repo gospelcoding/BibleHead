@@ -73,10 +73,10 @@ export default class RestoreBackupModal extends React.PureComponent {
                   <TextInput
                     value={this.state.code}
                     placeholder={I18n.t("Code")}
-                    onChangeText={value =>
-                      this.setState({ code: value.toLocaleUpperCase() })
-                    }
+                    onChangeText={value => this.setState({ code: value })}
                     autoFocus
+                    autoCorrect={false}
+                    autoCapitalize={"characters"}
                     style={styles.codeText}
                   />
                   {this.state.errorMessage && (
