@@ -21,11 +21,22 @@ export default class Backup {
         "https://bh-api.gospelcoding.org/api/verses",
         data
       );
-      if (response.status != 200) throw "NetworkError";
       const responseBackupCode = response.data.code;
       return saveBackupData(responseBackupCode);
     } catch (error) {
       throw "NetworkError";
+    }
+  }
+
+  static async restoreBackup(code) {
+    try {
+      const response = await Axios.get(
+        `https://bh-api.gospelcoding.org/api/verses/${code}`
+      );
+      return response.data.verses;
+    } catch (error) {
+      if (error.response && error.response.status == 404) throw "NoSuchBackup";
+      else throw "NetworkError";
     }
   }
 

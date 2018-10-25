@@ -49,6 +49,7 @@ export default class VerseList extends React.PureComponent {
 
   async componentDidMount() {
     this.props.navigation.setParams({ addVerse: this.addVerseAndSave });
+    this.props.navigation.setParams({ reloadVerses: this.getVerses });
     const lists = await this.getVerses();
     if (this.props.navigation.getParam("action") == "review")
       this.doReview(lists.reviewing, lists.learning);
@@ -221,7 +222,11 @@ export default class VerseList extends React.PureComponent {
             name="add"
           />
           <SettingsAccess
-            goToSettings={() => navigation.navigate("SettingsView")}
+            goToSettings={() =>
+              navigation.navigate("SettingsView", {
+                reloadVerses: navigation.getParam("reloadVerses")
+              })
+            }
           />
         </View>
       )

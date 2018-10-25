@@ -9,6 +9,7 @@ import Notifications from "../../util/Notifications";
 import PickerModal from "../shared/PickerModal";
 import BHSwitch from "../shared/BHSwitch";
 import Backup from "../../util/Backups";
+import RestoreBackupModal from "./RestoreBackupModal";
 
 export default class SettingsView extends React.PureComponent {
   state = {
@@ -102,12 +103,7 @@ export default class SettingsView extends React.PureComponent {
         >
           <View style={[styles.row, { flexDirection: "column" }]}>
             <Text style={styles.settingTitle}>{I18n.t("NewVerseMethod")}</Text>
-            <Text
-              style={[
-                styles.settingText,
-                { fontSize: 16, alignSelf: "flex-end" }
-              ]}
-            >
+            <Text style={styles.settingTextLittle}>
               {I18n.t(this.state.settings.newVerseMethod)}
             </Text>
           </View>
@@ -116,9 +112,17 @@ export default class SettingsView extends React.PureComponent {
         <XPlatformTouchable onPress={this.createBackup}>
           <View style={[styles.row, { flexDirection: "column" }]}>
             <Text style={styles.settingTitle}>{I18n.t("BackupVersesNow")}</Text>
-            <Text style={styles.settingText}>
+            <Text style={styles.settingTextLittle}>
               {backupDetailText(this.state)}
             </Text>
+          </View>
+        </XPlatformTouchable>
+
+        <XPlatformTouchable
+          onPress={() => this.setState({ showingRestoreBackupModal: true })}
+        >
+          <View style={styles.row}>
+            <Text style={styles.settingTitle}>{I18n.t("RestoreBackup")}</Text>
           </View>
         </XPlatformTouchable>
 
@@ -142,6 +146,14 @@ export default class SettingsView extends React.PureComponent {
           }
           itemText={item => I18n.t(item)}
         />
+
+        <RestoreBackupModal
+          isVisible={!!this.state.showingRestoreBackupModal}
+          reloadVerses={this.props.navigation.getParam("reloadVerses")}
+          dismissModal={() =>
+            this.setState({ showingRestoreBackupModal: false })
+          }
+        />
       </SafeAreaView>
     );
   }
@@ -164,7 +176,7 @@ function backupDetailText(state) {
   if (state.latestBackup)
     return I18n.t("LatestBackup", {
       code: state.latestBackup.code,
-      datetime: new Date(state.latestBackup.datetime).toLocaleString()
+      datetime: new Date(state.latestBackup.datetime).toLocaleDateString()
     });
   return "";
 }
@@ -185,6 +197,10 @@ const styles = StyleSheet.create({
   },
   settingText: {
     fontSize: 20,
+    color: "#999"
+  },
+  settingTextLittle: {
+    fontSize: 16,
     color: "#999"
   }
 });
