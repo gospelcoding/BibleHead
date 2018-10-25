@@ -53,9 +53,7 @@ export default class VerseReview extends React.PureComponent {
     return {
       title: Verse.refText(verses[verseNumber]),
       headerRight: (
-        <Text style={styles.headerRight}>
-          {I18n.t("xOfY", { x: verseNumber + 1, y: 5 })}
-        </Text>
+        <Text style={styles.headerRight}>{progressText(navigation)}</Text>
       ),
       headerLeft: (
         <BHActionButton
@@ -105,4 +103,11 @@ function reviewText(verse) {
   return verse.learned
     ? verse.text
     : verse.text.slice(0, verse.splitIndices[verse.currentSplit]);
+}
+
+function progressText(navigation) {
+  const verseNumber = navigation.getParam("verseNumber", 0) + 1;
+  let verseCount = navigation.getParam("reviewVerses").length;
+  if (navigation.getParam("learningVerse")) verseCount += 1;
+  return I18n.t("xOfY", { x: verseNumber, y: verseCount });
 }
