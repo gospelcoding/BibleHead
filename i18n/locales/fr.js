@@ -13,6 +13,8 @@ export default {
   Chapter: "Chapitre",
   ChooseBible: "Version de la Bible",
   Code: "Code",
+  CodeExplanation:
+    "Le code pour votre sauvegarde est {{code}}. Il faut l'écriver quelque-part parce que vouz en aurez besion si vous voulez restaurer la sauvegarde.",
   Confirm: "Confirmer",
   Done: "Terminer",
   DownloadFromBibleGateway: "Télécharger de Bible Gateway",

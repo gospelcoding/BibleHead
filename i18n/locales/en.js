@@ -13,6 +13,8 @@ export default {
   Chapter: "Chapter",
   ChooseBible: "Bible Version",
   Code: "Code",
+  CodeExplanation:
+    "The code for your backup is {{code}}. You should write this down somewhere because you will need it if you want to restore the backup.",
   Confirm: "Confirm",
   Done: "Done",
   DownloadFromBibleGateway: "Download from Bible Gateway",

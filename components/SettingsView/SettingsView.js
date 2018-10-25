@@ -10,6 +10,7 @@ import PickerModal from "../shared/PickerModal";
 import BHSwitch from "../shared/BHSwitch";
 import Backup from "../../util/Backups";
 import RestoreBackupModal from "./RestoreBackupModal";
+import CodeExplanationModal from "./CodeExplanationModal";
 
 export default class SettingsView extends React.PureComponent {
   state = {
@@ -53,11 +54,12 @@ export default class SettingsView extends React.PureComponent {
     this.setState({ backingUp: true });
     try {
       const newLatestBackup = await Backup.createBackup();
-      this.setState({
+      this.setState(prevState => ({
         latestBackup: newLatestBackup,
         backingUp: false,
-        backupError: undefined
-      });
+        backupError: undefined,
+        showingCodeExplanationModal: !prevState.latestBackup
+      }));
     } catch (error) {
       this.setState({ backupError: error, backingUp: false });
     }
@@ -153,6 +155,14 @@ export default class SettingsView extends React.PureComponent {
           dismissModal={() =>
             this.setState({ showingRestoreBackupModal: false })
           }
+        />
+
+        <CodeExplanationModal
+          isVisible={!!this.state.showingCodeExplanationModal}
+          dismissModal={() =>
+            this.setState({ showingCodeExplanationModal: false })
+          }
+          code={this.state.latestBackup && this.state.latestBackup.code}
         />
       </SafeAreaView>
     );
