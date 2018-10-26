@@ -1,6 +1,6 @@
 import I18n from "react-native-i18n";
-import en from "./locales/en";
-import fr from "./locales/fr";
+const en = require("./locales/en.json");
+const fr = require("./locales/fr.json");
 
 I18n.fallbacks = true;
 I18n.translations = { en, fr };
