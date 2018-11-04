@@ -1,5 +1,5 @@
 import React from "react";
-import { WebView, SafeAreaView } from "react-native";
+import { WebView, SafeAreaView, Text } from "react-native";
 import CommonStyles from "../../util/CommonStyles";
 import parsePassage from "./parsePassage";
 import I18n from "../../i18n/i18n";
@@ -50,6 +50,11 @@ export default class BibleGateway extends React.PureComponent {
           source={{ uri: "https://www.biblegateway.com/passage/" }}
           useWebKit
           onNavigationStateChange={this.handleNavigationStateChange}
+          renderError={() => (
+            <Text style={CommonStyles.textView}>
+              {I18n.t("ConnectionError")}
+            </Text>
+          )}
         />
         {this.state.passage && (
           <BGPassageDisplay

@@ -124,46 +124,54 @@ function pureTextContent(node) {
 }
 
 function parseRefText(refText) {
-  const spaceIndex = refText.indexOf(" ");
-  const firstColonIndex = refText.indexOf(":");
-  const secondColonIndex = refText.lastIndexOf(":");
-  const dashIndex = refText.indexOf("-");
+  let pattern = /(\d+):(\d+)-(\d+):(\d+)/; // John 1:1-2:2
+  let match = pattern.exec(refText);
+  if (match)
+    return {
+      bookName: refText.slice(0, match.index).trim(),
+      startChapter: parseInt(match[1]),
+      startVerse: parseInt(match[2]),
+      endChapter: parseInt(match[3]),
+      endVerse: parseInt(match[4])
+    };
 
-  let ref = {};
-  if (spaceIndex < 0) return ref;
-  ref.bookName = refText.slice(0, spaceIndex);
+  pattern = /(\d+):(\d+)-(\d+)/; // John 1:1-2
+  match = pattern.exec(refText);
+  if (match)
+    return {
+      bookName: refText.slice(0, match.index).trim(),
+      startChapter: parseInt(match[1]),
+      endChapter: parseInt(match[1]),
+      startVerse: parseInt(match[2]),
+      endVerse: parseInt(match[3])
+    };
 
-  // John 1-2
-  if (firstColonIndex < spaceIndex && dashIndex > 0) {
-    ref.startChapter = parseInt(refText.slice(spaceIndex + 1, dashIndex));
-    ref.endChapter = parseInt(refText.slice(dashIndex + 1));
-    return ref;
+  pattern = /(\d+):(\d+)/; // John 1:1
+  match = pattern.exec(refText);
+  if (match) {
+    return {
+      bookName: refText.slice(0, match.index).trim(),
+      startChapter: parseInt(match[1]),
+      startVerse: parseInt(match[2])
+    };
   }
 
-  // John 1
-  if (firstColonIndex < spaceIndex) {
-    ref.startChapter = parseInt(refText.slice(spaceIndex + 1));
-    return ref;
-  }
-  ref.startChapter = parseInt(refText.slice(spaceIndex + 1, firstColonIndex));
+  pattern = /(\d+)-(\d+)/; // John 1-2
+  match = pattern.exec(refText);
+  if (match)
+    return {
+      bookName: refText.slice(0, match.index).trim(),
+      startChapter: parseInt(match[1]),
+      endChapter: parseInt(match[2])
+    };
 
-  // John 1:1
-  if (dashIndex < firstColonIndex) {
-    ref.startVerse = parseInt(refText.slice(firstColonIndex + 1));
-    return ref;
-  }
+  pattern = /(\d+)$/; // John 1
+  match = pattern.exec(refText);
+  if (match)
+    return {
+      bookName: refText.slice(0, match.index).trim(),
+      startChapter: parseInt(match[1])
+    };
 
-  // John 1:1-2
-  if (secondColonIndex == firstColonIndex) {
-    ref.startVerse = parseInt(refText.slice(firstColonIndex + 1, dashIndex));
-    ref.endChapter = ref.startChapter;
-    ref.endVerse = parseInt(refText.slice(dashIndex + 1));
-    return ref;
-  }
-
-  // John 1:1-2:2
-  ref.startVerse = parseInt(refText.slice(firstColonIndex + 1, dashIndex));
-  ref.endChapter = parseInt(refText.slice(dashIndex + 1, secondColonIndex));
-  ref.endVerse = parseInt(refText.slice(secondColonIndex + 1));
-  return ref;
+  return {};
 }

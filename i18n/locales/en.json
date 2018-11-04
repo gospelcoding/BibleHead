@@ -15,6 +15,7 @@
   "Code": "Code",
   "CodeExplanation":
     "The code for your backup is {{code}}. You should write this down somewhere because you will need it if you want to restore the backup.",
+  "ConnectionError": "Unable to connect to Bible Gateway. Does your device have an internet connection?",
   "Confirm": "Confirm",
   "Done": "Done",
   "DownloadFromBibleGateway": "Download from Bible Gateway",

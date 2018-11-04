@@ -15,6 +15,7 @@
   "Code": "Code",
   "CodeExplanation":
     "Le code pour votre sauvegarde est {{code}}. Il faut l'écriver quelque-part parce que vouz en aurez besion si vous voulez restaurer la sauvegarde.",
+  "ConnectionError": "Échec de connexion au Bible Gateway. Est-ce que votre appareil a une connexion internet ?",
   "Confirm": "Confirmer",
   "Done": "Terminer",
   "DownloadFromBibleGateway": "Télécharger de Bible Gateway",
