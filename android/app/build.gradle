@@ -101,8 +101,8 @@ android {
         applicationId "org.gospelcoding.biblehead"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 213
-        versionName "2.13"
+        versionCode 214
+        versionName "2.14"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
