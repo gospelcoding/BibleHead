@@ -16,7 +16,7 @@ export default function ButtonWords(props) {
         <BHButton
           key={word + index}
           title={word}
-          color={props.redButtons.includes(index) ? ThemeColors.red : undefined}
+          color={buttonColor(word, index, props.greenWord, props.redButtons)}
           hidden={props.hidButtons.includes(index)}
           buttonStyle={{ margin: 4 }}
           onPress={() => {
@@ -26,4 +26,10 @@ export default function ButtonWords(props) {
       ))}
     </View>
   );
+}
+
+function buttonColor(word, index, greenWord, redButtons) {
+  if (word === greenWord) return ThemeColors.buttonGreen;
+  if (redButtons.includes(index)) return ThemeColors.red;
+  return undefined;
 }

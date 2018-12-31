@@ -6,6 +6,7 @@ import ButtonWords from "./ButtonWords";
 import { randInt } from "../../util/util";
 import update from "immutability-helper";
 import CommonStyles from "../../util/CommonStyles";
+import { red } from "ansi-colors";
 
 const isIOS = Platform.OS == "ios";
 const numberOfButtons = 12;
@@ -23,6 +24,7 @@ export default class ShuffleWordsGame extends React.PureComponent {
     state.redButtons = [];
     state.hidButtons = [];
     state.done = false;
+    state.greenWord = false;
     return state;
   };
 
@@ -33,10 +35,23 @@ export default class ShuffleWordsGame extends React.PureComponent {
   buttonWordPress = (word, buttonWordIndex) => {
     if (word === this.state.wordsWithIndices[this.state.step].word)
       this.advance(buttonWordIndex);
-    else
-      this.setState(prevState => ({
-        redButtons: update(prevState.redButtons, { $push: [buttonWordIndex] })
-      }));
+    else this.addWrong(buttonWordIndex);
+  };
+
+  addWrong = buttonWordIndex => {
+    this.setState(prevState => {
+      const redButtons = update(prevState.redButtons, {
+        $push: [buttonWordIndex]
+      });
+      const greenWord =
+        redButtons.length > 2
+          ? prevState.wordsWithIndices[prevState.step].word
+          : false;
+      return {
+        redButtons: redButtons,
+        greenWord: greenWord
+      };
+    });
   };
 
   advance = buttonWordIndex => {
@@ -53,7 +68,8 @@ export default class ShuffleWordsGame extends React.PureComponent {
           0,
           prevState.wordsWithIndices[nextStep].index
         ),
-        redButtons: []
+        redButtons: [],
+        greenWord: false
       };
       if (prevState.shuffledWords.length >= nextStep + numberOfButtons) {
         let newWord = prevState.shuffledWords[nextStep + numberOfButtons - 1];
@@ -93,6 +109,7 @@ export default class ShuffleWordsGame extends React.PureComponent {
             buttonWords={this.state.buttonWords}
             buttonWordPress={this.buttonWordPress}
             redButtons={this.state.redButtons}
+            greenWord={this.state.greenWord}
             hidButtons={this.state.hidButtons}
           />
         )}
