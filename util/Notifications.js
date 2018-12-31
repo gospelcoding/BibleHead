@@ -1,4 +1,4 @@
-import { NativeModules } from "react-native";
+import { NativeModules, Platform } from "react-native";
 import Settings from "./Settings";
 import I18n from "../i18n/i18n";
 
@@ -7,11 +7,17 @@ const AlarmModule = NativeModules.AlarmModule;
 export default class Notifications {
   static async updateNotificationSchedule() {
     const settings = await Settings.readSettings();
-    if (settings.notification) scheduleNotifications(settings.notificationTime);
-    else AlarmModule.cancelAlarm();
+    if (settings.notification) {
+      setupNotificationChannel();
+      scheduleNotifications(settings.notificationTime);
+    } else {
+      AlarmModule.cancelAlarm();
+    }
   }
+}
 
-  static setupNotificationChannel() {
+function setupNotificationChannel() {
+  if (Platform.OS == "android") {
     AlarmModule.setupNotificationChannel(
       I18n.t("NotificationChannelDescription")
     );

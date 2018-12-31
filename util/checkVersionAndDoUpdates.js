@@ -24,7 +24,6 @@ export default async function checkVersionAndDoUpdates() {
 }
 
 async function androidFirstRun() {
-  Notifications.setupNotificationChannel();
   const existingVersesJSON = await VerseStorageConverterModule.importExistingVerses();
   const existingVerses = JSON.parse(existingVersesJSON);
   if (existingVerses.length > 0) {
