@@ -1,9 +1,10 @@
 import I18n from "react-native-i18n";
 const en = require("./locales/en.json");
 const fr = require("./locales/fr.json");
+const es = require("./locales/es.json");
 
 I18n.fallbacks = true;
-I18n.translations = { en, fr };
+I18n.translations = { en, fr, es };
 
 I18n.getLocales = function() {
   return Object.entries(this.translations).map(keyValue => {
