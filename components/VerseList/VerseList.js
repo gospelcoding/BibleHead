@@ -1,13 +1,13 @@
 import React from "react";
 import {
   SafeAreaView,
-  Text,
   SectionList,
   StyleSheet,
   Platform,
   NativeModules,
   NativeEventEmitter,
-  View
+  View,
+  BackHandler
 } from "react-native";
 import VerseStorage from "../../models/VerseStorage";
 import Verse from "../../models/Verse";
@@ -26,6 +26,9 @@ const { AlarmModule } = NativeModules;
 const alarmModuleEmitter = new NativeEventEmitter(AlarmModule);
 
 export default class VerseList extends React.PureComponent {
+  _didFocusSubscription;
+  _willBlurSubscription;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -34,6 +37,12 @@ export default class VerseList extends React.PureComponent {
       loading: true,
       selectedId: null
     };
+    this._didFocusSubscription = props.navigation.addListener("didFocus", () =>
+      BackHandler.addEventListener(
+        "hardwareBackPress",
+        this.onBackButtonPressAndroid
+      )
+    );
   }
 
   getVerses = async () => {
@@ -56,7 +65,29 @@ export default class VerseList extends React.PureComponent {
     this.subscription = alarmModuleEmitter.addListener("DoReview", () => {
       this.doReview(lists.reviewing, lists.learning);
     });
+    this._willBlurSubscription = this.props.navigation.addListener(
+      "willBlur",
+      () =>
+        BackHandler.removeEventListener(
+          "hardwareBackPress",
+          this.onBackButtonPressAndroid
+        )
+    );
   }
+
+  componentWillUnmount() {
+    this._didFocusSubscription && this._didFocusSubscription.remove();
+    this._willBlurSubscription && this._willBlurSubscription.remove();
+  }
+
+  onBackButtonPressAndroid = () => {
+    if (this.state.selectedId) {
+      this.setState({ selectedId: null });
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   practiceVerse = verse => {
     this.props.navigation.navigate("VersePractice", {
