@@ -4,7 +4,7 @@ import BibleBook from "../models/BibleBook";
 import I18n from "../i18n/i18n";
 import Notifications from "./Notifications";
 
-const currentVersion = "2.14";
+const currentVersion = "2.15";
 const storageKey = "bh.version";
 const VerseStorageConverterModule = NativeModules.VerseStorageConverterModule;
 const isIOS = Platform.OS == "ios";
