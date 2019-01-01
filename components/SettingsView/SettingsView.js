@@ -11,6 +11,7 @@ import BHSwitch from "../shared/BHSwitch";
 import Backup from "../../util/Backups";
 import RestoreBackupModal from "./RestoreBackupModal";
 import CodeExplanationModal from "./CodeExplanationModal";
+import { zeroPad } from "../../util/util";
 
 export default class SettingsView extends React.PureComponent {
   state = {
@@ -177,7 +178,7 @@ function dateFromNotificationTime(timeStr) {
 }
 
 function notificationTimeFromDate(date) {
-  return `${date.getHours()}:${date.getMinutes()}`;
+  return `${date.getHours()}:${zeroPad(date.getMinutes(), 2)}`;
 }
 
 function backupDetailText(state) {

@@ -42,3 +42,9 @@ export function aShadeDarker(color) {
       .join("")
   );
 }
+
+export function zeroPad(number, length) {
+  const s = `${number}`;
+  const zeros = new Array(length - s.length).fill("0").join("");
+  return zeros + s;
+}
