@@ -12,10 +12,10 @@ import CommonStyles from "../../util/CommonStyles";
 import XPlatformTouchable from "../shared/XPlatformTouchable";
 import update from "immutability-helper";
 import Verse from "../../models/Verse";
-import BHActionButton from "../shared/BHActionButton";
 import i18n from "../../i18n/i18n";
 import CheckBox from "react-native-checkbox";
 import HelpText from "../shared/HelpText";
+import { BHHeaderButtons, Item } from "../shared/BHHeaderButtons";
 
 const isIOS = Platform.OS == "ios";
 
@@ -105,11 +105,14 @@ export default class PassageSplitter extends React.PureComponent {
     return {
       title: Verse.refText(navigation.getParam("verse")),
       headerRight: (
-        <BHActionButton
-          onPress={navigation.getParam("save")}
-          name="checkmark"
-          size={isIOS ? 36 : 28}
-        />
+        <BHHeaderButtons>
+          <Item
+            onPress={navigation.getParam("save")}
+            iconName="checkmark"
+            title="Save"
+            iconSize={isIOS ? 36 : undefined}
+          />
+        </BHHeaderButtons>
       )
     };
   };

@@ -2,24 +2,18 @@ import React from "react";
 import {
   SafeAreaView,
   View,
-  Text,
-  Switch,
   TextInput,
   StyleSheet,
   Platform,
   KeyboardAvoidingView
 } from "react-native";
-import CommonStyles from "../../util/CommonStyles";
 import I18n from "../../i18n/i18n";
 import Verse from "../../models/Verse";
 import update from "immutability-helper";
-import BHButton from "../shared/BHButton";
 import ThemeColors from "../../util/ThemeColors";
-import BHModalDropdown from "../shared/BHModalDropdown";
-import XPlatformIcon from "../shared/XPlatformIcon";
 import { intArray } from "../../util/util";
 import PickerModal from "../shared/PickerModal";
-import BHActionButton from "../shared/BHActionButton";
+import { BHHeaderButtons, Item } from "../shared/BHHeaderButtons";
 
 const isAndroid = Platform.OS == "android";
 
@@ -29,22 +23,16 @@ export default class TextEntry extends React.PureComponent {
     this.state = {
       verse: props.navigation.getParam("verse")
     };
-  }
-
-  componentDidMount() {
-    this.props.navigation.setParams({
-      title: Verse.refText(this.state.verse),
-      verseHasText: !!this.state.verse.text,
-      clickSave: this.saveVerse
+    props.navigation.setParams({
+      clickSave: this.saveVerse,
+      editReference: this.editReference
     });
   }
 
-  showModal = whichModal => {
-    this.setState(this.modalState(whichModal));
-  };
-
-  removeEndVerse = () => {
-    this.updateVerse({ endVerse: null, endChapter: null });
+  editReference = option => {
+    if (option == "RemoveEndVerse")
+      this.updateVerse({ endVerse: null, endChapter: null });
+    else this.setState(this.modalState(option));
   };
 
   modalState = whichModal => {
@@ -87,23 +75,11 @@ export default class TextEntry extends React.PureComponent {
 
   refStr = (c, v) => `${c}:${v}`;
 
-  verseRefMenuOptions = () => {
-    return this.state.verse.endChapter
-      ? [
-          "ChangeStartChapter",
-          "ChangeStartVerse",
-          "ChangeEndVerse",
-          "RemoveEndVerse"
-        ]
-      : ["ChangeStartChapter", "ChangeStartVerse", "AddEndVerse"];
-  };
-
   updateVerse = mergeVerse => {
     this.setState(prevState => {
       const newVerse = update(prevState.verse, { $merge: mergeVerse });
       this.props.navigation.setParams({
-        title: Verse.refText(newVerse),
-        verseHasText: !!newVerse.text
+        verse: newVerse
       });
       return {
         verse: newVerse
@@ -118,14 +94,26 @@ export default class TextEntry extends React.PureComponent {
   };
 
   static navigationOptions = ({ navigation }) => {
+    const verse = navigation.getParam("verse");
     return {
-      title: navigation.getParam("title", ""),
-      headerRight: navigation.getParam("verseHasText") && (
-        <BHActionButton
-          name="checkmark"
-          color="white"
-          onPress={navigation.getParam("clickSave")}
-        />
+      title: Verse.refText(verse),
+      headerRight: !!verse.text && (
+        <BHHeaderButtons>
+          <Item
+            title="save"
+            iconName="checkmark"
+            iconSize={isAndroid ? undefined : 36}
+            onPress={navigation.getParam("clickSave")}
+          />
+          {verseRefMenuOptions(verse).map(option => (
+            <Item
+              key={option}
+              title={I18n.t(option)}
+              show="never"
+              onPress={() => navigation.getParam("editReference")(option)}
+            />
+          ))}
+        </BHHeaderButtons>
       )
     };
   };
@@ -146,29 +134,6 @@ export default class TextEntry extends React.PureComponent {
           behavior={isAndroid ? undefined : "padding"}
           enabled
         >
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            <Text style={styles.refHeader}>
-              {Verse.refText(this.state.verse)}
-            </Text>
-            <BHModalDropdown
-              style={{ margin: 8 }}
-              dropdownStyle={{
-                elevation: 8
-              }}
-              options={this.verseRefMenuOptions()}
-              renderRow={option => (
-                <Text style={styles.menuOption}>{I18n.t(option)}</Text>
-              )}
-              onSelect={(index, value) => {
-                if (value == "RemoveEndVerse") this.removeEndVerse();
-                else this.showModal(value);
-              }}
-            >
-              <XPlatformIcon name="create" color={ThemeColors.yellow} />
-            </BHModalDropdown>
-          </View>
           <TextInput
             style={styles.textInput}
             placeholder={I18n.t("VerseTextInputHint")}
@@ -186,15 +151,21 @@ export default class TextEntry extends React.PureComponent {
   }
 }
 
+function verseRefMenuOptions(verse) {
+  return verse.endChapter
+    ? [
+        "ChangeStartChapter",
+        "ChangeStartVerse",
+        "ChangeEndVerse",
+        "RemoveEndVerse"
+      ]
+    : ["ChangeStartChapter", "ChangeStartVerse", "AddEndVerse"];
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: isAndroid ? ThemeColors.grey : "white"
-  },
-  refHeader: {
-    fontSize: 24,
-    padding: 8,
-    color: "black"
   },
   textInput: {
     flex: 1,
@@ -203,9 +174,5 @@ const styles = StyleSheet.create({
     padding: 8,
     margin: isAndroid ? 8 : 0,
     elevation: isAndroid ? 4 : 0
-  },
-  menuOption: {
-    fontSize: 18,
-    padding: 8
   }
 });

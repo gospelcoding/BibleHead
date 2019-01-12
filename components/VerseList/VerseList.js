@@ -6,7 +6,6 @@ import {
   Platform,
   NativeModules,
   NativeEventEmitter,
-  View,
   BackHandler
 } from "react-native";
 import VerseStorage from "../../models/VerseStorage";
@@ -17,10 +16,11 @@ import SectionHeader from "./SectionHeader";
 import I18n from "../../i18n/i18n";
 import BHStatusBar from "../shared/BHStatusBar";
 import CommonStyles from "../../util/CommonStyles";
-import BHActionButton from "../shared/BHActionButton";
 import UndoAlert from "../shared/UndoAlert";
-import SettingsAccess from "./SettingsAccess";
 import Settings from "../../util/Settings";
+import VLHeaderButtons from "./VLHeaderButtons";
+
+const isIos = Platform.OS == "ios";
 
 const { AlarmModule } = NativeModules;
 const alarmModuleEmitter = new NativeEventEmitter(AlarmModule);
@@ -59,6 +59,7 @@ export default class VerseList extends React.PureComponent {
   async componentDidMount() {
     this.props.navigation.setParams({ addVerse: this.addVerseAndSave });
     this.props.navigation.setParams({ reloadVerses: this.getVerses });
+    // if (isIos) Orientation.lockToPortrait(); // In ios, the header bar and status bar overlap in landscape
     const lists = await this.getVerses();
     if (this.props.navigation.getParam("action") == "review")
       this.doReview(lists.reviewing, lists.learning);
@@ -245,21 +246,14 @@ export default class VerseList extends React.PureComponent {
     return {
       headerTitle: I18n.t("MyVerses"),
       headerRight: (
-        <View style={{ flexDirection: "row" }}>
-          <BHActionButton
-            onPress={() => {
-              goToAddVerse(navigation);
-            }}
-            name="add"
-          />
-          <SettingsAccess
-            goToSettings={() =>
-              navigation.navigate("SettingsView", {
-                reloadVerses: navigation.getParam("reloadVerses")
-              })
-            }
-          />
-        </View>
+        <VLHeaderButtons
+          addVerse={() => goToAddVerse(navigation)}
+          goToSettings={() =>
+            navigation.navigate("SettingsView", {
+              reloadVerses: navigation.getParam("reloadVerses")
+            })
+          }
+        />
       )
     };
   };
@@ -309,7 +303,7 @@ export default class VerseList extends React.PureComponent {
 
 const styles = StyleSheet.create({
   list: {
-    paddingHorizontal: Platform.OS == "ios" ? 0 : 8
+    paddingHorizontal: isIos ? 0 : 8
   }
 });
 
