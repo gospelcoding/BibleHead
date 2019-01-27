@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { WebView, SafeAreaView, Text } from "react-native";
 import CommonStyles from "../../util/CommonStyles";
 import parsePassage from "./parsePassage";
@@ -33,10 +34,10 @@ export default class BibleGateway extends React.PureComponent {
     };
     const addVerse = this.props.navigation.getParam("addVerse");
     addVerse(verse);
-    this.props.navigation.navigate("VerseList");
+    this.props.navigation.navigate("VerseListScreen");
   };
 
-  static navigationOptions = ({ navigation }) => ({
+  static navigationOptions = () => ({
     headerTitle: I18n.t("BibleGateway")
   });
 
@@ -66,3 +67,7 @@ export default class BibleGateway extends React.PureComponent {
     );
   }
 }
+
+BibleGateway.propTypes = {
+  navigation: PropTypes.object.isRequired
+};

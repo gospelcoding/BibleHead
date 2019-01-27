@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { SafeAreaView, AsyncStorage } from "react-native";
 import Verse from "../../models/Verse";
 import HideWordsGame from "./HideWordsGame";
@@ -46,11 +47,11 @@ export default class VersePractice extends React.PureComponent {
     const updateVerse = this.props.navigation.getParam("updateVerse", () => {});
     const verse = this.verse();
     updateVerse(verse, Verse.markLearnedParams(verse));
-    this.props.navigation.navigate("VerseList");
+    this.props.navigation.navigate("VerseListScreen");
   };
 
   goHome = () => {
-    this.props.navigation.navigate("VerseList");
+    this.props.navigation.navigate("VerseListScreen");
   };
 
   static navigationOptions = ({ navigation }) => {
@@ -71,7 +72,7 @@ export default class VersePractice extends React.PureComponent {
         <BHActionButton
           name="arrow-back"
           onPress={() => {
-            navigation.navigate("VerseList");
+            navigation.navigate("VerseListScreen");
           }}
         />
       )
@@ -104,3 +105,7 @@ export default class VersePractice extends React.PureComponent {
     );
   }
 }
+
+VersePractice.propTypes = {
+  navigation: PropTypes.object.isRequired
+};

@@ -1,7 +1,7 @@
 import React from "react";
 import { Platform } from "react-native";
 import NewVerseForm from "./components/NewVerseForm/NewVerseForm";
-import VerseList from "./components/VerseList/VerseList";
+import VerseListScreen from "./components/VerseList/VerseListScreen";
 import { createStackNavigator } from "react-navigation";
 import VersePractice from "./components/VersePractice/VersePractice";
 import VerseReview from "./components/VerseReview/VerseReview";
@@ -25,8 +25,8 @@ const uriPrefix = isIOS ? "biblehead://" : "biblehead://biblehead/";
 const RootStack = createStackNavigator(
   {
     Experiment: Experiment,
-    VerseList: {
-      screen: VerseList,
+    VerseListScreen: {
+      screen: VerseListScreen,
       path: "list/:action"
     },
     NewVerseForm: NewVerseForm,
@@ -44,7 +44,7 @@ const RootStack = createStackNavigator(
     SettingsView: SettingsView
   },
   {
-    initialRouteName: "VerseList",
+    initialRouteName: "VerseListScreen",
     navigationOptions: {
       headerStyle: {
         backgroundColor: ThemeColors.blue

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {
   SafeAreaView,
   Text,
@@ -48,7 +49,7 @@ export default class PassageSplitter extends React.PureComponent {
       splitIndices: getSplitIndices(this.state.splits),
       currentSplit: this.state.currentSplit
     });
-    this.props.navigation.navigate("VerseList");
+    this.props.navigation.navigate("VerseListScreen");
   };
 
   toggleSplitLearned = (splitNumber, prevLearned) => {
@@ -220,3 +221,7 @@ function wordsWithIndices(text, offset) {
 function getSplitIndices(splits) {
   return splits.map(wordsIndices => wordsIndices[0].index);
 }
+
+PassageSplitter.propTypes = {
+  navigation: PropTypes.object.isRequired
+};

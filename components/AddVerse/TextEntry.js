@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {
   SafeAreaView,
   View,
@@ -90,7 +91,7 @@ export default class TextEntry extends React.PureComponent {
   saveVerse = () => {
     const saveVerse = this.props.navigation.getParam("saveVerse");
     saveVerse(this.state.verse);
-    this.props.navigation.navigate("VerseList");
+    this.props.navigation.navigate("VerseListScreen");
   };
 
   static navigationOptions = ({ navigation }) => {
@@ -176,3 +177,7 @@ const styles = StyleSheet.create({
     elevation: isAndroid ? 4 : 0
   }
 });
+
+TextEntry.propTypes = {
+  navigation: PropTypes.object.isRequired
+};

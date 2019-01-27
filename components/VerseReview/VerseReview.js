@@ -1,11 +1,10 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, Text, Platform } from "react-native";
+import { SafeAreaView, StyleSheet, Text } from "react-native";
 import PropTypes from "prop-types";
 import ShowWordsGame from "./ShowWordsGame";
 import Verse from "../../models/Verse";
 import I18n from "../../i18n/i18n";
 import CommonStyles from "../../util/CommonStyles";
-import XPlatformTouchable from "../shared/XPlatformTouchable";
 import BHActionButton from "../shared/BHActionButton";
 
 // const isIOS = Platform.OS == "ios";
@@ -40,7 +39,7 @@ export default class VerseReview extends React.PureComponent {
         "VersePractice",
         this.props.navigation.state.params
       );
-    else this.props.navigation.navigate("VerseList");
+    else this.props.navigation.navigate("VerseListScreen");
   };
 
   setSplitIndex = splitIndex => {
@@ -59,7 +58,7 @@ export default class VerseReview extends React.PureComponent {
         <BHActionButton
           name="arrow-back"
           onPress={() => {
-            navigation.navigate("VerseList");
+            navigation.navigate("VerseListScreen");
           }}
         />
       )
@@ -95,7 +94,10 @@ const styles = StyleSheet.create({
 
 VerseReview.propTypes = {
   navigation: PropTypes.shape({
-    getParam: PropTypes.func.isRequired
+    getParam: PropTypes.func.isRequired,
+    state: PropTypes.object.isRequired,
+    push: PropTypes.func.isRequired,
+    navigate: PropTypes.func.isRequired
   }).isRequired
 };
 
