@@ -24,10 +24,13 @@ export default function XPlatformTouchable(props) {
     android: {
       Touchable: TouchableNativeFeedback,
       props: {
-        background: TouchableNativeFeedback.Ripple(
-          "rgba(0, 0, 0, .32)",
-          borderlessRipple
-        )
+        background:
+          Platform.Version >= 21
+            ? TouchableNativeFeedback.Ripple(
+                "rgba(0, 0, 0, .32)",
+                borderlessRipple
+              )
+            : undefined
       }
     }
   });
