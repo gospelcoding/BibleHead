@@ -61,4 +61,4 @@ buck-out/
 util/apiKeys.js
 
 debuggerWorker.js
-app-release.apk
+*.apk
