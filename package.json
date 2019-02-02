@@ -22,7 +22,7 @@
     "react-native-vector-icons": "^5.0.0",
     "react-navigation": "^2.9.3",
     "react-navigation-backhandler": "^1.2.0",
-    "react-navigation-header-buttons": "^2.1.1"
+    "react-navigation-header-buttons": "https://github.com/rjconrad/react-navigation-header-buttons.git"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",

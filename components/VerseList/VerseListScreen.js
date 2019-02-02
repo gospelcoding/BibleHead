@@ -14,10 +14,10 @@ import BHStatusBar from "../shared/BHStatusBar";
 import CommonStyles from "../../util/CommonStyles";
 import UndoAlert from "../shared/UndoAlert";
 import Settings from "../../util/Settings";
-import VLHeaderButtons from "./VLHeaderButtons";
 import { TabView, TabBar } from "react-native-tab-view";
 import VerseList from "./VerseList";
 import ThemeColors from "../../util/ThemeColors";
+import { BHHeaderButtons, Item } from "../shared/BHHeaderButtons";
 
 const { AlarmModule } = NativeModules;
 const alarmModuleEmitter = new NativeEventEmitter(AlarmModule);
@@ -56,9 +56,11 @@ export default class VerseListScreen extends React.PureComponent {
   };
 
   async componentDidMount() {
-    this.props.navigation.setParams({ addVerse: this.addVerseAndSave });
-    this.props.navigation.setParams({ reloadVerses: this.getVerses });
-    // if (isIos) Orientation.lockToPortrait(); // In ios, the header bar and status bar overlap in landscape
+    this.props.navigation.setParams({
+      addVerse: this.addVerseAndSave,
+      reloadVerses: this.getVerses,
+      doReview: this.doReview
+    });
     const lists = await this.getVerses();
     if (this.props.navigation.getParam("action") == "review")
       this.doReview(lists.reviewing, lists.learning);
@@ -124,7 +126,7 @@ export default class VerseListScreen extends React.PureComponent {
   addVerseAndSave = async verse => {
     verse = await VerseStorage.createVerse(verse);
     this.addVerse(verse);
-    this.toggleSelect(verse);
+    this.toggleSelect(verse); // TODO - fix this
   };
 
   updateVerse = (verse, mergeVerse) => {
@@ -234,14 +236,18 @@ export default class VerseListScreen extends React.PureComponent {
       },
       headerTitle: I18n.t("MyVerses"),
       headerRight: (
-        <VLHeaderButtons
-          addVerse={() => goToAddVerse(navigation)}
-          goToSettings={() =>
-            navigation.navigate("SettingsView", {
-              reloadVerses: navigation.getParam("reloadVerses")
-            })
-          }
-        />
+        <BHHeaderButtons overflowIconName="menu">
+          <Item
+            title={I18n.t("AddVerse")}
+            onPress={() => goToAddVerse(navigation)}
+            show="never"
+          />
+          <Item
+            title={I18n.t("ReviewVerses")}
+            onPress={navigation.getParam("doReview")}
+            show="never"
+          />
+        </BHHeaderButtons>
       )
     };
   };

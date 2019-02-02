@@ -5596,10 +5596,9 @@ react-navigation-drawer@0.4.3:
   dependencies:
     react-native-drawer-layout-polyfill "^1.3.2"
 
-react-navigation-header-buttons@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/react-navigation-header-buttons/-/react-navigation-header-buttons-2.1.1.tgz#7f388a3fafd5c9510e144f6dcd5cf0793e27c826"
-  integrity sha512-ZWqwvdOBDduAGr1WpmHWbCMmSx9ZpuKdnFOByt9iOSZwwQwMP2f98rkePAlYXlTcThgaqbpdt7jcktAcG056fA==
+"react-navigation-header-buttons@https://github.com/rjconrad/react-navigation-header-buttons.git":
+  version "2.1.2"
+  resolved "https://github.com/rjconrad/react-navigation-header-buttons.git#f4a0bbb8f06727408d37febe63bb489ca8a88cee"
   dependencies:
     react-native-platform-touchable "^1.1.1"
 
