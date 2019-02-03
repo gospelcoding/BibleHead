@@ -1,28 +1,15 @@
 import { AsyncStorage } from "react-native";
 import Verse from "./Verse";
 import update from "immutability-helper";
+import Backups from "../util/Backups";
 
-export default class VerseStorage {
-  static async createVerse(verse) {
-    return await createVerse(verse);
-  }
-
-  static async getAllVerses() {
-    return await getAllVerses();
-  }
-
-  static async updateVerse(verse, mergeVerse) {
-    return await updateVerse(verse, mergeVerse);
-  }
-
-  static async deleteVerse(id) {
-    return await deleteVerse(id);
-  }
-
-  static async restoreDeleted(id) {
-    return await restoreDeleted(id);
-  }
-}
+export default {
+  createVerse: createVerse,
+  getAllVerses: getAllVerses,
+  updateVerse: updateVerse,
+  deleteVerse: deleteVerse,
+  restoreDeleted: restoreDeleted
+};
 
 async function createVerse(verse) {
   verse = await assignVerseId(verse);
@@ -31,6 +18,7 @@ async function createVerse(verse) {
     AsyncStorage.setItem(`bh.verse.${verse.id}`, JSON.stringify(verse)),
     addVerseToIndexAndSave(verse)
   ]);
+  Backups.automaticBackup();
   return verse;
 }
 
@@ -89,6 +77,7 @@ async function updateVerse(verse, mergeVerse) {
   const newVerse = update(verse, { $merge: mergeVerse });
   AsyncStorage.setItem(`bh.verse.${newVerse.id}`, JSON.stringify(newVerse));
   if (needToMoveVerseInIndex(mergeVerse)) await moveVerseInIndex(newVerse);
+  Backups.automaticBackup();
 }
 
 function needToMoveVerseInIndex(mergeVerse) {
@@ -130,6 +119,7 @@ async function deleteVerse(id) {
   await changeKey(`bh.verse.${id}`, `bh.deletedVerse.${id}`);
   await addVerseToDeletedIndex(id);
   await removeVerseFromIndexAndSave(id);
+  Backups.automaticBackup();
 }
 
 function removeVerseFromIndex(index, id) {

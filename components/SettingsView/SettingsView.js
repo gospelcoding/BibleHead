@@ -112,6 +112,19 @@ export default class SettingsView extends React.PureComponent {
           </View>
         </XPlatformTouchable>
 
+        <View style={styles.row}>
+          <Text style={styles.settingTitle}>
+            {I18n.t("BackupVersesAutomatically")}
+          </Text>
+          <BHSwitch
+            value={this.state.settings.automaticBackup}
+            onValueChange={value => {
+              this.updateSettings({ automaticBackup: value });
+              if (value) this.createBackup();
+            }}
+          />
+        </View>
+
         <XPlatformTouchable onPress={this.createBackup}>
           <View style={[styles.row, { flexDirection: "column" }]}>
             <Text style={styles.settingTitle}>{I18n.t("BackupVersesNow")}</Text>

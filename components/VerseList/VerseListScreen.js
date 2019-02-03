@@ -247,6 +247,15 @@ export default class VerseListScreen extends React.PureComponent {
             onPress={navigation.getParam("doReview")}
             show="never"
           />
+          <Item
+            title={I18n.t("Preferences")}
+            onPress={() =>
+              navigation.navigate("SettingsView", {
+                reloadVerses: navigation.getParam("reloadVerses")
+              })
+            }
+            show="never"
+          />
         </BHHeaderButtons>
       )
     };

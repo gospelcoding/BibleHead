@@ -4,25 +4,30 @@ const settingsKey = "bh.settings";
 const defaultSettings = {
   notification: true,
   notificationTime: "6:45",
-  newVerseMethod: "AlwaysAsk"
+  newVerseMethod: "AlwaysAsk",
+  automaticBackup: false
 };
 
-export default class Settings {
-  static async readSettings() {
-    const settingsJSON = await AsyncStorage.getItem(settingsKey);
-    if (!settingsJSON) {
-      this.writeSettings(defaultSettings);
-      return defaultSettings;
-    }
-    return JSON.parse(settingsJSON);
-  }
+export default {
+  readSettings: readSettings,
+  writeSettings: writeSettings,
+  newVerseMethodSettings: newVerseMethodSettings
+};
 
-  static async writeSettings(settings) {
-    const settingsJSON = JSON.stringify(settings);
-    await AsyncStorage.mergeItem(settingsKey, settingsJSON);
+async function readSettings() {
+  const settingsJSON = await AsyncStorage.getItem(settingsKey);
+  if (!settingsJSON) {
+    writeSettings(defaultSettings);
+    return defaultSettings;
   }
+  return JSON.parse(settingsJSON);
+}
 
-  static newVerseMethodSettings() {
-    return ["AlwaysAsk", "DownloadFromBibleGateway", "ManualEntry"];
-  }
+async function writeSettings(settings) {
+  const settingsJSON = JSON.stringify(settings);
+  await AsyncStorage.mergeItem(settingsKey, settingsJSON);
+}
+
+function newVerseMethodSettings() {
+  return ["AlwaysAsk", "DownloadFromBibleGateway", "ManualEntry"];
 }
