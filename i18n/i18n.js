@@ -2,9 +2,10 @@ import I18n from "react-native-i18n";
 const en = require("./locales/en.json");
 const fr = require("./locales/fr.json");
 const es = require("./locales/es.json");
+const nl = require("./locales/nl.json");
 
 I18n.fallbacks = true;
-I18n.translations = { en, fr, es };
+I18n.translations = { en, fr, es, nl };
 
 I18n.getLocales = function() {
   return Object.entries(this.translations).map(keyValue => {
@@ -23,7 +24,8 @@ I18n.currentLang = function() {
 I18n.codeConversion = {
   en: "eng-US",
   fr: "fra",
-  es: "spa"
+  es: "spa",
+  nl: "nld"
 };
 
 export default I18n;
