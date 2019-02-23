@@ -15,6 +15,7 @@ import ThemeColors from "../../util/ThemeColors";
 import { intArray } from "../../util/util";
 import PickerModal from "../shared/PickerModal";
 import { BHHeaderButtons, Item } from "../shared/BHHeaderButtons";
+import BookNameModal from "./BookNameModal";
 
 const isAndroid = Platform.OS == "android";
 
@@ -38,6 +39,10 @@ export default class TextEntry extends React.PureComponent {
 
   modalState = whichModal => {
     switch (whichModal) {
+      case "BookName":
+        return {
+          bookNameModalDisplayed: true
+        };
       case "ChangeStartChapter":
         return {
           modalData: intArray(1, 150),
@@ -98,14 +103,16 @@ export default class TextEntry extends React.PureComponent {
     const verse = navigation.getParam("verse");
     return {
       title: Verse.refText(verse),
-      headerRight: !!verse.text && (
+      headerRight: (
         <BHHeaderButtons>
-          <Item
-            title="save"
-            iconName="checkmark"
-            iconSize={isAndroid ? undefined : 36}
-            onPress={navigation.getParam("clickSave")}
-          />
+          {!!verse.text && (
+            <Item
+              title="save"
+              iconName="checkmark"
+              iconSize={isAndroid ? undefined : 36}
+              onPress={navigation.getParam("clickSave")}
+            />
+          )}
           {verseRefMenuOptions(verse).map(option => (
             <Item
               key={option}
@@ -129,6 +136,12 @@ export default class TextEntry extends React.PureComponent {
           dismissModal={() => {
             this.setState({ modalData: undefined, onModalSelect: undefined });
           }}
+        />
+        <BookNameModal
+          isVisible={!!this.state.bookNameModalDisplayed}
+          verse={this.state.verse}
+          updateName={name => this.updateVerse({ bookName: name })}
+          dismissModal={() => this.setState({ bookNameModalDisplayed: false })}
         />
         <KeyboardAvoidingView
           style={{ flex: 1 }}
@@ -155,12 +168,13 @@ export default class TextEntry extends React.PureComponent {
 function verseRefMenuOptions(verse) {
   return verse.endChapter
     ? [
+        "BookName",
         "ChangeStartChapter",
         "ChangeStartVerse",
         "ChangeEndVerse",
         "RemoveEndVerse"
       ]
-    : ["ChangeStartChapter", "ChangeStartVerse", "AddEndVerse"];
+    : ["BookName", "ChangeStartChapter", "ChangeStartVerse", "AddEndVerse"];
 }
 
 const styles = StyleSheet.create({
