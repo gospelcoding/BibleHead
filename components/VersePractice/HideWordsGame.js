@@ -3,7 +3,6 @@ import { Text, View, Platform, StyleSheet, ScrollView } from "react-native";
 import { shuffle } from "../../util/util";
 import ButtonRow from "./ButtonRow";
 import PropTypes from "prop-types";
-import Verse from "../../models/Verse";
 
 const isIOS = Platform.OS == "ios";
 
@@ -25,7 +24,7 @@ export default class HideWordsGame extends React.PureComponent {
   };
 
   takeStep = numberOfSteps => {
-    this.setState((prevState, props) => {
+    this.setState(prevState => {
       if (prevState.step >= prevState.coordinates.length) {
         return {
           done: true,
@@ -78,7 +77,7 @@ export default class HideWordsGame extends React.PureComponent {
           bigStep={this.bigStep}
           replay={this.replay}
           goHome={this.props.goHome}
-          markLearned={this.props.markLearned}
+          toggleLearned={this.props.toggleLearned}
           verseLearned={this.props.verse.learned}
         />
       </View>
@@ -139,4 +138,9 @@ const styles = StyleSheet.create({
   }
 });
 
-HideWordsGame.propTypes = {};
+HideWordsGame.propTypes = {
+  practiceParams: PropTypes.object.isRequired,
+  goHome: PropTypes.func.isRequired,
+  toggleLearned: PropTypes.func.isRequired,
+  verse: PropTypes.object.isRequired
+};

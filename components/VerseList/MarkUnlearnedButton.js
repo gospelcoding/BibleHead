@@ -1,29 +1,23 @@
 import React from "react";
-import { Button } from "react-native";
 import PropTypes from "prop-types";
 import I18n from "../../i18n/i18n";
 import ThemeColors from "../../util/ThemeColors";
 import BHButton from "../shared/BHButton";
 
-export default function LearnedToggleButton(props) {
-  const markLearned = !props.verse.learned;
-  const buttonTitle = markLearned
-    ? I18n.t("MarkLearned")
-    : I18n.t("MarkUnlearned");
-  const color = markLearned ? ThemeColors.buttonBlueOrGreen : ThemeColors.red;
+export default function MarkUnlearnedButton(props) {
   return (
     <BHButton
       onPress={() => {
-        props.updateVerse(props.verse, { learned: markLearned });
+        props.updateVerse(props.verse, { learned: false });
         props.toggleSelect(props.verse);
       }}
-      title={buttonTitle}
-      color={color}
+      title={I18n.t("MarkUnlearned")}
+      color={ThemeColors.red}
     />
   );
 }
 
-LearnedToggleButton.propTypes = {
+MarkUnlearnedButton.propTypes = {
   verse: PropTypes.shape({ learned: PropTypes.bool }).isRequired,
   updateVerse: PropTypes.func.isRequired,
   toggleSelect: PropTypes.func.isRequired

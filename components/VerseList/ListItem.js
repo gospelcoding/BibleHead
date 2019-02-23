@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {
   Text,
   StyleSheet,
@@ -8,7 +9,7 @@ import {
   Image
 } from "react-native";
 import Verse from "../../models/Verse";
-import LearnedToggleButton from "./LearnedToggleButton";
+import MarkUnlearnedButton from "./MarkUnlearnedButton";
 import XPlatformTouchable from "../shared/XPlatformTouchable";
 import I18n from "../../i18n/i18n";
 import ThemeColors from "../../util/ThemeColors";
@@ -72,12 +73,23 @@ export default function ListItem(props) {
           <ScrollView style={styles.verseTextScroll} nestedScrollEnabled={true}>
             <Text style={styles.verseText}>{props.verse.text}</Text>
           </ScrollView>
-          <View style={styles.buttonRow}>
-            <LearnedToggleButton
-              verse={props.verse}
-              updateVerse={props.updateVerse}
-              toggleSelect={props.toggleSelect}
-            />
+          <View
+            style={[
+              styles.buttonRow,
+              {
+                justifyContent: props.verse.learned
+                  ? "space-between"
+                  : "flex-end"
+              }
+            ]}
+          >
+            {props.verse.learned && (
+              <MarkUnlearnedButton
+                verse={props.verse}
+                updateVerse={props.updateVerse}
+                toggleSelect={props.toggleSelect}
+              />
+            )}
             <BHButton
               onPress={() => {
                 props.practiceVerse(props.verse);
@@ -90,6 +102,17 @@ export default function ListItem(props) {
     </View>
   );
 }
+
+ListItem.propTypes = {
+  toggleSelect: PropTypes.func.isRequired,
+  verse: PropTypes.object.isRequired,
+  selected: PropTypes.bool,
+  openPassageSplitter: PropTypes.func.isRequired,
+  editVerse: PropTypes.func.isRequired,
+  removeVerse: PropTypes.func.isRequired,
+  updateVerse: PropTypes.func.isRequired,
+  practiceVerse: PropTypes.func.isRequired
+};
 
 const styles = StyleSheet.create({
   item: {

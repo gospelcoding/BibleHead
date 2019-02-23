@@ -14,9 +14,9 @@ import XPlatformTouchable from "../shared/XPlatformTouchable";
 import update from "immutability-helper";
 import Verse from "../../models/Verse";
 import i18n from "../../i18n/i18n";
-import CheckBox from "react-native-checkbox";
 import HelpText from "../shared/HelpText";
 import { BHHeaderButtons, Item } from "../shared/BHHeaderButtons";
+import BHCheckbox from "../shared/BHCheckbox";
 
 const isIOS = Platform.OS == "ios";
 
@@ -128,7 +128,8 @@ export default class PassageSplitter extends React.PureComponent {
                 <Text style={styles.splitHeaderTitle}>
                   {i18n.t("Part") + " " + (splitNumber + 1)}
                 </Text>
-                <CheckBox
+                <BHCheckbox
+                  small={true}
                   label={i18n.t("Learned")}
                   checked={this.state.currentSplit > splitNumber}
                   onChange={checked => {

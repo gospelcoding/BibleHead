@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 26 26" enable-background="new 0 0 26 26" width="26px" height="26px" xmlns="http://www.w3.org/2000/svg">
+  <path stroke-width="2" stroke-miterlimit="10" d="M 20 24 L 6 24 C 3.8 24 2 22.2 2 20 L 2 6 C 2 3.8 3.8 2 6 2 L 20 2 C 22.2 2 24 3.8 24 6 L 24 20 C 24 22.2 22.2 24 20 24 Z" style="fill: rgb(86, 126, 66); stroke: rgb(86, 126, 66);"/>
+  <path d="M18.9,8.6l-6,8.8c-0.2,0.3-0.5,0.4-0.7,0.4c-0.3,0-0.6-0.2-0.8-0.3L7.9,14c-0.2-0.2-0.2-0.6,0-0.9l0.9-0.9  C9,12,9.4,12,9.6,12.3l2.3,2.3l4.9-7.3c0.2-0.3,0.6-0.3,0.8-0.2l1,0.7C19,8,19.1,8.3,18.9,8.6z" style="fill: rgb(255, 255, 255);"/>
+</svg>

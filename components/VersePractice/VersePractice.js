@@ -7,13 +7,18 @@ import CommonStyles from "../../util/CommonStyles";
 import ShuffleWordsGame from "./ShuffleWordsGame";
 import SwitchGameButton from "./SwitchGameButton";
 import BHActionButton from "../shared/BHActionButton";
+import update from "immutability-helper";
 
 export default class VersePractice extends React.PureComponent {
   constructor(props) {
     super(props);
+    const verse =
+      this.props.navigation.getParam("verse") ||
+      this.props.navigation.getParam("learningVerse");
     this.state = {
       game: "ShuffleWords",
-      practiceParams: Verse.practiceParams(this.verse())
+      practiceParams: Verse.practiceParams(verse),
+      verse: verse
     };
   }
 
@@ -27,7 +32,7 @@ export default class VersePractice extends React.PureComponent {
       practiceParams: this.state.practiceParams
     });
     const updateVerse = this.props.navigation.getParam("updateVerse");
-    updateVerse(this.verse(), { lastPracticed: new Date().getTime() });
+    updateVerse(this.state.verse, { lastPracticed: new Date().getTime() });
   }
 
   switchGame = game => {
@@ -36,18 +41,14 @@ export default class VersePractice extends React.PureComponent {
     AsyncStorage.setItem("bh.versePracticeGame", game);
   };
 
-  verse = () => {
-    return (
-      this.props.navigation.getParam("verse") ||
-      this.props.navigation.getParam("learningVerse")
-    );
-  };
-
-  markLearned = () => {
+  toggleLearned = () => {
+    const change = this.state.verse.learned
+      ? { learned: false }
+      : Verse.markLearnedParams(this.state.verse);
+    const newVerse = update(this.state.verse, { $merge: change });
+    this.setState({ verse: newVerse });
     const updateVerse = this.props.navigation.getParam("updateVerse", () => {});
-    const verse = this.verse();
-    updateVerse(verse, Verse.markLearnedParams(verse));
-    this.props.navigation.navigate("VerseListScreen");
+    updateVerse(this.state.verse, newVerse);
   };
 
   goHome = () => {
@@ -95,9 +96,9 @@ export default class VersePractice extends React.PureComponent {
       <SafeAreaView style={CommonStyles.screenRoot}>
         {Game && (
           <Game
-            verse={this.verse()}
+            verse={this.state.verse}
             goHome={this.goHome}
-            markLearned={this.markLearned}
+            toggleLearned={this.toggleLearned}
             practiceParams={this.state.practiceParams}
           />
         )}

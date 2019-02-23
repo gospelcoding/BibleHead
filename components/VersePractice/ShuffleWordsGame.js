@@ -6,7 +6,6 @@ import ButtonWords from "./ButtonWords";
 import { randInt } from "../../util/util";
 import update from "immutability-helper";
 import CommonStyles from "../../util/CommonStyles";
-import { red } from "ansi-colors";
 
 const isIOS = Platform.OS == "ios";
 const numberOfButtons = 12;
@@ -101,7 +100,7 @@ export default class ShuffleWordsGame extends React.PureComponent {
             done={true}
             replay={this.replay}
             goHome={this.props.goHome}
-            markLearned={this.props.markLearned}
+            markLearned={this.props.toggleLearned}
             verseLearned={this.props.verse.learned}
           />
         ) : (
@@ -174,3 +173,10 @@ const styles = StyleSheet.create({
     marginHorizontal: isIOS ? 0 : 8
   }
 });
+
+ShuffleWordsGame.propTypes = {
+  practiceParams: PropTypes.object.isRequired,
+  goHome: PropTypes.func.isRequired,
+  toggleLearned: PropTypes.func.isRequired,
+  verse: PropTypes.object.isRequired
+};
