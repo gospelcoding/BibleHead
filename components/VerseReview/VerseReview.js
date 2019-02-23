@@ -102,9 +102,10 @@ VerseReview.propTypes = {
 };
 
 function reviewText(verse) {
-  return verse.learned
+  const text = verse.learned
     ? verse.text
     : verse.text.slice(0, verse.splitIndices[verse.currentSplit]);
+  return text.trim(); // Avoids bug in step button caused by leading whitespace
 }
 
 function progressText(navigation) {

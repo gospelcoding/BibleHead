@@ -21,7 +21,7 @@ function nextSplitIndex(pattern, props) {
     : match[0].length + match.index + props.splitIndex;
 }
 
-export default function showWordsGame(props) {
+export default function ShowWordsGame(props) {
   const scroll = () => {
     setTimeout(() => {
       this.scrollView && this.scrollView.scrollToEnd();
@@ -95,3 +95,12 @@ const styles = StyleSheet.create({
     elevation: isIOS ? 0 : 4
   }
 });
+
+ShowWordsGame.propTypes = {
+  setSplitIndex: PropTypes.func.isRequired,
+  updateVerse: PropTypes.func.isRequired,
+  verse: PropTypes.object.isRequired,
+  nextVerse: PropTypes.func.isRequired,
+  verseText: PropTypes.string.isRequired,
+  splitIndex: PropTypes.number.isRequired
+};
