@@ -7,12 +7,15 @@ import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 
 public class AlarmModule extends ReactContextBaseJavaModule {
-    Context context;
+    private static boolean doReviewNowFlag = false;
+
+    private ReactApplicationContext context;
 
     public AlarmModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -22,6 +25,11 @@ public class AlarmModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "AlarmModule";
+    }
+
+    // To be called by MainActivity if we need to launch a review
+    public static void setDoReviewFlag() {
+        doReviewNowFlag = true;
     }
 
     @ReactMethod
@@ -51,5 +59,13 @@ public class AlarmModule extends ReactContextBaseJavaModule {
     public void cancelAlarm() {
         AlarmManager.cancelAlarm(context);
         AlarmTimeSetting.setAlarmTime(context, "");
+    }
+
+    @ReactMethod
+    public void checkIfNeedToReviewNow(Promise promise) {
+        if (doReviewNowFlag)
+            promise.resolve(true);
+        else
+            promise.resolve(false);
     }
 }

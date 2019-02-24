@@ -18,6 +18,7 @@ import { TabView, TabBar } from "react-native-tab-view";
 import VerseList from "./VerseList";
 import ThemeColors from "../../util/ThemeColors";
 import { BHHeaderButtons, Item } from "../shared/BHHeaderButtons";
+import Notifications from "../../util/Notifications";
 
 const { AlarmModule } = NativeModules;
 const alarmModuleEmitter = new NativeEventEmitter(AlarmModule);
@@ -62,11 +63,11 @@ export default class VerseListScreen extends React.PureComponent {
       doReview: this.doReview
     });
     const lists = await this.getVerses();
-    if (this.props.navigation.getParam("action") == "review")
-      this.doReview(lists.reviewing, lists.learning);
     this.subscription = alarmModuleEmitter.addListener("DoReview", () => {
       this.doReview(lists.reviewing, lists.learning);
     });
+    if (await Notifications.checkIfNeedToReviewNow())
+      this.doReview(lists.reviewing, lists.learning);
     this._willBlurSubscription = this.props.navigation.addListener(
       "willBlur",
       () =>
@@ -80,6 +81,7 @@ export default class VerseListScreen extends React.PureComponent {
   componentWillUnmount() {
     this._didFocusSubscription && this._didFocusSubscription.remove();
     this._willBlurSubscription && this._willBlurSubscription.remove();
+    this.subscription && this.subscription.remove();
   }
 
   practiceVerse = verse => {

@@ -11,6 +11,7 @@ import android.util.Log;
 
 public class ReviewNotifier extends BroadcastReceiver {
     public static final String NOTIFICATION_CHANNEL = "daily_review_reminder";
+    public static final String DO_REVIEW_FLAG = "DO_REVIEW_FLAG";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -27,7 +28,8 @@ public class ReviewNotifier extends BroadcastReceiver {
                         .setContentText(notificationText)
                         .setAutoCancel(true);
 
-        Intent reviewActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("biblehead://biblehead/list/review"));
+        Intent reviewActivityIntent = new Intent(context, MainActivity.class);
+        reviewActivityIntent.putExtra(DO_REVIEW_FLAG, true);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, reviewActivityIntent, 0);
 
         mBuilder.setContentIntent(pendingIntent);
