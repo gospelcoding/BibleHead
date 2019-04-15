@@ -1,6 +1,5 @@
 import React from "react";
 import { Platform } from "react-native";
-import NewVerseForm from "./components/NewVerseForm/NewVerseForm";
 import VerseListScreen from "./components/VerseList/VerseListScreen";
 import { createStackNavigator } from "react-navigation";
 import VersePractice from "./components/VersePractice/VersePractice";
@@ -23,7 +22,6 @@ const RootStack = createStackNavigator(
   {
     Experiment: Experiment,
     VerseListScreen: VerseListScreen,
-    NewVerseForm: NewVerseForm,
     VersePractice: VersePractice,
     VerseReview: VerseReview,
     AddVerseMenu: AddVerseMenu,
