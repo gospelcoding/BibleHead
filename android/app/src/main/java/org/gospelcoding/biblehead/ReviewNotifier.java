@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import java.util.Date;
+
 public class ReviewNotifier extends BroadcastReceiver {
     public static final String NOTIFICATION_CHANNEL = "daily_review_reminder";
     public static final String DO_REVIEW_FLAG = "DO_REVIEW_FLAG";
@@ -29,8 +31,9 @@ public class ReviewNotifier extends BroadcastReceiver {
                         .setAutoCancel(true);
 
         Intent reviewActivityIntent = new Intent(context, MainActivity.class);
-        reviewActivityIntent.putExtra(DO_REVIEW_FLAG, true);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, reviewActivityIntent, 0);
+        long timestamp = new Date().getTime();
+        reviewActivityIntent.putExtra(DO_REVIEW_FLAG, timestamp);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, reviewActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         mBuilder.setContentIntent(pendingIntent);
         NotificationManager mNotificationManager =

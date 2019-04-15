@@ -11,9 +11,11 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 public class AlarmModule extends ReactContextBaseJavaModule {
     private static boolean doReviewNowFlag = false;
+    private static AlarmModule alarmModuleInstance;
 
     private ReactApplicationContext context;
 
@@ -29,7 +31,10 @@ public class AlarmModule extends ReactContextBaseJavaModule {
 
     // To be called by MainActivity if we need to launch a review
     public static void setDoReviewFlag() {
-        doReviewNowFlag = true;
+        if (alarmModuleInstance != null)
+            alarmModuleInstance.doReviewNow();
+        else
+            doReviewNowFlag = true;
     }
 
     @ReactMethod
@@ -67,5 +72,12 @@ public class AlarmModule extends ReactContextBaseJavaModule {
             promise.resolve(true);
         else
             promise.resolve(false);
+        doReviewNowFlag = false;
+    }
+
+    private void doReviewNow() {
+        Log.e("BH Alarm", "Do Review Now!");
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("DoReview", null);
     }
 }
