@@ -101,7 +101,7 @@ export default class ShuffleWordsGame extends React.PureComponent {
             replay={this.replay}
             goHome={this.props.goHome}
             markLearned={this.props.toggleLearned}
-            verseLearned={this.props.verse.learned}
+            verseLearned={this.props.practiceParams.learned}
           />
         ) : (
           <ButtonWords

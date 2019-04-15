@@ -132,7 +132,7 @@ export default class VerseListScreen extends React.PureComponent {
   };
 
   updateVerse = (verse, mergeVerse) => {
-    if (this.needToMoveVerse(mergeVerse)) {
+    if (this.needToMoveVerse(verse, mergeVerse)) {
       this.updateVerseAndMove(verse, mergeVerse);
     } else {
       this.setState(prevState => {
@@ -150,12 +150,12 @@ export default class VerseListScreen extends React.PureComponent {
     }
   };
 
-  needToMoveVerse(mergeVerse) {
+  needToMoveVerse(verse, mergeVerse) {
     return (
-      mergeVerse.learned !== undefined ||
-      mergeVerse.bookId ||
-      mergeVerse.startChapter ||
-      mergeVerse.startVerse
+      mergeVerse.learned != verse.learned ||
+      mergeVerse.bookId != verse.bookId ||
+      mergeVerse.startChapter != verse.startChapter ||
+      mergeVerse.startVerse != verse.startVerse
     );
   }
 

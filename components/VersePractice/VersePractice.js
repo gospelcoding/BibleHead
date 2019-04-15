@@ -42,11 +42,15 @@ export default class VersePractice extends React.PureComponent {
   };
 
   toggleLearned = () => {
-    const change = this.state.verse.learned
-      ? { learned: false }
-      : Verse.markLearnedParams(this.state.verse);
+    const change = Verse.toggleLearnedParams(
+      this.state.verse,
+      !this.state.practiceParams.learned
+    );
     const newVerse = update(this.state.verse, { $merge: change });
-    this.setState({ verse: newVerse });
+    const newPracticeParams = update(this.state.practiceParams, {
+      learned: { $set: !this.state.practiceParams.learned }
+    });
+    this.setState({ verse: newVerse, practiceParams: newPracticeParams });
     const updateVerse = this.props.navigation.getParam("updateVerse", () => {});
     updateVerse(this.state.verse, newVerse);
   };

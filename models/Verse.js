@@ -64,12 +64,14 @@ export default class Verse {
       return {
         text: verse.text,
         progress: "",
-        prompt: ""
+        prompt: "",
+        learned: verse.learned
       };
     return {
       text: Verse.currentLearningText(verse),
       progress: `(${verse.currentSplit + 1}/${verse.splitIndices.length})`,
-      prompt: Verse.currentLearningPrompt(verse)
+      prompt: Verse.currentLearningPrompt(verse),
+      learned: false
     };
   }
 
@@ -167,11 +169,14 @@ export default class Verse {
     };
   }
 
-  static markLearnedParams(verse) {
-    if (!Verse.isDivided(verse)) return { learned: true };
-    if (verse.currentSplit == verse.splitIndices.length - 1)
+  static toggleLearnedParams(verse, learned) {
+    if (!Verse.isDivided(verse)) return { learned };
+    const newCurrentSplit = learned
+      ? verse.currentSplit + 1
+      : verse.currentSplit - 1;
+    if (newCurrentSplit == verse.splitIndices.length)
       return { learned: true, currentSplit: 0 };
-    return { currentSplit: verse.currentSplit + 1 };
+    return { currentSplit: newCurrentSplit };
   }
 
   static successfulReviewParams(verse) {

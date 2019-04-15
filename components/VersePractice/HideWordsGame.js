@@ -78,7 +78,7 @@ export default class HideWordsGame extends React.PureComponent {
           replay={this.replay}
           goHome={this.props.goHome}
           toggleLearned={this.props.toggleLearned}
-          verseLearned={this.props.verse.learned}
+          verseLearned={this.props.practiceParams.learned}
         />
       </View>
     );
