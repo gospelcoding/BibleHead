@@ -1,11 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  SafeAreaView,
-  NativeModules,
-  NativeEventEmitter,
-  BackHandler
-} from "react-native";
+import { SafeAreaView, NativeModules, NativeEventEmitter } from "react-native";
 import VerseStorage from "../../models/VerseStorage";
 import Verse from "../../models/Verse";
 import update from "immutability-helper";
@@ -19,14 +14,12 @@ import VerseList from "./VerseList";
 import ThemeColors from "../../util/ThemeColors";
 import { BHHeaderButtons, Item } from "../shared/BHHeaderButtons";
 import Notifications from "../../util/Notifications";
+import { AndroidBackHandler } from "react-navigation-backhandler";
 
 const { AlarmModule } = NativeModules;
 const alarmModuleEmitter = new NativeEventEmitter(AlarmModule);
 
 export default class VerseListScreen extends React.PureComponent {
-  _didFocusSubscription;
-  _willBlurSubscription;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -36,14 +29,9 @@ export default class VerseListScreen extends React.PureComponent {
       routes: [
         { key: "learning", title: I18n.t("Learning") },
         { key: "reviewing", title: I18n.t("Reviewing") }
-      ]
+      ],
+      selectedIds: [null, null]
     };
-    this._didFocusSubscription = props.navigation.addListener("didFocus", () =>
-      BackHandler.addEventListener(
-        "hardwareBackPress",
-        this.onBackButtonPressAndroid
-      )
-    );
   }
 
   getVerses = async () => {
@@ -68,21 +56,23 @@ export default class VerseListScreen extends React.PureComponent {
     });
     if (await Notifications.checkIfNeedToReviewNow())
       this.doReview(lists.reviewing, lists.learning);
-    this._willBlurSubscription = this.props.navigation.addListener(
-      "willBlur",
-      () =>
-        BackHandler.removeEventListener(
-          "hardwareBackPress",
-          this.onBackButtonPressAndroid
-        )
-    );
   }
 
   componentWillUnmount() {
-    this._didFocusSubscription && this._didFocusSubscription.remove();
-    this._willBlurSubscription && this._willBlurSubscription.remove();
     this.subscription && this.subscription.remove();
   }
+
+  toggleSelect = verse => {
+    this.setState(prevState => {
+      const prevSelectedId = prevState.selectedIds[prevState.index];
+      const selectedId = verse.id == prevSelectedId ? null : verse.id;
+      return {
+        selectedIds: update(prevState.selectedIds, {
+          [prevState.index]: { $set: selectedId }
+        })
+      };
+    });
+  };
 
   practiceVerse = verse => {
     this.props.navigation.navigate("VersePractice", {
@@ -128,7 +118,12 @@ export default class VerseListScreen extends React.PureComponent {
   addVerseAndSave = async verse => {
     verse = await VerseStorage.createVerse(verse);
     this.addVerse(verse);
-    this.toggleSelect(verse); // TODO - fix this
+    this.setState(
+      {
+        index: 0 // Go to learning tab
+      },
+      () => this.toggleSelect(verse)
+    );
   };
 
   updateVerse = (verse, mergeVerse) => {
@@ -300,6 +295,7 @@ export default class VerseListScreen extends React.PureComponent {
                     ? this.state.learningList
                     : this.state.reviewingList
                 }
+                selectedId={this.state.selectedIds[this.state.index]}
                 {...this.functionsForVerseList}
               />
             )}
@@ -314,6 +310,17 @@ export default class VerseListScreen extends React.PureComponent {
             undoAction={this.undoDelete}
           />
         )}
+
+        <AndroidBackHandler
+          onBackPress={() => {
+            const selectedId = this.state.selectedIds[this.state.index];
+            if (selectedId) {
+              this.toggleSelect({ id: selectedId });
+              return true;
+            }
+            return false;
+          }}
+        />
       </SafeAreaView>
     );
   }
