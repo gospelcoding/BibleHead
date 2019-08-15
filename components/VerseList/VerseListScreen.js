@@ -51,11 +51,11 @@ export default class VerseListScreen extends React.PureComponent {
       doReview: this.doReview
     });
     const lists = await this.getVerses();
+    if (this.props.navigation.getParam("action") == "review")
+      this.doReview(lists.reviewing, lists.learning);
     this.subscription = alarmModuleEmitter.addListener("DoReview", () => {
       this.doReview(lists.reviewing, lists.learning);
     });
-    if (await Notifications.checkIfNeedToReviewNow())
-      this.doReview(lists.reviewing, lists.learning);
   }
 
   componentWillUnmount() {

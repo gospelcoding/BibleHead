@@ -14,12 +14,6 @@ export default class Notifications {
       AlarmModule.cancelAlarm();
     }
   }
-
-  static async checkIfNeedToReviewNow() {
-    if (Platform.OS == "android") {
-      return await AlarmModule.checkIfNeedToReviewNow();
-    }
-  }
 }
 
 function setupNotificationChannel() {

@@ -13,11 +13,9 @@ import java.util.Date;
 
 public class ReviewNotifier extends BroadcastReceiver {
     public static final String NOTIFICATION_CHANNEL = "daily_review_reminder";
-    public static final String DO_REVIEW_FLAG = "DO_REVIEW_FLAG";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("BH Alarm", "Alarm fired");
 
         String[] notificationParams = AlarmTimeSetting.getNotificationParams(context);
         String notificationTitle = notificationParams[0];
@@ -30,9 +28,8 @@ public class ReviewNotifier extends BroadcastReceiver {
                         .setContentText(notificationText)
                         .setAutoCancel(true);
 
-        Intent reviewActivityIntent = new Intent(context, MainActivity.class);
-        long timestamp = new Date().getTime();
-        reviewActivityIntent.putExtra(DO_REVIEW_FLAG, timestamp);
+        Intent reviewActivityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("biblehead://biblehead/list/review"));
+        
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, reviewActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         mBuilder.setContentIntent(pendingIntent);

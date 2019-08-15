@@ -25,30 +25,5 @@ public class MainActivity extends ReactActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);
         super.onCreate(savedInstanceState);
-        processIntent();
-        Log.e("BH Alarm", "MainActivity.onCreate!");
     }
-
-    @Override
-    public void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        Log.e("BH Alarm", "MainActivity.onNewIntent");
-        processIntent();
-    }
-
-     private void processIntent() {
-         Intent intent = getIntent();
-         long doReviewNow = intent.getLongExtra(ReviewNotifier.DO_REVIEW_FLAG, 0);
-         SharedPreferences values = getSharedPreferences(SHARED_PREFS_INSTANCE, 0);
-         long lastReviewTime = values.getLong(LAST_REVIEW_TIME_KEY, 0);
-         //Log.i("BH Alarm", intent.getExtras().toString());
-         Log.e("BH Alarm", "Intent flag: " + doReviewNow + "Last Review Time: " + lastReviewTime);
-         if (doReviewNow > 0 && doReviewNow != lastReviewTime) {
-             Log.d("BH Alarm", "If satisfied");
-             AlarmModule.setDoReviewFlag();
-             SharedPreferences.Editor valuesEditor = values.edit();
-             valuesEditor.putLong(LAST_REVIEW_TIME_KEY, doReviewNow);
-             valuesEditor.apply();
-         }
-     }
 }

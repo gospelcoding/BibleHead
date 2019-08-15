@@ -14,9 +14,6 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 public class AlarmModule extends ReactContextBaseJavaModule {
-    private static boolean doReviewNowFlag = false;
-    private static AlarmModule alarmModuleInstance;
-
     private ReactApplicationContext context;
 
     public AlarmModule(ReactApplicationContext reactContext) {
@@ -27,14 +24,6 @@ public class AlarmModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "AlarmModule";
-    }
-
-    // To be called by MainActivity if we need to launch a review
-    public static void setDoReviewFlag() {
-        if (alarmModuleInstance != null)
-            alarmModuleInstance.doReviewNow();
-        else
-            doReviewNowFlag = true;
     }
 
     @ReactMethod
@@ -64,20 +53,5 @@ public class AlarmModule extends ReactContextBaseJavaModule {
     public void cancelAlarm() {
         AlarmManager.cancelAlarm(context);
         AlarmTimeSetting.setAlarmTime(context, "");
-    }
-
-    @ReactMethod
-    public void checkIfNeedToReviewNow(Promise promise) {
-        if (doReviewNowFlag)
-            promise.resolve(true);
-        else
-            promise.resolve(false);
-        doReviewNowFlag = false;
-    }
-
-    private void doReviewNow() {
-        Log.e("BH Alarm", "Do Review Now!");
-        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("DoReview", null);
     }
 }

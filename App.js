@@ -18,10 +18,13 @@ import SplashScreen from "react-native-splash-screen";
 import PassageSplitter from "./components/PassageSplitter/PassageSplitter";
 import SettingsView from "./components/SettingsView/SettingsView";
 
+const isIOS = Platform.OS == "ios";
+const uriPrefix = isIOS ? "biblehead://" : "biblehead://biblehead/";
+
 const RootStack = createStackNavigator(
   {
     Experiment: Experiment,
-    VerseListScreen: VerseListScreen,
+    VerseListScreen: { screen: VerseListScreen, path: "list/:action" },
     VersePractice: VersePractice,
     VerseReview: VerseReview,
     AddVerseMenu: AddVerseMenu,
@@ -60,6 +63,10 @@ export default class App extends React.PureComponent {
   }
 
   render() {
-    return this.state.loaded ? <RootStack /> : <LoadingScreen />;
+    return this.state.loaded ? (
+      <RootStack uriPrefix={uriPrefix} />
+    ) : (
+      <LoadingScreen />
+    );
   }
 }
