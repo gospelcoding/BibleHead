@@ -1,4 +1,4 @@
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import Verse from "./Verse";
 import update from "immutability-helper";
 import Backups from "../util/Backups";

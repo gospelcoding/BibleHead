@@ -6,9 +6,9 @@ import {
   ScrollView,
   View,
   StyleSheet,
-  Platform,
-  AsyncStorage
+  Platform
 } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import CommonStyles from "../../util/CommonStyles";
 import XPlatformTouchable from "../shared/XPlatformTouchable";
 import update from "immutability-helper";

@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { SafeAreaView, AsyncStorage } from "react-native";
+import { SafeAreaView } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import Verse from "../../models/Verse";
 import HideWordsGame from "./HideWordsGame";
 import CommonStyles from "../../util/CommonStyles";

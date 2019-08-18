@@ -1,7 +1,7 @@
 import React from "react";
 import { Platform } from "react-native";
 import VerseListScreen from "./components/VerseList/VerseListScreen";
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator, createAppContainer } from "react-navigation";
 import VersePractice from "./components/VersePractice/VersePractice";
 import VerseReview from "./components/VerseReview/VerseReview";
 import Experiment from "./components/experiment/Experiment";
@@ -38,7 +38,7 @@ const RootStack = createStackNavigator(
   },
   {
     initialRouteName: "VerseListScreen",
-    navigationOptions: {
+    defaultNavigationOptions: {
       headerStyle: {
         backgroundColor: ThemeColors.blue
       },
@@ -48,15 +48,22 @@ const RootStack = createStackNavigator(
   }
 );
 
+const AppContainer = createAppContainer(RootStack);
+
 export default class App extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       loaded: false
     };
+    // SplashScreen.hide(); // For debugging
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.init();
+  }
+
+  async init() {
     await checkVersionAndDoUpdates();
     this.setState({ loaded: true });
     SplashScreen.hide();
@@ -64,7 +71,7 @@ export default class App extends React.PureComponent {
 
   render() {
     return this.state.loaded ? (
-      <RootStack uriPrefix={uriPrefix} />
+      <AppContainer uriPrefix={uriPrefix} />
     ) : (
       <LoadingScreen />
     );

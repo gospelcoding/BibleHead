@@ -1,4 +1,5 @@
-import { AsyncStorage, NativeModules, Platform } from "react-native";
+import { NativeModules, Platform } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import VerseStorage from "../models/VerseStorage";
 import BibleBook from "../models/BibleBook";
 import I18n from "../i18n/i18n";

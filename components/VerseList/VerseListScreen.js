@@ -13,7 +13,6 @@ import { TabView, TabBar } from "react-native-tab-view";
 import VerseList from "./VerseList";
 import ThemeColors from "../../util/ThemeColors";
 import { BHHeaderButtons, Item } from "../shared/BHHeaderButtons";
-import Notifications from "../../util/Notifications";
 import { AndroidBackHandler } from "react-navigation-backhandler";
 
 const { AlarmModule } = NativeModules;
@@ -275,6 +274,7 @@ export default class VerseListScreen extends React.PureComponent {
         {this.state.reviewingList.length == 0 ? (
           <VerseList
             verses={this.state.learningList}
+            selectedId={this.state.selectedIds[this.state.index]}
             {...this.functionsForVerseList}
           />
         ) : (

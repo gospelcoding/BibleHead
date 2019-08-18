@@ -1,7 +1,7 @@
 import VerseStorage from "../models/VerseStorage";
 import Axios from "axios";
 import apiKeys from "./apiKeys";
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import Settings from "./Settings";
 
 const formatVersion = 1;
