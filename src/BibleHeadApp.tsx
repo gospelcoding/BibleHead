@@ -4,21 +4,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {stringsForDeviceLocale} from './i18n/i18nRN';
 import {I18nContext, useT} from './i18n/i18nReact';
+import BHState from './BHState';
+import SettingsScreen from './settings/SettingsScreen';
 
 function HomeScreen() {
   const t = useT();
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>{t('MyVerses')}</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  const t = useT();
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>{t('Preferences')} </Text>
     </View>
   );
 }
@@ -42,8 +35,10 @@ export default function BibleHeadApp() {
   const [deviceStrings] = useState(stringsForDeviceLocale());
 
   return (
-    <I18nContext.Provider value={deviceStrings}>
-      <BHNavigator />
-    </I18nContext.Provider>
+    <BHState>
+      <I18nContext.Provider value={deviceStrings}>
+        <BHNavigator />
+      </I18nContext.Provider>
+    </BHState>
   );
 }
