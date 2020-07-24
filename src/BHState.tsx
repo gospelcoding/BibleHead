@@ -6,11 +6,15 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {TypedUseSelectorHook, useSelector, Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {PropsWithChildren} from 'react';
+import draftVerseSlice from './addVerse/draftVerseSlice';
+import versesSlice from './verseList/versesSlice';
 
 const reducer = persistReducer(
   {key: 'root', storage: AsyncStorage},
   combineReducers({
     settings: settingsSlice.reducer,
+    draftVerse: draftVerseSlice.reducer,
+    verses: versesSlice.reducer,
   }),
 );
 const store = configureStore({reducer, middleware: []});
