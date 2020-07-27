@@ -1,6 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Verse} from '../verses/Verse';
-import {useAppSelector} from '../BHState';
 
 const learningSlice = createSlice({
   name: 'learning',
@@ -24,11 +23,3 @@ const learningSlice = createSlice({
 });
 
 export default learningSlice;
-
-export function useNextLearningVerse(): Verse | undefined {
-  const toLearn = useAppSelector((state) => state.learning.toLearn);
-  const verses = useAppSelector((state) => state.verses.verses);
-  return toLearn.length > 0
-    ? verses.find((v) => v.id == toLearn[0])
-    : undefined;
-}

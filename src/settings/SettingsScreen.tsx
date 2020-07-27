@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 // import I18n from '../../i18n/i18n';
 // import Settings from '../../util/Settings';
 // import update from 'immutability-helper';
@@ -9,7 +15,7 @@ import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
 // import PickerModal from '../shared/PickerModal';
 // import BHSwitch from '../shared/BHSwitch';
 // import Backup from '../../util/Backups';
-// import RestoreBackupModal from './RestoreBackupModal';
+import RestoreBackupModal from './RestoreBackupModal';
 // import CodeExplanationModal from './CodeExplanationModal';
 // import {zeroPad} from '../../util/util';
 import {useAppSelector} from '../BHState';
@@ -17,8 +23,17 @@ import {useT} from '../i18n/i18nReact';
 import BHSwitch from '../components/BHSwitch';
 import {useDispatch} from 'react-redux';
 import {settingsSlice} from './Settings';
+// import {TouchableOpacity} from 'react-native-gesture-handler';
+import BHButton from '../components/BHButton';
+import ThemeColors from '../util/ThemeColors';
+import {NavigationProp} from '@react-navigation/native';
+import {BHRootNav} from '../BibleHeadApp';
 
-export default function SettingsScreen() {
+interface IProps {
+  navigation: NavigationProp<BHRootNav, 'Preferences'>;
+}
+
+export default function SettingsScreen({navigation}: IProps) {
   const t = useT();
   const dispatch = useDispatch();
 
@@ -26,6 +41,9 @@ export default function SettingsScreen() {
     showingNewVerseMethodPicker,
     setShowingNewVerseMethodPicker,
   ] = useState(false);
+  const [showingRestoreBackupModal, setShowingRestoreBackupModal] = useState(
+    false,
+  );
 
   const settings = useAppSelector((state) => state.settings);
   // const latestBackup = ...
@@ -135,12 +153,11 @@ export default function SettingsScreen() {
           </View>
         </XPlatformTouchable> */}
 
-      {/* <XPlatformTouchable
-          onPress={() => this.setState({showingRestoreBackupModal: true})}>
-          <View style={styles.row}>
-            <Text style={styles.settingTitle}>{t('RestoreBackup')}</Text>
-          </View>
-        </XPlatformTouchable> */}
+      <TouchableOpacity onPress={() => setShowingRestoreBackupModal(true)}>
+        <View style={styles.row}>
+          <Text style={styles.settingTitle}>{t('RestoreBackup')}</Text>
+        </View>
+      </TouchableOpacity>
       {/* 
         <DateTimePicker
           isVisible={this.state.showingTimePicker}
@@ -162,12 +179,12 @@ export default function SettingsScreen() {
           }
           itemText={(item) => t(item)}
         /> */}
-      {/* 
-        <RestoreBackupModal
-          isVisible={!!this.state.showingRestoreBackupModal}
-          reloadVerses={this.props.navigation.getParam('reloadVerses')}
-          dismissModal={() => this.setState({showingRestoreBackupModal: false})}
-        /> */}
+
+      <RestoreBackupModal
+        goHome={() => navigation.navigate('VerseList')}
+        isVisible={showingRestoreBackupModal}
+        dismissModal={() => setShowingRestoreBackupModal(false)}
+      />
 
       {/* <CodeExplanationModal
           isVisible={!!this.state.showingCodeExplanationModal}

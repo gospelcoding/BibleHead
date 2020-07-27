@@ -7,9 +7,10 @@ import BHTextInput from '../util/BHTextInput';
 import {refText, practiceParams} from '../verses/Verse';
 import HideWordsGame from './HideWordsGame';
 import {useDispatch} from 'react-redux';
-import learningSlice, {useNextLearningVerse} from './learningSlice';
+import learningSlice from './learningSlice';
 import {BHRootNav} from '../BibleHeadApp';
 import CommonStyles from '../util/CommonStyles';
+import {useNextLearningVerse} from './useNextLearningVerse';
 
 interface IProps {
   navigation: NavigationProp<BHRootNav, 'Learning'>;
@@ -34,6 +35,7 @@ export default function LearningScreen({navigation}: IProps) {
   return (
     <SafeAreaView style={CommonStyles.screenRoot}>
       <HideWordsGame
+        key={verse.id}
         verse={verse}
         practiceParams={practiceParams(verse)}
         goHome={done}
