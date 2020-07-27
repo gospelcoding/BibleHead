@@ -8,7 +8,7 @@ import draftVerseSlice from './draftVerseSlice';
 import {NavigationProp} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {useT} from '../i18n/i18nReact';
-import versesSlice from '../verseList/versesSlice';
+import BHText from '../components/BHText';
 
 interface IProps {
   navigation: NavigationProp<any, any>;
@@ -28,7 +28,7 @@ export default function TextEntryScreen({navigation}: IProps) {
 
   return (
     <View style={CommonStyles.screenRoot}>
-      <Text style={CommonStyles.textView}>{refText(draftVerse)}</Text>
+      <BHText>{refText(draftVerse)}</BHText>
       <BHTextInput
         multiline
         value={draftVerse.text}
@@ -39,7 +39,7 @@ export default function TextEntryScreen({navigation}: IProps) {
       <Button
         title={t('Save')}
         onPress={() => {
-          dispatch(versesSlice.actions.addVerse(draftVerse));
+          dispatch(draftVerseSlice.actions.saveDraftVerse(draftVerse));
           navigation.navigate('VerseList');
         }}
       />

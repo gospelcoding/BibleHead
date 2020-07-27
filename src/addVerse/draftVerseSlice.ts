@@ -9,6 +9,7 @@ const draftVerseSlice = createSlice({
   reducers: {
     setDraftVerse: (_, action: PayloadAction<Verse>) => action.payload,
     clearDraftVerse: () => null,
+    saveDraftVerse: (_, action: PayloadAction<Verse>) => null,
   },
 });
 

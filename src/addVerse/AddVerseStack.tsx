@@ -1,7 +1,5 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import BookPicker from './BookPicker';
-import ChapterPicker from './ChapterPicker';
 import RefEditorScreen from './RefEditorScreen';
 import TextEntry from './TextEntry';
 import {NavigationProp} from '@react-navigation/native';

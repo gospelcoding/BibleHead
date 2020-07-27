@@ -9,6 +9,7 @@ import {NavigationProp} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import draftVerseSlice from './draftVerseSlice';
 import {newVerse} from '../verses/Verse';
+import BHText from '../components/BHText';
 
 interface IProps {
   navigation: NavigationProp<any, any>;
@@ -33,7 +34,7 @@ export default function RefEditorScreen({navigation}: IProps) {
   return (
     <View style={CommonStyles.screenRoot}>
       <Pressable onPress={() => setShowBookModal(true)}>
-        <Text style={CommonStyles.textView}>{bookName}</Text>
+        <BHText>{bookName}</BHText>
       </Pressable>
       <PickerModal
         isVisible={showBookModal}
@@ -45,14 +46,14 @@ export default function RefEditorScreen({navigation}: IProps) {
       <Text style={CommonStyles.listHeader}>{t('Start')}:</Text>
       <View style={{flexDirection: 'row'}}>
         <NumberInput value={startChapter} setValue={setStartChapter} />
-        <Text style={CommonStyles.textView}>:</Text>
+        <BHText>:</BHText>
         <NumberInput value={startVerse} setValue={setStartVerse} />
       </View>
 
       <Text style={CommonStyles.listHeader}>{t('End')}</Text>
       <View style={{flexDirection: 'row'}}>
         <NumberInput value={endChapter} setValue={setEndChapter} />
-        <Text style={CommonStyles.textView}>:</Text>
+        <BHText>:</BHText>
         <NumberInput value={endVerse} setValue={setEndVerse} />
       </View>
       <Button

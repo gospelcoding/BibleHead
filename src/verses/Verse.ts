@@ -1,11 +1,12 @@
 export interface Verse {
+  id: number;
   text: string;
   bookId: number; // 0-65
   bookName: string;
   startChapter: number;
-  endChapter: number;
-  startVerse: number;
-  endVerse: number;
+  endChapter?: number;
+  startVerse?: number;
+  endVerse?: number;
   learned: boolean;
   createdAt: number;
   lastReview?: number;
@@ -20,11 +21,14 @@ export interface DividedVerse extends Verse {
   currentSplit: number; // Index of splitIndices
 }
 
-export function newVerse(verse: Omit<Verse, 'learned' | 'createdAt'>): Verse {
+export function newVerse(
+  verse: Omit<Verse, 'learned' | 'createdAt' | 'id'>,
+): Verse {
   return {
     ...verse,
     learned: false,
     createdAt: Date.now(),
+    id: 0, // id should be 0 until saved in versesSlice
   };
 }
 
@@ -37,7 +41,9 @@ export function refText(verse: Verse) {
     } else {
       ref +=
         verse.endChapter == verse.startChapter
-          ? `-${verse.endVerse}`
+          ? verse.startVerse == verse.endVerse
+            ? ''
+            : `-${verse.endVerse}`
           : `-${verse.endChapter}:${verse.endVerse}`;
     }
   }
@@ -50,7 +56,14 @@ export function isDivided(verse: Verse): verse is DividedVerse {
   ); // verse.splitIndices && verse.splitIndices.length > 1;
 }
 
-export function practiceParams(verse: Verse) {
+export interface PracticeParams {
+  text: string;
+  progress: string;
+  prompt: string;
+  learned: boolean;
+}
+
+export function practiceParams(verse: Verse): PracticeParams {
   if (!isDivided(verse) || verse.learned)
     return {
       text: verse.text,

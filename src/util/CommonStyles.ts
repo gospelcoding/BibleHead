@@ -16,13 +16,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 8,
   },
-  textView: {
-    backgroundColor: 'white',
-    fontSize: 18,
-    padding: 8,
-    margin: isIOS ? 0 : 8,
-    elevation: isIOS ? 0 : 4,
-  },
   textInput: {
     fontSize: 24,
     borderBottomColor: ThemeColors.grey,
@@ -34,3 +27,22 @@ const styles = StyleSheet.create({
 });
 
 export default styles;
+
+export const buttonRowStyles = StyleSheet.create({
+  buttonRow: {
+    flexDirection: 'row',
+  },
+  buttonContainer: {
+    flex: 1,
+  },
+  button: {
+    height: 65,
+    margin: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: 36,
+  },
+  iconButtonText: {},
+});

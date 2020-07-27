@@ -7,8 +7,16 @@ import BHState from './BHState';
 import SettingsScreen from './settings/SettingsScreen';
 import AddVerseStack from './addVerse/AddVerseStack';
 import VerseListScreen from './verseList/VerseListScreen';
+import LearningScreen from './learning/LearningScreen';
 
-const Tab = createBottomTabNavigator();
+export type BHRootNav = {
+  AddVerse: undefined;
+  VerseList: undefined;
+  Learning: undefined;
+  Preferences: undefined;
+};
+
+const Tab = createBottomTabNavigator<BHRootNav>();
 
 function BHNavigator() {
   const t = useT();
@@ -16,9 +24,10 @@ function BHNavigator() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name={t('AddVerse')} component={AddVerseStack} />
-        <Tab.Screen name={'VerseList'} component={VerseListScreen} />
-        <Tab.Screen name={t('Preferences')} component={SettingsScreen} />
+        <Tab.Screen name="AddVerse" component={AddVerseStack} />
+        <Tab.Screen name="VerseList" component={VerseListScreen} />
+        <Tab.Screen name="Learning" component={LearningScreen} />
+        <Tab.Screen name="Preferences" component={SettingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
