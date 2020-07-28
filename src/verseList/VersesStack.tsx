@@ -1,0 +1,27 @@
+import React from 'react';
+import {NavigationProp} from '@react-navigation/native';
+import {BHRootNav} from '../BibleHeadApp';
+import {createStackNavigator} from '@react-navigation/stack';
+import VerseListScreen from './VerseListScreen';
+import VerseShowScreen from './VerseShowScreen';
+import {Verse} from '../verses/Verse';
+
+interface IProps {
+  navigation: NavigationProp<BHRootNav, 'Verses'>;
+}
+
+export type VersesStackNav = {
+  VerseList: undefined;
+  VerseShow: {verse: Verse};
+};
+
+const Stack = createStackNavigator<VersesStackNav>();
+
+export default function VersesStack(props: IProps) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="VerseList" component={VerseListScreen} />
+      <Stack.Screen name="VerseShow" component={VerseShowScreen} />
+    </Stack.Navigator>
+  );
+}

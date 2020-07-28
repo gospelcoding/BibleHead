@@ -10,7 +10,6 @@ import BHIconButton from '../components/BHIconButton';
 
 interface IProps {
   replay: () => void;
-  goHome: () => void;
   verse: Verse;
 }
 
@@ -42,7 +41,7 @@ export default function ButtonRowFinal(props: IProps) {
           <BHIconButton
             name="home"
             size={36}
-            onPress={props.goHome}
+            onPress={() => dispatch(versesSlice.actions.clearLearning())}
             buttonStyle={buttonRowStyles.button}
             textStyle={buttonRowStyles.iconButtonText}
           />

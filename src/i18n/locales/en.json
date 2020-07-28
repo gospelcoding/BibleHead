@@ -42,6 +42,7 @@
   "NotificationChannelDescription": "Daily review reminder",
   "NotificationText": "Review your memory verses.",
   "NotificationTitle": "Daily Review",
+  "NoVerses": "You don't have any verses to review.",
   "Part": "Part",
   "PassageSplitter": "Passage Splitter:",
   "PassageSplitterHelp":
@@ -59,6 +60,7 @@
   "Verse": "Verse",
   "VerseDeleted": "{{ref}} deleted.",
   "VerseDownload": "Verse Download",
+  "VersesReviewedToday": "Verses Reviewed Today",
   "VerseTextInputHint": "Paste or type verse text here.",
   "MyVerses": "My Verses",
   "xOfY": "{{x}} of {{y}}",

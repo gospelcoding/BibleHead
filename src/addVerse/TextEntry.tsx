@@ -4,11 +4,11 @@ import CommonStyles from '../util/CommonStyles';
 import {useAppSelector} from '../BHState';
 import {refText} from '../verses/Verse';
 import BHTextInput from '../util/BHTextInput';
-import draftVerseSlice from './draftVerseSlice';
 import {NavigationProp} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {useT} from '../i18n/i18nReact';
 import BHText from '../components/BHText';
+import versesSlice from '../verseList/versesSlice';
 
 interface IProps {
   navigation: NavigationProp<any, any>;
@@ -18,7 +18,7 @@ export default function TextEntryScreen({navigation}: IProps) {
   const dispatch = useDispatch();
   const t = useT();
 
-  const draftVerse = useAppSelector((state) => state.draftVerse);
+  const draftVerse = useAppSelector((state) => state.verses.draftVerse);
 
   useEffect(() => {
     if (!draftVerse) navigation.navigate('RefEditor');
@@ -33,14 +33,14 @@ export default function TextEntryScreen({navigation}: IProps) {
         multiline
         value={draftVerse.text}
         onChangeText={(text) =>
-          dispatch(draftVerseSlice.actions.setDraftVerse({...draftVerse, text}))
+          dispatch(versesSlice.actions.setDraftVerse({...draftVerse, text}))
         }
       />
       <Button
         title={t('Save')}
         onPress={() => {
-          dispatch(draftVerseSlice.actions.saveDraftVerse(draftVerse));
-          navigation.navigate('VerseList');
+          dispatch(versesSlice.actions.saveDraftVerse());
+          navigation.navigate('Verses');
         }}
       />
     </View>

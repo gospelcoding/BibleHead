@@ -63,7 +63,7 @@ export interface PracticeParams {
   learned: boolean;
 }
 
-export function practiceParams(verse: Verse): PracticeParams {
+export function versePracticeParams(verse: Verse): PracticeParams {
   if (!isDivided(verse) || verse.learned)
     return {
       text: verse.text,
@@ -106,27 +106,34 @@ export function reviewWeight(verse: Verse) {
   return (age * lastWrongFactor) / reviews;
 }
 
-export function selectReviewVersesAndLearningVerse(
-  reviewList: Verse[],
-  learningList: Verse[],
-) {
+export function selectReviewVersesAndLearningVerse(verses: Verse[]) {
+  const [reviewing, learning] = reviewingAndLearningLists(verses);
   return {
-    reviewVerses: selectReviewVerses(
-      allReviewableVerses(reviewList, learningList),
-      4,
-    ),
-    learningVerse: selectLearningVerse(learningList),
+    reviewVerses: selectReviewVerses(reviewing, 4),
+    learningVerse: selectLearningVerse(learning),
   };
 }
 
-export function allReviewableVerses(
-  reviewList: Verse[],
-  learningList: Verse[],
-) {
-  return reviewList.concat(
-    learningList.filter((verse) => isDivided(verse) && verse.currentSplit > 0),
-  );
+export function reviewingAndLearningLists(verses: Verse[]) {
+  const learning: Verse[] = [];
+  const reviewing: Verse[] = [];
+  verses.forEach((verse) => {
+    // A verse can be on both lists!
+    if (!verse.learned) learning.push(verse);
+    if (verse.learned || (isDivided(verse) && verse.currentSplit > 0))
+      reviewing.push(verse);
+  });
+  return [reviewing, learning];
 }
+
+// export function allReviewableVerses(
+//   reviewList: Verse[],
+//   learningList: Verse[],
+// ) {
+//   return reviewList.concat(
+//     learningList.filter((verse) => isDivided(verse) && verse.currentSplit > 0),
+//   );
+// }
 
 export function selectReviewVerses(verses: Verse[], number: number) {
   let weightedVerses = verses.map((verse) => {
@@ -163,23 +170,24 @@ export function compareVerses(a: Verse, b: Verse) {
   return verseCompareVal(a) - verseCompareVal(b);
 }
 
-export function getLearningAndReviewingLists(verses: Verse[]) {
-  let learning = [];
-  let reviewing = [];
-  for (const verse of verses) {
-    if (verse.learned) {
-      reviewing.push(verse);
-    } else {
-      learning.push(verse);
-    }
-  }
-  return {
-    learning: learning,
-    reviewing: reviewing,
-  };
-}
+// export function getLearningAndReviewingLists(verses: Verse[]) {
+//   let learning = [];
+//   let reviewing = [];
+//   for (const verse of verses) {
+//     if (verse.learned) {
+//       reviewing.push(verse);
+//     } else {
+//       learning.push(verse);
+//     }
+//   }
+//   return {
+//     learning: learning,
+//     reviewing: reviewing,
+//   };
+// }
 
-export function toggleLearnedParams(verse: Verse, learned: boolean) {
+export function toggleLearnedParams(verse: Verse) {
+  const learned = !verse.learned;
   if (!isDivided(verse)) return {learned};
   const newCurrentSplit = learned
     ? verse.currentSplit + 1
@@ -197,7 +205,7 @@ export function successfulReviewParams(verse: Verse) {
   };
 }
 
-export function failedReviewParams(verse: Verse) {
+export function failedReviewParams() {
   return {
     lastReview: new Date().getTime(),
     lastReviewWrong: true,
@@ -208,4 +216,12 @@ function verseCompareVal(verse: Verse) {
   return (
     (verse.startVerse || 1) + 1000 * (verse.startChapter + 1000 * verse.bookId)
   );
+}
+
+export function verseReviewText(verse: Verse) {
+  const text =
+    verse.learned || !isDivided(verse)
+      ? verse.text
+      : verse.text.slice(0, verse.splitIndices[verse.currentSplit]);
+  return text.trim(); // Avoids bug in step button caused by leading whitespace
 }

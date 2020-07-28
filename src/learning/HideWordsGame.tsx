@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Text, View, Platform, StyleSheet, ScrollView} from 'react-native';
-import {Verse, PracticeParams} from '../verses/Verse';
+import {Verse, PracticeParams, versePracticeParams} from '../verses/Verse';
 import {shuffle} from '../util/util';
 import ButtonRowFinal from './ButtonRowFinal';
 import ButtonRowHideWords from './ButtonRowHideWords';
@@ -10,13 +10,12 @@ import ThemeColors from '../util/ThemeColors';
 const isIOS = Platform.OS == 'ios';
 
 interface IProps {
-  practiceParams: PracticeParams;
-  goHome: () => void;
   verse: Verse;
 }
 
 export default function HideWordsGame(props: IProps) {
-  const [verseText] = useState(nonBreakingHyphenize(props.practiceParams.text));
+  const practiceParams = versePracticeParams(props.verse);
+  const [verseText] = useState(nonBreakingHyphenize(practiceParams.text));
   const [gameText, setGameText] = useState(verseText);
   const [coordinates, setCoordinates] = useState(getWordCoordinates(verseText));
   const [step, setStep] = useState(0);
@@ -57,19 +56,15 @@ export default function HideWordsGame(props: IProps) {
   return (
     <View style={styles.container}>
       <ScrollView style={{flex: 1}}>
-        {!!props.practiceParams.prompt && (
-          <Text style={styles.promptText}>{props.practiceParams.prompt}</Text>
+        {!!practiceParams.prompt && (
+          <Text style={styles.promptText}>{practiceParams.prompt}</Text>
         )}
         <Text style={styles.hideWordsText} textBreakStrategy="simple">
           {peek ? verseText : gameText}
         </Text>
       </ScrollView>
       {done ? (
-        <ButtonRowFinal
-          replay={replay}
-          goHome={props.goHome}
-          verse={props.verse}
-        />
+        <ButtonRowFinal replay={replay} verse={props.verse} />
       ) : (
         <ButtonRowHideWords
           step={step}

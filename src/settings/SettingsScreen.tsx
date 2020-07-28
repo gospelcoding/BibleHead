@@ -181,7 +181,7 @@ export default function SettingsScreen({navigation}: IProps) {
         /> */}
 
       <RestoreBackupModal
-        goHome={() => navigation.navigate('VerseList')}
+        goHome={() => navigation.navigate('Verses')}
         isVisible={showingRestoreBackupModal}
         dismissModal={() => setShowingRestoreBackupModal(false)}
       />

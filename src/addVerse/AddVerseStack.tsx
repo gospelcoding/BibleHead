@@ -11,10 +11,6 @@ interface IProps {
 const Stack = createStackNavigator();
 
 export default function AddVerseStack({navigation}: IProps) {
-  const doneAddingVerse = () => {
-    navigation.navigate('VerseList');
-  };
-
   return (
     <Stack.Navigator>
       <Stack.Screen name="RefEditor" component={RefEditorScreen} />

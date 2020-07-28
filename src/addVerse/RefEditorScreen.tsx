@@ -7,9 +7,9 @@ import PickerModal from '../components/PickerModal';
 import NumberInput from '../components/NumberInput';
 import {NavigationProp} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
-import draftVerseSlice from './draftVerseSlice';
 import {newVerse} from '../verses/Verse';
 import BHText from '../components/BHText';
+import versesSlice from '../verseList/versesSlice';
 
 interface IProps {
   navigation: NavigationProp<any, any>;
@@ -18,7 +18,7 @@ interface IProps {
 export default function RefEditorScreen({navigation}: IProps) {
   const dispatch = useDispatch();
   const t = useT();
-  const draftVerse = useAppSelector((state) => state.draftVerse);
+  const draftVerse = useAppSelector((state) => state.verses.draftVerse);
   const bibleBooks = useBibleBooks();
   const [bookId, setBookId] = useState(draftVerse?.bookId || 0);
   const bookName = bibleBooks[bookId];
@@ -60,7 +60,7 @@ export default function RefEditorScreen({navigation}: IProps) {
         title={t('Save')}
         onPress={() => {
           dispatch(
-            draftVerseSlice.actions.setDraftVerse(
+            versesSlice.actions.setDraftVerse(
               newVerse({
                 bookId,
                 bookName,

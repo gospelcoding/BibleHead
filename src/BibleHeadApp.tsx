@@ -6,12 +6,12 @@ import {I18nContext, useT} from './i18n/i18nReact';
 import BHState from './BHState';
 import SettingsScreen from './settings/SettingsScreen';
 import AddVerseStack from './addVerse/AddVerseStack';
-import VerseListScreen from './verseList/VerseListScreen';
 import LearningScreen from './learning/LearningScreen';
+import VersesStack from './verseList/VersesStack';
 
 export type BHRootNav = {
   AddVerse: undefined;
-  VerseList: undefined;
+  Verses: undefined;
   Learning: undefined;
   Preferences: undefined;
 };
@@ -25,7 +25,7 @@ function BHNavigator() {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="AddVerse" component={AddVerseStack} />
-        <Tab.Screen name="VerseList" component={VerseListScreen} />
+        <Tab.Screen name="Verses" component={VersesStack} />
         <Tab.Screen name="Learning" component={LearningScreen} />
         <Tab.Screen name="Preferences" component={SettingsScreen} />
       </Tab.Navigator>

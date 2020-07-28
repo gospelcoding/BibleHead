@@ -1,16 +1,18 @@
-import React from 'react';
-import {NavigationProp} from '@react-navigation/native';
+import React, {useEffect} from 'react';
+import {NavigationProp, useFocusEffect} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native';
 import BHText from '../components/BHText';
 import {useAppSelector} from '../BHState';
 import BHTextInput from '../util/BHTextInput';
-import {refText, practiceParams} from '../verses/Verse';
+import {refText} from '../verses/Verse';
 import HideWordsGame from './HideWordsGame';
 import {useDispatch} from 'react-redux';
-import learningSlice from './learningSlice';
 import {BHRootNav} from '../BibleHeadApp';
 import CommonStyles from '../util/CommonStyles';
-import {useNextLearningVerse} from './useNextLearningVerse';
+import {useNextLearningVerse, useNextReviewVerse} from './useNextLearningVerse';
+import ShowWordsGame from './ShowWordsGame';
+import versesSlice from '../verseList/versesSlice';
+import ReviewSummary from './ReviewSummary';
 
 interface IProps {
   navigation: NavigationProp<BHRootNav, 'Learning'>;
@@ -18,28 +20,45 @@ interface IProps {
 
 export default function LearningScreen({navigation}: IProps) {
   const dispatch = useDispatch();
-  const verse = useNextLearningVerse();
+  const reviewVerse = useNextReviewVerse();
+  const learnVerse = useNextLearningVerse();
 
   const done = () => {
-    navigation.navigate('VerseList');
-    dispatch(learningSlice.actions.clear());
+    navigation.navigate('Verses');
+    dispatch(versesSlice.actions.clearLearning());
   };
 
-  if (!verse)
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      // Start review if coming to this screen and no review in progress
+
+      if (!reviewVerse && !learnVerse)
+        dispatch(versesSlice.actions.startReview());
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
+
+  if (reviewVerse) {
     return (
-      <SafeAreaView>
-        <BHText>Learn it!</BHText>
+      <SafeAreaView style={CommonStyles.screenRoot}>
+        <ShowWordsGame key={reviewVerse.id} verse={reviewVerse} />
       </SafeAreaView>
     );
+  }
+
+  if (learnVerse) {
+    return (
+      <SafeAreaView style={CommonStyles.screenRoot}>
+        <HideWordsGame key={learnVerse.id} verse={learnVerse} />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={CommonStyles.screenRoot}>
-      <HideWordsGame
-        key={verse.id}
-        verse={verse}
-        practiceParams={practiceParams(verse)}
-        goHome={done}
-      />
+      <ReviewSummary addVerse={() => navigation.navigate('AddVerse')} />
     </SafeAreaView>
   );
 }

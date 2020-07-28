@@ -60,3 +60,6 @@ buck-out/
 
 # VSCode Debugging
 .vscode/.react
+
+# Api Keys
+src/util/apiKeys.ts

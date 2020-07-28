@@ -1,10 +1,21 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {Verse, compareVerses} from '../verses/Verse';
-import draftVerseSlice from '../addVerse/draftVerseSlice';
+import {
+  Verse,
+  compareVerses,
+  successfulReviewParams,
+  failedReviewParams,
+  selectReviewVersesAndLearningVerse,
+  toggleLearnedParams,
+} from '../verses/Verse';
 
 export type VersesState = {
   verses: Verse[];
   nextId: number;
+  learning: {
+    toReview: number[];
+    toLearn: number[];
+  };
+  draftVerse: null | Verse;
 };
 
 const versesSlice = createSlice({
@@ -12,6 +23,11 @@ const versesSlice = createSlice({
   initialState: {
     verses: [],
     nextId: 1,
+    learning: {
+      toReview: [],
+      toLearn: [],
+    },
+    draftVerse: null,
   } as VersesState,
   reducers: {
     add: (state, action: PayloadAction<Verse[]>) =>
@@ -20,14 +36,57 @@ const versesSlice = createSlice({
       updateVerse(state, action.payload),
     toggleLearned: (state, action: PayloadAction<number>) => {
       const verse = state.verses.find((v) => v.id == action.payload);
-      if (verse) verse.learned = !verse.learned;
+      if (verse) Object.assign(verse, toggleLearnedParams(verse));
+    },
+    remove: (state, action: PayloadAction<number>) => {
+      state.verses = state.verses.filter((v) => v.id !== action.payload);
+    },
+    learnAVerse: (state, action: PayloadAction<Verse>) => {
+      state.learning.toLearn = [action.payload.id];
+    },
+    startReview: (state) => {
+      const {reviewVerses, learningVerse} = selectReviewVersesAndLearningVerse(
+        state.verses,
+      );
+      state.learning.toReview = reviewVerses.map((v) => v.id);
+      state.learning.toLearn = learningVerse ? [learningVerse.id] : [];
+    },
+    // Payload indicates review success
+    reviewDone: (state, action: PayloadAction<boolean>) => {
+      const verseId: number | undefined = state.learning.toReview[0];
+      const verse = state.verses.find((v) => v.id == verseId);
+      if (verse) {
+        const newVerse = {
+          ...verse,
+          ...(action.payload
+            ? successfulReviewParams(verse)
+            : failedReviewParams()),
+        };
+        updateVerse(state, newVerse);
+      }
+
+      state.learning.toReview.shift();
+    },
+    clearLearning: (state) => {
+      state.learning = {
+        toLearn: [],
+        toReview: [],
+      };
+    },
+    setDraftVerse: (state, action: PayloadAction<Verse>) => {
+      state.draftVerse = action.payload;
+    },
+    clearDraftVerse: (state) => {
+      state.draftVerse = null;
+    },
+    saveDraftVerse: (state) => {
+      if (state.draftVerse) {
+        if (state.draftVerse.id == 0) addVerses(state, [state.draftVerse]);
+        else updateVerse(state, state.draftVerse);
+      }
+      state.draftVerse = null;
     },
   },
-  extraReducers: (builder) =>
-    builder.addCase(draftVerseSlice.actions.saveDraftVerse, (state, action) => {
-      if (action.payload.id == 0) addVerses(state, [action.payload]);
-      else updateVerse(state, action.payload);
-    }),
 });
 
 function addVerses(state: VersesState, verses: Verse[]) {

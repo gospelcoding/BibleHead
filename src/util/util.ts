@@ -51,3 +51,19 @@ export function zeroPad(number: number, length: number) {
   const zeros = new Array(length - s.length).fill('0').join('');
   return zeros + s;
 }
+
+export function sameDay(a: Date, b: Date): boolean {
+  return isoDateString(a) == isoDateString(b);
+}
+
+// Returns as YYYY-MM-DD
+function isoDateString(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
+
+// export function discriminate<T>(list: T[], discriminator: (item: T)=>boolean): [T[], T[]] {
+//   const pass: T[] = [];
+//   const fail: T[] = [];
+//   list.forEach(item => discriminator(item) ? pass.push(item) : fail.push(item))
+//   return [pass, fail]
+// }
