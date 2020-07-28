@@ -13,6 +13,8 @@ import {useNextLearningVerse, useNextReviewVerse} from './useNextLearningVerse';
 import ShowWordsGame from './ShowWordsGame';
 import versesSlice from '../verseList/versesSlice';
 import ReviewSummary from './ReviewSummary';
+import ScreenRoot from '../components/ScreenRoot';
+import ShuffleWordsGame from './ShuffleWordsGame';
 
 interface IProps {
   navigation: NavigationProp<BHRootNav, 'Learning'>;
@@ -22,6 +24,7 @@ export default function LearningScreen({navigation}: IProps) {
   const dispatch = useDispatch();
   const reviewVerse = useNextReviewVerse();
   const learnVerse = useNextLearningVerse();
+  const learnGame = useAppSelector((state) => state.settings.learnGame);
 
   const done = () => {
     navigation.navigate('Verses');
@@ -31,34 +34,36 @@ export default function LearningScreen({navigation}: IProps) {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       // Start review if coming to this screen and no review in progress
-
       if (!reviewVerse && !learnVerse)
         dispatch(versesSlice.actions.startReview());
     });
 
-    // Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation]);
 
   if (reviewVerse) {
     return (
-      <SafeAreaView style={CommonStyles.screenRoot}>
+      <ScreenRoot>
         <ShowWordsGame key={reviewVerse.id} verse={reviewVerse} />
-      </SafeAreaView>
+      </ScreenRoot>
     );
   }
 
   if (learnVerse) {
     return (
-      <SafeAreaView style={CommonStyles.screenRoot}>
-        <HideWordsGame key={learnVerse.id} verse={learnVerse} />
-      </SafeAreaView>
+      <ScreenRoot>
+        {learnGame == 'HideWords' ? (
+          <HideWordsGame key={learnVerse.id} verse={learnVerse} />
+        ) : (
+          <ShuffleWordsGame key={learnVerse.id} verse={learnVerse} />
+        )}
+      </ScreenRoot>
     );
   }
 
   return (
-    <SafeAreaView style={CommonStyles.screenRoot}>
+    <ScreenRoot>
       <ReviewSummary addVerse={() => navigation.navigate('AddVerse')} />
-    </SafeAreaView>
+    </ScreenRoot>
   );
 }

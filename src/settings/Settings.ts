@@ -5,6 +5,7 @@ export interface BHSettings {
   notificationTime: string;
   useBibleGateway: boolean;
   automaticBackup: boolean;
+  learnGame: 'HideWords' | 'ShuffleWords';
 }
 
 export function defaultSettings(): BHSettings {
@@ -13,6 +14,7 @@ export function defaultSettings(): BHSettings {
     notificationTime: '6:45',
     automaticBackup: false,
     useBibleGateway: false,
+    learnGame: 'HideWords',
   };
 }
 

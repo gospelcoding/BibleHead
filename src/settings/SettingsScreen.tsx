@@ -28,6 +28,7 @@ import BHButton from '../components/BHButton';
 import ThemeColors from '../util/ThemeColors';
 import {NavigationProp} from '@react-navigation/native';
 import {BHRootNav} from '../BibleHeadApp';
+import ScreenRoot from '../components/ScreenRoot';
 
 interface IProps {
   navigation: NavigationProp<BHRootNav, 'Preferences'>;
@@ -96,7 +97,7 @@ export default function SettingsScreen({navigation}: IProps) {
   // };
 
   return (
-    <SafeAreaView>
+    <ScreenRoot>
       <View style={styles.row}>
         <Text style={styles.settingTitle}>
           {t('NotificationChannelDescription')}
@@ -193,7 +194,7 @@ export default function SettingsScreen({navigation}: IProps) {
           }
           code={this.state.latestBackup && this.state.latestBackup.code}
         /> */}
-    </SafeAreaView>
+    </ScreenRoot>
   );
 }
 

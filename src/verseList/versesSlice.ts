@@ -42,7 +42,7 @@ const versesSlice = createSlice({
       state.verses = state.verses.filter((v) => v.id !== action.payload);
     },
     learnAVerse: (state, action: PayloadAction<Verse>) => {
-      state.learning.toLearn = [action.payload.id];
+      state.learning = {toLearn: [action.payload.id], toReview: []};
     },
     startReview: (state) => {
       const {reviewVerses, learningVerse} = selectReviewVersesAndLearningVerse(

@@ -10,6 +10,7 @@ import {useDispatch} from 'react-redux';
 import {newVerse} from '../verses/Verse';
 import BHText from '../components/BHText';
 import versesSlice from '../verseList/versesSlice';
+import ScreenRoot from '../components/ScreenRoot';
 
 interface IProps {
   navigation: NavigationProp<any, any>;
@@ -32,7 +33,7 @@ export default function RefEditorScreen({navigation}: IProps) {
   const [showBookModal, setShowBookModal] = useState(draftVerse === undefined);
 
   return (
-    <View style={CommonStyles.screenRoot}>
+    <ScreenRoot>
       <Pressable onPress={() => setShowBookModal(true)}>
         <BHText>{bookName}</BHText>
       </Pressable>
@@ -75,6 +76,6 @@ export default function RefEditorScreen({navigation}: IProps) {
           navigation.navigate('TextEntry');
         }}
       />
-    </View>
+    </ScreenRoot>
   );
 }

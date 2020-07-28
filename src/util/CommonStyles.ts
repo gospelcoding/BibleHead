@@ -4,10 +4,6 @@ import {Platform, StyleSheet} from 'react-native';
 const isIOS = Platform.OS == 'ios';
 
 const styles = StyleSheet.create({
-  screenRoot: {
-    flex: 1,
-    backgroundColor: ThemeColors.white,
-  },
   headerOptions: {},
   picker: {},
   listHeader: {
