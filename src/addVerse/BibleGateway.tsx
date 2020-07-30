@@ -5,7 +5,7 @@ import Axios from 'axios';
 import BGPassageDisplay from './BGPassageDisplay';
 import WebView from 'react-native-webview';
 import {newVerse} from '../verses/Verse';
-import versesSlice from '../verseList/versesSlice';
+import {addVerses} from '../verseList/versesSlice';
 import {useDispatch} from 'react-redux';
 import {useT} from '../i18n/i18nReact';
 import BHText from '../components/BHText';
@@ -42,7 +42,7 @@ export default function BibleGateway(props: IProps) {
         text: passage.text,
         ...passage.ref,
       });
-      dispatch(versesSlice.actions.add([verse]));
+      dispatch(addVerses([verse]));
       props.done();
     }
   };

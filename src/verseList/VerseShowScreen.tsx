@@ -12,7 +12,11 @@ import BHButton from '../components/BHButton';
 import {VersesStackNav} from './VersesStack';
 import {BHRootNav} from '../BibleHeadApp';
 import {useDispatch} from 'react-redux';
-import versesSlice from './versesSlice';
+import versesSlice, {
+  updateVerse,
+  toggleVerseLearned,
+  removeVerse,
+} from './versesSlice';
 import {useT} from '../i18n/i18nReact';
 import BHIconButton from '../components/BHIconButton';
 import BHCheckbox from '../components/BHCheckbox';
@@ -41,9 +45,9 @@ export default function VerseShowScreen({navigation, route}: IProps) {
 
   if (!verse) return null;
 
-  const removeVerse = () => {
+  const removeTheVerse = () => {
     navigation.navigate('VerseList');
-    dispatch(versesSlice.actions.remove(verse.id));
+    dispatch(removeVerse(verse.id));
   };
 
   return (
@@ -51,20 +55,18 @@ export default function VerseShowScreen({navigation, route}: IProps) {
       {editing ? (
         <VerseEditor
           done={() => setEditing(false)}
-          saveVerse={(verse) => dispatch(versesSlice.actions.update(verse))}
+          saveVerse={(verse) => dispatch(updateVerse(verse))}
           verse={verse}
         />
       ) : (
         <ScrollView>
           <BHText>{refText(verse)}</BHText>
           <BHText>{verse.text}</BHText>
-          <BHIconButton name="trash" onPress={removeVerse} />
+          <BHIconButton name="trash" onPress={removeTheVerse} />
           <BHCheckbox
             label={t('Learned')}
             value={verse.learned}
-            onValueChange={() =>
-              dispatch(versesSlice.actions.toggleLearned(verse.id))
-            }
+            onValueChange={() => dispatch(toggleVerseLearned(verse.id))}
           />
           <BHIconButton name="create" onPress={() => setEditing(true)} />
         </ScrollView>

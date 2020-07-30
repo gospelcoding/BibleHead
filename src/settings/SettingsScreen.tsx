@@ -29,6 +29,10 @@ import ThemeColors from '../util/ThemeColors';
 import {NavigationProp} from '@react-navigation/native';
 import {BHRootNav} from '../BibleHeadApp';
 import ScreenRoot from '../components/ScreenRoot';
+import BHTouchable from '../components/BHTouchable';
+import {LatestBackup, createBackup} from '../util/Backups';
+import {TFunc, TKey} from '../i18n/i18n';
+import CodeExplanationModal from './CodeExplanationModal';
 
 interface IProps {
   navigation: NavigationProp<BHRootNav, 'Preferences'>;
@@ -38,24 +42,18 @@ export default function SettingsScreen({navigation}: IProps) {
   const t = useT();
   const dispatch = useDispatch();
 
-  const [
-    showingNewVerseMethodPicker,
-    setShowingNewVerseMethodPicker,
-  ] = useState(false);
   const [showingRestoreBackupModal, setShowingRestoreBackupModal] = useState(
     false,
   );
+  const [
+    showingCodeExplanationModal,
+    setShowingCodeExplanationModal,
+  ] = useState(false);
+  const [backingUp, setBackingUp] = useState(false);
+  const [backupError, setBackupError] = useState<null | TKey>(null);
 
   const settings = useAppSelector((state) => state.settings);
-  // const latestBackup = ...
-
-  // updateSettings = (mergeSettings) => {
-  //   this.setState((prevState) => ({
-  //     settings: update(prevState.settings, {$merge: mergeSettings}),
-  //   }));
-  //   Settings.writeSettings(mergeSettings);
-  //   this.updateNotificationSchedule(mergeSettings);
-  // };
+  const verses = useAppSelector((state) => state.verses.verses);
 
   // updateNotificationSchedule = (mergeSettings) => {
   //   if (
@@ -70,25 +68,22 @@ export default function SettingsScreen({navigation}: IProps) {
   //   this.setState({showingTimePicker: false});
   // };
 
-  // setNewVerseMethod = (method) => {
-  //   this.updateSettings({newVerseMethod: method});
-  //   this.setState({showingNewVerseMethodPicker: false});
-  // };
-
-  // createBackup = async () => {
-  //   this.setState({backingUp: true});
-  //   try {
-  //     const newLatestBackup = await Backup.createBackup();
-  //     this.setState((prevState) => ({
-  //       latestBackup: newLatestBackup,
-  //       backingUp: false,
-  //       backupError: undefined,
-  //       showingCodeExplanationModal: !prevState.latestBackup,
-  //     }));
-  //   } catch (error) {
-  //     this.setState({backupError: error, backingUp: false});
-  //   }
-  // };
+  const backup = async () => {
+    setBackingUp(true);
+    try {
+      const newLatestBackup = await createBackup(
+        verses,
+        settings.latestBackup?.code,
+      );
+      setShowingCodeExplanationModal(!settings.latestBackup);
+      dispatch(settingsSlice.actions.setLatestBackup(newLatestBackup));
+      setBackupError(null);
+    } catch (error) {
+      setBackupError(error);
+    } finally {
+      setBackingUp(false);
+    }
+  };
 
   // static navigationOptions = () => {
   //   return {
@@ -122,37 +117,30 @@ export default function SettingsScreen({navigation}: IProps) {
           </XPlatformTouchable>
         )} */}
 
-      {/* <XPlatformTouchable
-          onPress={() => this.setState({showingNewVerseMethodPicker: true})}>
-          <View style={[styles.row, {flexDirection: 'column'}]}>
-            <Text style={styles.settingTitle}>{t('NewVerseMethod')}</Text>
-            <Text style={styles.settingTextLittle}>
-              {t(settings.newVerseMethod)}
-            </Text>
-          </View>
-        </XPlatformTouchable> */}
-      {/* 
-        <View style={styles.row}>
-          <Text style={styles.settingTitle}>
-            {t('BackupVersesAutomatically')}
+      <View style={styles.row}>
+        <Text style={styles.settingTitle}>
+          {t('BackupVersesAutomatically')}
+        </Text>
+        <BHSwitch
+          value={settings.automaticBackup}
+          onValueChange={(value) => {
+            dispatch(settingsSlice.actions.toggleAutomaticBackups());
+            if (value) backup();
+          }}
+        />
+      </View>
+
+      <BHTouchable onPress={backup}>
+        <View style={[styles.row, {flexDirection: 'column'}]}>
+          <Text style={styles.settingTitle}>{t('BackupVersesNow')}</Text>
+          <Text style={styles.settingTextLittle}>
+            {backupDetailText(
+              {backingUp, backupError, latestBackup: settings.latestBackup},
+              t,
+            )}
           </Text>
-          <BHSwitch
-            value={settings.automaticBackup}
-            onValueChange={(value) => {
-              this.updateSettings({automaticBackup: value});
-              if (value) this.createBackup();
-            }}
-          />
-        </View> */}
-      {/* 
-        <XPlatformTouchable onPress={this.createBackup}>
-          <View style={[styles.row, {flexDirection: 'column'}]}>
-            <Text style={styles.settingTitle}>{t('BackupVersesNow')}</Text>
-            <Text style={styles.settingTextLittle}>
-              {backupDetailText(this.state)}
-            </Text>
-          </View>
-        </XPlatformTouchable> */}
+        </View>
+      </BHTouchable>
 
       <TouchableOpacity onPress={() => setShowingRestoreBackupModal(true)}>
         <View style={styles.row}>
@@ -171,31 +159,37 @@ export default function SettingsScreen({navigation}: IProps) {
           cancelTextIOS={t('Cancel')}
         /> */}
 
-      {/* <PickerModal
-          isVisible={this.state.showingNewVerseMethodPicker}
-          data={Settings.newVerseMethodSettings()}
-          itemSelected={this.setNewVerseMethod}
-          dismissModal={() =>
-            this.setState({showingNewVerseMethodPicker: false})
-          }
-          itemText={(item) => t(item)}
-        /> */}
-
       <RestoreBackupModal
         goHome={() => navigation.navigate('Verses')}
         isVisible={showingRestoreBackupModal}
         dismissModal={() => setShowingRestoreBackupModal(false)}
       />
 
-      {/* <CodeExplanationModal
-          isVisible={!!this.state.showingCodeExplanationModal}
-          dismissModal={() =>
-            this.setState({showingCodeExplanationModal: false})
-          }
-          code={this.state.latestBackup && this.state.latestBackup.code}
-        /> */}
+      <CodeExplanationModal
+        isVisible={!!showingCodeExplanationModal}
+        dismissModal={() => setShowingCodeExplanationModal(false)}
+        code={settings.latestBackup?.code || ''}
+      />
     </ScreenRoot>
   );
+}
+
+function backupDetailText(
+  state: {
+    backingUp: boolean;
+    backupError: TKey | null;
+    latestBackup: LatestBackup | undefined;
+  },
+  t: TFunc,
+) {
+  if (state.backingUp) return t('BackingUp');
+  if (state.backupError) return t(state.backupError);
+  if (state.latestBackup)
+    return t('LatestBackup', {
+      code: state.latestBackup.code,
+      datetime: new Date(state.latestBackup.datetime).toLocaleDateString(),
+    });
+  return '';
 }
 
 // function dateFromNotificationTime(timeStr) {
@@ -207,17 +201,6 @@ export default function SettingsScreen({navigation}: IProps) {
 
 // function notificationTimeFromDate(date) {
 //   return `${date.getHours()}:${zeroPad(date.getMinutes(), 2)}`;
-// }
-
-// function backupDetailText(state) {
-//   if (state.backingUp) return t('BackingUp');
-//   if (state.backupError) return t(state.backupError);
-//   if (state.latestBackup)
-//     return t('LatestBackup', {
-//       code: state.latestBackup.code,
-//       datetime: new Date(state.latestBackup.datetime).toLocaleDateString(),
-//     });
-//   return '';
 // }
 
 const styles = StyleSheet.create({

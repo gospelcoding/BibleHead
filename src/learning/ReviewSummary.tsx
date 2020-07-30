@@ -40,7 +40,7 @@ export default function ReviewSummary(props: IProps) {
       />
       <BHText>{t('VersesReviewedToday')}</BHText>
       {reviewedToday.map((verse) => (
-        <BHText>{refText(verse)}</BHText>
+        <BHText key={verse.id}>{refText(verse)}</BHText>
       ))}
     </View>
   );

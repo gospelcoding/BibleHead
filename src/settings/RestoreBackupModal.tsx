@@ -15,7 +15,7 @@ import {restoreBackup} from '../util/Backups';
 import {Verse, refText} from '../verses/Verse';
 import {useDispatch} from 'react-redux';
 import {useT} from '../i18n/i18nReact';
-import versesSlice from '../verseList/versesSlice';
+import {addVerses} from '../verseList/versesSlice';
 import {isTKey} from '../i18n/i18n';
 import BHButton from '../components/BHButton';
 import CommonStyles from '../util/CommonStyles';
@@ -56,9 +56,9 @@ export default function RestoreBackupModal(props: IProps) {
     }
   };
 
-  const addVerses = async () => {
+  const addNewVerses = async () => {
     if (verses) {
-      dispatch(versesSlice.actions.add(verses));
+      dispatch(addVerses(verses));
       props.dismissModal();
       props.goHome();
     }
@@ -119,7 +119,7 @@ export default function RestoreBackupModal(props: IProps) {
                 {isIOS && (
                   <BHButton
                     title={t('AddVerses')}
-                    onPress={addVerses}
+                    onPress={addNewVerses}
                     textStyle={styles.buttonTextStyle}
                     buttonStyle={styles.buttonStyle}
                   />
@@ -145,7 +145,7 @@ export default function RestoreBackupModal(props: IProps) {
             {!isIOS && phase == Phases.versesDisplay && (
               <BHButton
                 title={t('AddVerses')}
-                onPress={addVerses}
+                onPress={addNewVerses}
                 textStyle={styles.buttonTextStyle}
                 buttonStyle={styles.buttonStyle}
               />

@@ -7,6 +7,7 @@ import {TypedUseSelectorHook, useSelector, Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {PropsWithChildren} from 'react';
 import versesSlice from './verseList/versesSlice';
+import thunk from 'redux-thunk';
 
 const reducer = persistReducer(
   {key: 'root4', storage: AsyncStorage},
@@ -15,7 +16,7 @@ const reducer = persistReducer(
     verses: versesSlice.reducer,
   }),
 );
-const store = configureStore({reducer, middleware: []});
+const store = configureStore({reducer, middleware: [thunk]});
 const persistor = persistStore(store);
 
 export type AppState = ReturnType<typeof reducer>;

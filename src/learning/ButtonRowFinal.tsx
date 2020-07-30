@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {useT} from '../i18n/i18nReact';
 import {useDispatch} from 'react-redux';
 import {Verse} from '../verses/Verse';
-import versesSlice from '../verseList/versesSlice';
+import versesSlice, {toggleVerseLearned} from '../verseList/versesSlice';
 import {buttonRowStyles} from '../util/CommonStyles';
 import BHCheckbox from '../components/BHCheckbox';
 import BHIconButton from '../components/BHIconButton';
@@ -22,9 +22,7 @@ export default function ButtonRowFinal(props: IProps) {
       <BHCheckbox
         label={t('Learned')}
         value={!!props.verse.learned}
-        onValueChange={() =>
-          dispatch(versesSlice.actions.toggleLearned(props.verse.id))
-        }
+        onValueChange={() => dispatch(toggleVerseLearned(props.verse.id))}
         containerStyle={styles.checkboxContainerStyle}
       />
       <View style={buttonRowStyles.buttonRow}>

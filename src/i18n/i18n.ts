@@ -39,7 +39,7 @@ function translate(
   if (key === '') return '';
   if (!strings[key]) console.error(`Missing i18n key: ${key}`);
   return Object.keys(subs).reduce((outStr, subKey) => {
-    const keyPattern = `%{${subKey}}`;
+    const keyPattern = `{{${subKey}}}`;
     while (outStr.includes(keyPattern)) {
       outStr = outStr.replace(keyPattern, subs[subKey]);
     }

@@ -19,7 +19,7 @@ import {
 } from '@react-navigation/native';
 import {VersesStackNav} from './VersesStack';
 import {BHRootNav} from '../BibleHeadApp';
-import versesSlice from './versesSlice';
+import versesSlice, {updateVerse} from './versesSlice';
 
 interface IProps {
   navigation: CompositeNavigationProp<
@@ -39,11 +39,7 @@ export default function VerseListScreen({navigation}: IProps) {
   };
 
   useEffect(() => {
-    normalizeVerses(
-      verses,
-      (verse) => dispatch(versesSlice.actions.update(verse)),
-      bookNames,
-    );
+    normalizeVerses(verses, (verse) => dispatch(updateVerse(verse)), bookNames);
   }, []);
 
   return (
@@ -75,9 +71,7 @@ function ListItem(props: {
   return (
     <View style={{flexDirection: 'row'}}>
       <TouchableOpacity onPress={props.goToVerse}>
-        <BHText>
-          {props.verse.bookId}: {refText(props.verse)}
-        </BHText>
+        <BHText>{refText(props.verse)}</BHText>
       </TouchableOpacity>
       <View style={{flexGrow: 1}} />
       {!props.verse.learned && (

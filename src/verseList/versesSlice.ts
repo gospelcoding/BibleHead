@@ -7,6 +7,9 @@ import {
   selectReviewVersesAndLearningVerse,
   toggleLearnedParams,
 } from '../verses/Verse';
+import {AppDispatch, AppState} from '../BHState';
+import {automaticBackup} from '../util/Backups';
+import {settingsSlice} from '../settings/Settings';
 
 export type VersesState = {
   verses: Verse[];
@@ -28,10 +31,9 @@ const versesSlice = createSlice({
     },
   } as VersesState,
   reducers: {
-    add: (state, action: PayloadAction<Verse[]>) =>
-      addVerses(state, action.payload),
+    add: (state, action: PayloadAction<Verse[]>) => add(state, action.payload),
     update: (state, action: PayloadAction<Verse>) =>
-      updateVerse(state, action.payload),
+      update(state, action.payload),
     toggleLearned: (state, action: PayloadAction<number>) => {
       const verse = state.verses.find((v) => v.id == action.payload);
       if (verse) Object.assign(verse, toggleLearnedParams(verse));
@@ -60,7 +62,7 @@ const versesSlice = createSlice({
             ? successfulReviewParams(verse)
             : failedReviewParams()),
         };
-        updateVerse(state, newVerse);
+        update(state, newVerse);
       }
 
       state.learning.toReview.shift();
@@ -74,7 +76,7 @@ const versesSlice = createSlice({
   },
 });
 
-function addVerses(state: VersesState, verses: Verse[]) {
+function add(state: VersesState, verses: Verse[]) {
   verses.forEach((verse) => {
     state.verses.push({...verse, id: state.nextId});
     ++state.nextId;
@@ -82,12 +84,57 @@ function addVerses(state: VersesState, verses: Verse[]) {
   state.verses.sort(compareVerses);
 }
 
-function updateVerse(state: VersesState, verse: Verse) {
+function update(state: VersesState, verse: Verse) {
   const index = state.verses.findIndex((v) => v.id == verse.id);
   if (index >= 0) {
     state.verses[index] = verse;
     state.verses.sort(compareVerses);
   }
+}
+
+export function addVerses(verses: Verse[]) {
+  return (dispatch: AppDispatch, getState: () => AppState) => {
+    dispatch(versesSlice.actions.add(verses));
+    autoBackup(dispatch, getState);
+  };
+}
+
+export function updateVerse(verse: Verse) {
+  return (dispatch: AppDispatch, getState: () => AppState) => {
+    dispatch(versesSlice.actions.update(verse));
+    autoBackup(dispatch, getState);
+  };
+}
+
+export function toggleVerseLearned(id: number) {
+  return (dispatch: AppDispatch, getState: () => AppState) => {
+    dispatch(versesSlice.actions.toggleLearned(id));
+    autoBackup(dispatch, getState);
+  };
+}
+
+export function removeVerse(id: number) {
+  return (dispatch: AppDispatch, getState: () => AppState) => {
+    dispatch(versesSlice.actions.remove(id));
+    autoBackup(dispatch, getState);
+  };
+}
+
+export function verseReviewDone(success: boolean) {
+  return (dispatch: AppDispatch, getState: () => AppState) => {
+    dispatch(versesSlice.actions.reviewDone(success));
+    autoBackup(dispatch, getState);
+  };
+}
+
+async function autoBackup(dispatch: AppDispatch, getState: () => AppState) {
+  const state = getState();
+  const latestBackup = await automaticBackup(
+    state.verses.verses,
+    state.settings,
+  );
+  if (latestBackup)
+    dispatch(settingsSlice.actions.setLatestBackup(latestBackup));
 }
 
 export default versesSlice;

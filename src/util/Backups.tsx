@@ -1,11 +1,17 @@
 import Axios from 'axios';
 import apiKeys from './apiKeys';
-import {Settings} from 'react-native';
-// import AsyncStorage from "@react-native-community/async-storage";
+import {Verse} from '../verses/Verse';
+import {TKey} from '../i18n/i18n';
+import {BHSettings} from '../settings/Settings';
 
 const formatVersion = 1;
 const latestBackupStorageKey = 'bh.backups.latest';
 const minAutoBackupInterval = 2; // hours
+
+export type LatestBackup = {
+  code: string;
+  datetime: number;
+};
 
 // MOCK POST
 // Axios.post = async (url, data) => {
@@ -13,49 +19,45 @@ const minAutoBackupInterval = 2; // hours
 //   return { data: { code: "mock" } };
 // };
 
-// export default {
-//   createBackup: createBackup,
-//   automaticBackup: automaticBackup,
-//   restoreBackup: restoreBackup,
-//   latestBackupData: latestBackupData
-// };
+export async function createBackup(
+  verses: Verse[],
+  code: string | undefined,
+): Promise<LatestBackup> {
+  const data = {
+    verses,
+    code,
+    formatVersion: formatVersion,
+    apiKey: apiKeys.bh,
+  };
+  try {
+    const response = await Axios.post(
+      'https://bh-api.gospelcoding.org/api/verses',
+      data,
+    );
+    return {
+      code: response.data.code,
+      datetime: new Date().getTime(),
+    };
+  } catch (error) {
+    const err: TKey = 'NetworkError';
+    throw err;
+  }
+}
 
-// async function createBackup() {
-//   const verses = await VerseStorage.getAllVerses();
-//   const backupCode = await getBackupCode();
-//   const data = {
-//     verses: verses,
-//     code: backupCode,
-//     formatVersion: formatVersion,
-//     apiKey: apiKeys.bh
-//   };
-//   try {
-//     const response = await Axios.post(
-//       "https://bh-api.gospelcoding.org/api/verses",
-//       data
-//     );
-//     const responseBackupCode = response.data.code;
-//     return saveBackupData(responseBackupCode);
-//   } catch (error) {
-//     throw "NetworkError";
-//   }
-// }
+export async function automaticBackup(verses: Verse[], settings: BHSettings) {
+  if (!settings.automaticBackup) return;
 
-// async function automaticBackup() {
-//   const settings = await Settings.readSettings();
-//   if (!settings.automaticBackup) return;
+  const prevBackupData = settings.latestBackup;
+  if (prevBackupData && notOldEnough(prevBackupData)) return;
 
-//   const prevBackupData = await latestBackupData();
-//   if (prevBackupData && notOldEnough(prevBackupData)) return;
+  return createBackup(verses, prevBackupData?.code);
+}
 
-//   createBackup();
-// }
-
-// function notOldEnough(prevBackupData) {
-//   const now = Date.now().valueOf();
-//   const then = new Date(prevBackupData.datetime).valueOf();
-//   return now - then < minAutoBackupInterval * 60 * 60 * 1000;
-// }
+function notOldEnough(prevBackupData: LatestBackup) {
+  const now = Date.now().valueOf();
+  const then = new Date(prevBackupData.datetime).valueOf();
+  return now - then < minAutoBackupInterval * 60 * 60 * 1000;
+}
 
 export async function restoreBackup(code: string) {
   try {
@@ -68,22 +70,3 @@ export async function restoreBackup(code: string) {
     else throw 'NetworkError';
   }
 }
-
-// async function latestBackupData() {
-//   const backupDataStr = await AsyncStorage.getItem(latestBackupStorageKey);
-//   return backupDataStr ? JSON.parse(backupDataStr) : null;
-// }
-
-// async function getBackupCode() {
-//   const lastBackup = await latestBackupData();
-//   return lastBackup ? lastBackup.code : undefined;
-// }
-
-// function saveBackupData(code) {
-//   const backupData = {
-//     code: code,
-//     datetime: new Date().getTime()
-//   };
-//   AsyncStorage.setItem(latestBackupStorageKey, JSON.stringify(backupData));
-//   return backupData;
-// }

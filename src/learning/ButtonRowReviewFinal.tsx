@@ -5,7 +5,7 @@ import {buttonRowStyles} from '../util/CommonStyles';
 import BHIconButton from '../components/BHIconButton';
 import ThemeColors from '../util/ThemeColors';
 import {Verse} from '../verses/Verse';
-import versesSlice from '../verseList/versesSlice';
+import {verseReviewDone} from '../verseList/versesSlice';
 
 const isIOS = Platform.OS == 'ios';
 
@@ -25,7 +25,7 @@ export default function ButtonRowReviewFinal(props: IProps) {
           color={ThemeColors.red}
           buttonStyle={buttonRowStyles.button}
           textStyle={buttonRowStyles.buttonText}
-          onPress={() => dispatch(versesSlice.actions.reviewDone(false))}
+          onPress={() => dispatch(verseReviewDone(false))}
         />
       </View>
       <View style={buttonRowStyles.buttonContainer}>
@@ -35,7 +35,7 @@ export default function ButtonRowReviewFinal(props: IProps) {
           color={ThemeColors.buttonGreen}
           buttonStyle={buttonRowStyles.button}
           textStyle={buttonRowStyles.buttonText}
-          onPress={() => dispatch(versesSlice.actions.reviewDone(true))}
+          onPress={() => dispatch(verseReviewDone(true))}
         />
       </View>
     </View>

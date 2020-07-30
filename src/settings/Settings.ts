@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {LatestBackup} from '../util/Backups';
 
 export type LearnGame = 'HideWords' | 'ShuffleWords';
 
@@ -8,6 +9,7 @@ export interface BHSettings {
   useBibleGateway: boolean;
   automaticBackup: boolean;
   learnGame: LearnGame;
+  latestBackup?: LatestBackup;
 }
 
 export function defaultSettings(): BHSettings {
@@ -15,7 +17,7 @@ export function defaultSettings(): BHSettings {
     notification: true,
     notificationTime: '6:45',
     automaticBackup: false,
-    useBibleGateway: false,
+    useBibleGateway: true,
     learnGame: 'HideWords',
   };
 }
@@ -33,6 +35,12 @@ export const settingsSlice = createSlice({
     },
     toggleBibleGateway: (state) => {
       state.useBibleGateway = !state.useBibleGateway;
+    },
+    setLatestBackup: (state, action: PayloadAction<LatestBackup>) => {
+      state.latestBackup = action.payload;
+    },
+    toggleAutomaticBackups: (state) => {
+      state.automaticBackup = !state.automaticBackup;
     },
   },
 });
