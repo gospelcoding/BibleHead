@@ -1,11 +1,13 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
+export type LearnGame = 'HideWords' | 'ShuffleWords';
+
 export interface BHSettings {
   notification: boolean;
   notificationTime: string;
   useBibleGateway: boolean;
   automaticBackup: boolean;
-  learnGame: 'HideWords' | 'ShuffleWords';
+  learnGame: LearnGame;
 }
 
 export function defaultSettings(): BHSettings {
@@ -24,6 +26,13 @@ export const settingsSlice = createSlice({
   reducers: {
     toggleNotifications: (state, action: PayloadAction<boolean>) => {
       state.notification = action.payload;
+    },
+    toggleLearnGame: (state) => {
+      state.learnGame =
+        state.learnGame == 'HideWords' ? 'ShuffleWords' : 'HideWords';
+    },
+    toggleBibleGateway: (state) => {
+      state.useBibleGateway = !state.useBibleGateway;
     },
   },
 });

@@ -4,7 +4,6 @@ import {BHRootNav} from '../BibleHeadApp';
 import {createStackNavigator} from '@react-navigation/stack';
 import VerseListScreen from './VerseListScreen';
 import VerseShowScreen from './VerseShowScreen';
-import {Verse} from '../verses/Verse';
 
 interface IProps {
   navigation: NavigationProp<BHRootNav, 'Verses'>;
@@ -12,7 +11,7 @@ interface IProps {
 
 export type VersesStackNav = {
   VerseList: undefined;
-  VerseShow: {verse: Verse};
+  VerseShow: {id: number};
 };
 
 const Stack = createStackNavigator<VersesStackNav>();

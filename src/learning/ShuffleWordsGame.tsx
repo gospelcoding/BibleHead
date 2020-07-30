@@ -114,6 +114,7 @@ type IndexedWord = {
 };
 
 function getWords(text: string): IndexedWord[] {
+  const preferLowerCase = looksLikeGreek(text);
   const pattern = /\S+/g;
   const wordsWithIndices: IndexedWord[] = [];
   let find;
@@ -124,16 +125,25 @@ function getWords(text: string): IndexedWord[] {
     });
   }
 
-  const startPunctuation = /^[.,:;?¿!¡"“”‘’«»()]+/;
-  const endPunctuation = /[.,:;?¿!¡"“”‘’«»()]+$/;
+  const startPunctuation = /^[.,:;?¿!¡"“”‘’«»()·]+/;
+  const endPunctuation = /[.,:;?¿!¡"“”‘’«»()·]+$/;
   for (let wordObj of wordsWithIndices) {
-    wordObj.word = wordObj.word
-      .replace(startPunctuation, '')
-      .replace(endPunctuation, '')
-      .toUpperCase();
+    wordObj.word = decase(
+      wordObj.word.replace(startPunctuation, '').replace(endPunctuation, ''),
+      preferLowerCase,
+    );
   }
 
   return wordsWithIndices;
+}
+
+function decase(str: string, preferLowerCase: boolean) {
+  return preferLowerCase ? str.toLowerCase() : str.toUpperCase();
+}
+
+function looksLikeGreek(str: string) {
+  const greekAlphabet = /[αβγδεζηθικλμνξοπρσςτυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ]/g;
+  return (str.match(greekAlphabet) || []).length > Math.min(10, str.length / 2);
 }
 
 function shuffle(wordsWithIndices: IndexedWord[]) {

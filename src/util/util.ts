@@ -61,6 +61,10 @@ function isoDateString(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
+export function isInt(x: unknown) {
+  return parseInt(`${x}`) === x;
+}
+
 // export function discriminate<T>(list: T[], discriminator: (item: T)=>boolean): [T[], T[]] {
 //   const pass: T[] = [];
 //   const fail: T[] = [];

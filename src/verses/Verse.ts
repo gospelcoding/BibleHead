@@ -1,3 +1,6 @@
+import {Passage} from '../addVerse/parsePassage';
+import {isInt} from '../util/util';
+
 export interface Verse {
   id: number;
   text: string;
@@ -32,7 +35,7 @@ export function newVerse(
   };
 }
 
-export function refText(verse: Verse) {
+export function refText(verse: Verse | Passage['ref']) {
   let ref = `${verse.bookName} ${verse.startChapter}`;
   if (verse.startVerse) ref += `:${verse.startVerse}`;
   if (verse.endChapter) {
@@ -224,4 +227,21 @@ export function verseReviewText(verse: Verse) {
       ? verse.text
       : verse.text.slice(0, verse.splitIndices[verse.currentSplit]);
   return text.trim(); // Avoids bug in step button caused by leading whitespace
+}
+
+export function normalizeVerses(
+  verses: Verse[],
+  updateVerse: (verse: Verse) => void,
+  bookNames: string[],
+) {
+  verses.forEach((verse) => {
+    const update: Partial<Verse> = {};
+    if (!isInt(verse.bookId)) update.bookId = 100;
+    if (!isInt(verse.startChapter)) update.startChapter = 1;
+    if (!verse.bookName) {
+      if (verse.bookId) update.bookName = bookNames[verse.bookId];
+      else update.bookName = '???';
+    }
+    if (Object.keys(update).length > 0) updateVerse({...verse, ...update});
+  });
 }

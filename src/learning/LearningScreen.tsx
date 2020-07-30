@@ -1,20 +1,20 @@
 import React, {useEffect} from 'react';
-import {NavigationProp, useFocusEffect} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native';
+import {NavigationProp} from '@react-navigation/native';
+import {View} from 'react-native';
 import BHText from '../components/BHText';
 import {useAppSelector} from '../BHState';
-import BHTextInput from '../util/BHTextInput';
 import {refText} from '../verses/Verse';
 import HideWordsGame from './HideWordsGame';
 import {useDispatch} from 'react-redux';
 import {BHRootNav} from '../BibleHeadApp';
-import CommonStyles from '../util/CommonStyles';
 import {useNextLearningVerse, useNextReviewVerse} from './useNextLearningVerse';
 import ShowWordsGame from './ShowWordsGame';
 import versesSlice from '../verseList/versesSlice';
 import ReviewSummary from './ReviewSummary';
 import ScreenRoot from '../components/ScreenRoot';
 import ShuffleWordsGame from './ShuffleWordsGame';
+import SwitchGameButton from './SwitchGameButton';
+import ThemeColors from '../util/ThemeColors';
 
 interface IProps {
   navigation: NavigationProp<BHRootNav, 'Learning'>;
@@ -52,6 +52,12 @@ export default function LearningScreen({navigation}: IProps) {
   if (learnVerse) {
     return (
       <ScreenRoot>
+        <View
+          style={{flexDirection: 'row', backgroundColor: ThemeColors.darkBlue}}>
+          <BHText>{refText(learnVerse)}</BHText>
+          <View style={{flex: 1}} />
+          <SwitchGameButton game={learnGame} />
+        </View>
         {learnGame == 'HideWords' ? (
           <HideWordsGame key={learnVerse.id} verse={learnVerse} />
         ) : (

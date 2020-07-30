@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, View, Platform, Button} from 'react-native';
 import Modal from 'react-native-modal';
 import PickerList from './PickerList';
-import PropTypes from 'prop-types';
 import {useT} from '../i18n/i18nReact';
 import CommonStyles from '../util/CommonStyles';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -91,12 +90,3 @@ const styles = StyleSheet.create({
       android: CommonStyles.androidDialogButton,
     }) || {},
 });
-
-PickerModal.propTypes = {
-  isVisible: PropTypes.bool,
-  data: PropTypes.array,
-  itemSelected: PropTypes.func,
-  dismissModal: PropTypes.func,
-  keyExtractor: PropTypes.func,
-  itemText: PropTypes.func,
-};

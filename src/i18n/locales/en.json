@@ -23,6 +23,7 @@
   "Done": "Done",
   "DownloadFromBibleGateway": "Download from Bible Gateway",
   "End": "End",
+  "EndVerse": "End Verse",
   "GetVerses": "Get Verses",
   "GotIt": "Got it",
   "Heb412":
@@ -56,6 +57,7 @@
   "ReviewVerses": "Review Verses",
   "Save": "Save",
   "Start": "Start",
+  "StartVerse": "Start Verse",
   "Undo": "Undo",
   "Verse": "Verse",
   "VerseDeleted": "{{ref}} deleted.",

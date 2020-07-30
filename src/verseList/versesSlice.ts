@@ -15,7 +15,6 @@ export type VersesState = {
     toReview: number[];
     toLearn: number[];
   };
-  draftVerse: null | Verse;
 };
 
 const versesSlice = createSlice({
@@ -27,7 +26,6 @@ const versesSlice = createSlice({
       toReview: [],
       toLearn: [],
     },
-    draftVerse: null,
   } as VersesState,
   reducers: {
     add: (state, action: PayloadAction<Verse[]>) =>
@@ -72,19 +70,6 @@ const versesSlice = createSlice({
         toLearn: [],
         toReview: [],
       };
-    },
-    setDraftVerse: (state, action: PayloadAction<Verse>) => {
-      state.draftVerse = action.payload;
-    },
-    clearDraftVerse: (state) => {
-      state.draftVerse = null;
-    },
-    saveDraftVerse: (state) => {
-      if (state.draftVerse) {
-        if (state.draftVerse.id == 0) addVerses(state, [state.draftVerse]);
-        else updateVerse(state, state.draftVerse);
-      }
-      state.draftVerse = null;
     },
   },
 });

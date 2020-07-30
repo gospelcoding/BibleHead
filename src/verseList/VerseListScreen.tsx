@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useAppSelector} from '../BHState';
 import {
   FlatList,
@@ -7,11 +7,11 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {refText, Verse} from '../verses/Verse';
+import {refText, Verse, normalizeVerses} from '../verses/Verse';
 import BHText from '../components/BHText';
 import DividingLine from '../components/DividingLine';
 import BHButton from '../components/BHButton';
-import {useT} from '../i18n/i18nReact';
+import {useT, useBibleBooks} from '../i18n/i18nReact';
 import {useDispatch} from 'react-redux';
 import {
   NavigationProp,
@@ -31,11 +31,20 @@ interface IProps {
 export default function VerseListScreen({navigation}: IProps) {
   const dispatch = useDispatch();
   const verses = useAppSelector((state) => state.verses.verses);
+  const bookNames = useBibleBooks();
 
   const learnVerse = (verse: Verse) => {
     dispatch(versesSlice.actions.learnAVerse(verse));
     navigation.navigate('Learning');
   };
+
+  useEffect(() => {
+    normalizeVerses(
+      verses,
+      (verse) => dispatch(versesSlice.actions.update(verse)),
+      bookNames,
+    );
+  }, []);
 
   return (
     <SafeAreaView>
@@ -46,7 +55,7 @@ export default function VerseListScreen({navigation}: IProps) {
             verse={verse.item}
             learnVerse={() => learnVerse(verse.item)}
             goToVerse={() =>
-              navigation.navigate('VerseShow', {verse: verse.item})
+              navigation.navigate('VerseShow', {id: verse.item.id})
             }
           />
         )}
@@ -67,7 +76,7 @@ function ListItem(props: {
     <View style={{flexDirection: 'row'}}>
       <TouchableOpacity onPress={props.goToVerse}>
         <BHText>
-          {props.verse.id}: {refText(props.verse)}
+          {props.verse.bookId}: {refText(props.verse)}
         </BHText>
       </TouchableOpacity>
       <View style={{flexGrow: 1}} />
