@@ -1,90 +1,102 @@
-// An improved Button that accepts a child element or a title
-// and allows styling the button and the text
-// and onPressIn/onPressOut events
-
-// Default styles copied from the default React Native Button
-// thx, fb :)
-
-import React, {ComponentProps, PropsWithChildren} from 'react';
-import {
-  Platform,
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  StyleProp,
-  ViewStyle,
-  TextStyle,
-} from 'react-native';
-// import XPlatformTouchable from "./XPlatformTouchable";
-import PropTypes from 'prop-types';
+import React, {ComponentProps} from 'react';
+import {StyleSheet, Text, Platform} from 'react-native';
 import ThemeColors from '../util/ThemeColors';
+import BHTouchable from './BHTouchable';
+import {SvgXml} from 'react-native-svg';
+import Icon from 'react-native-ionicons';
+import ElevatedView from 'react-native-elevated-view';
 
-// const defaultButtonColor = ThemeColors.blue;
-
-interface IProps
-  extends PropsWithChildren<ComponentProps<typeof TouchableOpacity>> {
+interface IProps {
   title?: string;
-  color?: string;
+  svg?: string;
+  icon?: ComponentProps<typeof Icon>['name'];
+  color?: 'red' | 'yellow' | 'green';
+  size?: 'big' | 'jumbo';
+  iosFixJumboIcon?: boolean;
   hidden?: boolean;
-  buttonStyle?: StyleProp<ViewStyle>;
-  textStyle?: StyleProp<TextStyle>;
+  disabled?: boolean;
+  onPress: () => void;
+  onPressIn?: () => void;
+  onPressOut?: () => void;
 }
 
+const iconSizes = {
+  normal: 16,
+  big: 24,
+  jumbo: 36,
+};
+
+const isIos = Platform.OS == 'ios';
+
 export default function BHButton(props: IProps) {
-  const {
-    title,
-    buttonStyle,
-    textStyle,
-    children,
-    color,
-    hidden,
-    ...otherProps
-  } = props;
+  const buttonStyles = [
+    styles.button,
+    props.hidden ? {opacity: 0} : {},
+    props.size == 'big'
+      ? {height: 44, borderRadius: 20}
+      : props.size == 'jumbo'
+      ? {height: 66, borderRadius: 32}
+      : {},
+  ];
 
-  let textStyles: StyleProp<TextStyle>[] = [styles.text, textStyle];
-  let buttonStyles: StyleProp<ViewStyle>[] = [styles.button, buttonStyle];
+  const textStyles = [
+    styles.text,
+    props.hidden ? {opacity: 0} : {},
+    props.size ? {fontSize: props.size == 'jumbo' ? 36 : 24} : {},
+  ];
 
-  if (color) {
-    // if (Platform.OS == "ios") textStyles.push({ color: color });
-    buttonStyles.push({backgroundColor: color});
-  }
+  const bgColor = props.disabled
+    ? ThemeColors.grey
+    : props.color
+    ? ThemeColors[props.color]
+    : ThemeColors.lightBlue;
 
-  if (hidden) {
-    textStyles.push({opacity: 0});
-    buttonStyles.push({opacity: 0});
-  }
-
-  // Right now, I'm just using white to generate ripple color
-  // It's more visible on my dark matte buttons
-  // const androidButtonColor = color || defaultButtonColor;
-
-  let theTitle = title || '';
-  // theTitle = Platform.OS == "ios" ? theTitle : theTitle.toUpperCase();
-  const innerElement = children ? (
-    <Text style={textStyles}>{children}</Text>
-  ) : (
-    <Text style={textStyles}>{theTitle}</Text>
-  );
+  const iconSize =
+    props.iosFixJumboIcon && isIos ? 60 : iconSizes[props.size || 'normal'];
 
   return (
-    <TouchableOpacity /*color={"#ffffff"}*/ {...otherProps}>
-      <View style={buttonStyles}>{innerElement}</View>
-    </TouchableOpacity>
+    <BHTouchable
+      onPress={props.onPress}
+      onPressIn={props.onPressIn}
+      onPressOut={props.onPressOut}
+      backgroundColor={bgColor}
+      disabled={props.disabled}>
+      {(backgroundColor) => (
+        <ElevatedView
+          elevation={2}
+          style={[...buttonStyles, {backgroundColor}]}>
+          {props.svg ? (
+            <SvgXml xml={props.svg} height={iconSize} width={iconSize} />
+          ) : props.icon ? (
+            <Icon
+              style={{alignSelf: 'center'}}
+              size={iconSize}
+              name={props.icon}
+              color={styles.text.color}
+            />
+          ) : (
+            <Text style={textStyles}>{props.title}</Text>
+          )}
+        </ElevatedView>
+      )}
+    </BHTouchable>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: ThemeColors.buttonBlue,
-    elevation: 1,
     borderRadius: 16,
     padding: 8,
     margin: 8,
+    height: 36,
+    minWidth: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
-    color: 'white',
+    color: ThemeColors.white,
     textAlign: 'center',
     fontWeight: '500',
+    fontSize: 16,
   },
 });

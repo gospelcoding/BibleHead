@@ -8,6 +8,7 @@ import NumberInput from '../components/NumberInput';
 import BHButton from '../components/BHButton';
 import Container from '../components/Container';
 import Row from '../components/Row';
+import {View, StyleSheet} from 'react-native';
 
 interface IProps {
   verse: Verse | undefined;
@@ -56,40 +57,50 @@ export default function RefEditor(props: IProps) {
         />
       ) : (
         <Container>
-          <BHText>{t('Book')}</BHText>
+          <BHText subheading>{t('Book')}</BHText>
           <TapText
             text={props.verse.bookName}
             onPress={() => setShowBookList(true)}
           />
-          <BHText>{t('StartVerse')}</BHText>
-          <Row>
-            <NumberInput
-              value={props.verse.startChapter}
-              setValue={(startChapter) => updateVerse({startChapter})}
-            />
-            <BHText>:</BHText>
-            <NumberInput
-              value={props.verse.startVerse || 1}
-              setValue={(startVerse) => updateVerse({startVerse})}
-            />
-          </Row>
+          <BHText subheading>{t('StartVerse')}</BHText>
+          <View style={styles.numberInputRow}>
+            <Row>
+              <NumberInput
+                value={props.verse.startChapter}
+                setValue={(startChapter) => updateVerse({startChapter})}
+              />
+              <BHText>:</BHText>
+              <NumberInput
+                value={props.verse.startVerse || 1}
+                setValue={(startVerse) => updateVerse({startVerse})}
+              />
+            </Row>
+          </View>
 
-          <BHText>{t('EndVerse')}</BHText>
-          <Row>
-            <NumberInput
-              value={props.verse.endChapter || props.verse.startChapter}
-              setValue={(endChapter) => updateVerse({endChapter})}
-            />
-            <BHText>:</BHText>
-            <NumberInput
-              value={props.verse.endVerse || props.verse.startVerse || 1}
-              setValue={(endVerse) => updateVerse({endVerse})}
-            />
-          </Row>
+          <BHText subheading>{t('EndVerse')}</BHText>
+          <View style={styles.numberInputRow}>
+            <Row>
+              <NumberInput
+                value={props.verse.endChapter || props.verse.startChapter}
+                setValue={(endChapter) => updateVerse({endChapter})}
+              />
+              <BHText>:</BHText>
+              <NumberInput
+                value={props.verse.endVerse || props.verse.startVerse || 1}
+                setValue={(endVerse) => updateVerse({endVerse})}
+              />
+            </Row>
+          </View>
 
-          <BHButton title={t('Done')} onPress={props.done} />
+          <BHButton title={t('Next')} onPress={props.done} />
         </Container>
       )}
     </Container>
   );
 }
+
+const styles = StyleSheet.create({
+  numberInputRow: {
+    marginHorizontal: 16,
+  },
+});

@@ -1,34 +1,57 @@
 import React, {ComponentProps} from 'react';
 import Checkbox from '@react-native-community/checkbox';
-import {Platform, View} from 'react-native';
+import {Platform, View, StyleSheet} from 'react-native';
 import ThemeColors from '../util/ThemeColors';
 import BHText from './BHText';
+import BHTouchable from './BHTouchable';
 
-interface IProps extends ComponentProps<typeof Checkbox> {
+const isIos = Platform.OS == 'ios';
+
+interface IProps {
   small?: boolean;
   label: string;
+  value: boolean;
+  onValueChange: (value: boolean) => void;
 }
 
 export default function BHCheckbox(props: IProps) {
   const {small, label, ...otherProps} = props;
   const cbSize = small ? 18 : 26;
   const fontSize = small ? 22 : 32;
-  const uncheckedLabelColor = Platform.OS == 'ios' ? 'black' : '#666';
+
   return (
-    <View style={{flexDirection: 'row'}}>
+    <View style={styles.container}>
       <Checkbox
-        // checkedImage={require('./checkbox-checked-2.png')}
-        // uncheckedImage={require('./checkbox-unchecked.png')}
-        // checkboxStyle={{height: cbSize, width: cbSize}}
-        {...otherProps}
+        tintColors={{true: ThemeColors.lightBlue}}
+        onCheckColor={ThemeColors.lightBlue}
+        onTintColor={ThemeColors.lightBlue}
+        style={styles.checkbox}
+        value={props.value}
+        onValueChange={props.onValueChange}
       />
-      <BHText
-        style={{
-          color: props.checked ? ThemeColors.green : uncheckedLabelColor,
-          fontSize: fontSize,
-        }}>
-        {label}
-      </BHText>
+      <View style={styles.labelContainer}>
+        <BHTouchable
+          backgroundColor={ThemeColors.white}
+          onPress={() => props.onValueChange(!props.value)}>
+          {() => (
+            <View>
+              <BHText>{label}</BHText>
+            </View>
+          )}
+        </BHTouchable>
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: 8,
+  },
+  checkbox: {},
+  labelContainer: {
+    marginLeft: isIos ? 0 : -8,
+  },
+});

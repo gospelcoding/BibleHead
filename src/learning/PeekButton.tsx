@@ -1,26 +1,27 @@
 import React, {ComponentProps} from 'react';
 import BHButton from '../components/BHButton';
-import ThemeColors from '../util/ThemeColors';
-import BHIconButton from '../components/BHIconButton';
+import {useT} from '../i18n/i18nReact';
 
-interface IProps extends ComponentProps<typeof BHButton> {
+interface IProps {
   step: number;
   setPeek: () => void;
   cancelPeek: () => void;
 }
 
 export default function PeekButton(props: IProps) {
-  let {step, ...otherProps} = props;
+  const t = useT();
 
   return (
-    <BHIconButton
-      name="eye"
-      size={36}
-      color={ThemeColors.yellow}
+    <BHButton
+      icon="eye"
+      // size={36}
+      color="yellow"
       onPressIn={props.setPeek}
       onPressOut={props.cancelPeek}
-      hidden={step == 0 ? true : false}
-      {...otherProps}
+      hidden={props.step == 0 ? true : false}
+      onPress={() => {}}
+      title={t('Peek')}
+      size="jumbo"
     />
   );
 }

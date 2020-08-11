@@ -1,4 +1,4 @@
-import {isInt} from './util';
+import {isInt, aShadeDarker} from './util';
 
 test('isInt', () => {
   expect(isInt(0)).toBe(true);
@@ -11,4 +11,8 @@ test('isInt', () => {
   expect(isInt(null)).toBe(false);
   expect(isInt(NaN)).toBe(false);
   expect(isInt({})).toBe(false);
+});
+
+test('a shade darker', () => {
+  expect(aShadeDarker('#bb0a21')).toBe('#a8091e');
 });

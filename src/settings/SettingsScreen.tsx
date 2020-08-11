@@ -1,11 +1,5 @@
 import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
 // import I18n from '../../i18n/i18n';
 // import Settings from '../../util/Settings';
 // import update from 'immutability-helper';
@@ -27,15 +21,15 @@ import {settingsSlice} from './Settings';
 import BHButton from '../components/BHButton';
 import ThemeColors from '../util/ThemeColors';
 import {NavigationProp} from '@react-navigation/native';
-import {BHRootNav} from '../BibleHeadApp';
 import ScreenRoot from '../components/ScreenRoot';
 import BHTouchable from '../components/BHTouchable';
 import {LatestBackup, createBackup} from '../util/Backups';
 import {TFunc, TKey} from '../i18n/i18n';
 import CodeExplanationModal from './CodeExplanationModal';
+import {BHRootTabs} from '../BHRootNav';
 
 interface IProps {
-  navigation: NavigationProp<BHRootNav, 'Preferences'>;
+  navigation: NavigationProp<BHRootTabs, 'Preferences'>;
 }
 
 export default function SettingsScreen({navigation}: IProps) {
@@ -130,23 +124,30 @@ export default function SettingsScreen({navigation}: IProps) {
         />
       </View>
 
-      <BHTouchable onPress={backup}>
-        <View style={[styles.row, {flexDirection: 'column'}]}>
-          <Text style={styles.settingTitle}>{t('BackupVersesNow')}</Text>
-          <Text style={styles.settingTextLittle}>
-            {backupDetailText(
-              {backingUp, backupError, latestBackup: settings.latestBackup},
-              t,
-            )}
-          </Text>
-        </View>
+      <BHTouchable onPress={backup} backgroundColor={ThemeColors.white}>
+        {(backgroundColor) => (
+          <View
+            style={[styles.row, {flexDirection: 'column'}, {backgroundColor}]}>
+            <Text style={styles.settingTitle}>{t('BackupVersesNow')}</Text>
+            <Text style={styles.settingTextLittle}>
+              {backupDetailText(
+                {backingUp, backupError, latestBackup: settings.latestBackup},
+                t,
+              )}
+            </Text>
+          </View>
+        )}
       </BHTouchable>
 
-      <TouchableOpacity onPress={() => setShowingRestoreBackupModal(true)}>
-        <View style={styles.row}>
-          <Text style={styles.settingTitle}>{t('RestoreBackup')}</Text>
-        </View>
-      </TouchableOpacity>
+      <BHTouchable
+        onPress={() => setShowingRestoreBackupModal(true)}
+        backgroundColor={ThemeColors.white}>
+        {(backgroundColor) => (
+          <View style={[styles.row, {backgroundColor}]}>
+            <Text style={styles.settingTitle}>{t('RestoreBackup')}</Text>
+          </View>
+        )}
+      </BHTouchable>
       {/* 
         <DateTimePicker
           isVisible={this.state.showingTimePicker}
@@ -216,6 +217,7 @@ const styles = StyleSheet.create({
   settingTitle: {
     fontSize: 20,
     color: 'black',
+    flexShrink: 1,
   },
   settingText: {
     fontSize: 20,

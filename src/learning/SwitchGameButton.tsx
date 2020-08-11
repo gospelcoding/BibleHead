@@ -1,8 +1,10 @@
 import React from 'react';
-import {View, Image} from 'react-native';
-import BHTouchable from '../components/BHTouchable';
+import {View} from 'react-native';
 import {LearnGame, settingsSlice} from '../settings/Settings';
 import {useDispatch} from 'react-redux';
+import cardsSvg from './cardsIcon';
+import hideWordsSvg from './hideWordsIcon';
+import BHButton from '../components/BHButton';
 
 interface IProps {
   game: LearnGame;
@@ -16,10 +18,12 @@ export default function SwitchGameButton(props: IProps) {
     <View style={{flexDirection: 'row'}}>
       {buttonParams.map((params) => (
         <View style={{padding: 8}} key={params.game}>
-          <BHTouchable
-            onPress={() => dispatch(settingsSlice.actions.toggleLearnGame())}>
-            <Image source={params.imgSource} />
-          </BHTouchable>
+          <BHButton
+            onPress={() => dispatch(settingsSlice.actions.toggleLearnGame())}
+            svg={params.svg}
+            title={params.game}
+            size="big"
+          />
         </View>
       ))}
     </View>
@@ -31,12 +35,12 @@ function getButtonParams(currentGame: LearnGame) {
   if (currentGame != 'HideWords')
     buttonParams.push({
       game: 'HideWords',
-      imgSource: require('./hidewords.png'),
+      svg: hideWordsSvg,
     });
   if (currentGame != 'ShuffleWords')
     buttonParams.push({
       game: 'ShuffleWords',
-      imgSource: require('./cards.png'),
+      svg: cardsSvg,
     });
   return buttonParams;
 }

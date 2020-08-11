@@ -15,25 +15,28 @@ export default function ButtonRowShowWords(props: IProps) {
       <View style={buttonRowStyles.buttonContainer}>
         <BHButton
           title=">"
-          buttonStyle={buttonRowStyles.button}
-          textStyle={buttonRowStyles.buttonText}
+          // buttonStyle={buttonRowStyles.button}
+          // textStyle={buttonRowStyles.buttonText}
           onPress={props.normalStep}
+          size="jumbo"
         />
       </View>
       <View style={buttonRowStyles.buttonContainer}>
         <BHButton
           title=">>"
-          buttonStyle={buttonRowStyles.button}
-          textStyle={buttonRowStyles.buttonText}
+          // buttonStyle={buttonRowStyles.button}
+          // textStyle={buttonRowStyles.buttonText}
           onPress={props.bigStep}
+          size="jumbo"
         />
       </View>
       <View style={buttonRowStyles.buttonContainer}>
         <BHButton
           title=">|"
-          buttonStyle={buttonRowStyles.button}
-          textStyle={buttonRowStyles.buttonText}
+          // buttonStyle={buttonRowStyles.button}
+          // textStyle={buttonRowStyles.buttonText}
           onPress={props.stepToEnd}
+          size="jumbo"
         />
       </View>
     </View>

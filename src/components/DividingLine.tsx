@@ -1,5 +1,5 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React from 'react';
+import {View, StyleSheet} from 'react-native';
 
 export default function DividingLine() {
   return <View style={styles.dividingLine} />;
@@ -7,8 +7,8 @@ export default function DividingLine() {
 
 const styles = StyleSheet.create({
   dividingLine: {
-    marginHorizontal: 12,
-    borderTopWidth: 2,
-    borderTopColor: "#ddd"
-  }
+    marginHorizontal: 0,
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+  },
 });

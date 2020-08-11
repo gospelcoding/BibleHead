@@ -7,10 +7,9 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import {refText, Verse, normalizeVerses} from '../verses/Verse';
+import {refText, Verse, normalizeVerses, verseStrength} from '../verses/Verse';
 import BHText from '../components/BHText';
 import DividingLine from '../components/DividingLine';
-import BHButton from '../components/BHButton';
 import {useT, useBibleBooks} from '../i18n/i18nReact';
 import {useDispatch} from 'react-redux';
 import {
@@ -18,13 +17,18 @@ import {
   CompositeNavigationProp,
 } from '@react-navigation/native';
 import {VersesStackNav} from './VersesStack';
-import {BHRootNav} from '../BibleHeadApp';
 import versesSlice, {updateVerse} from './versesSlice';
+import {LearningStackNav} from '../learning/LearningStack';
+import {BHRootTabs} from '../BHRootNav';
+import ProgressBar from '../components/ProgressBar';
 
 interface IProps {
   navigation: CompositeNavigationProp<
-    NavigationProp<VersesStackNav, 'VerseList'>,
-    NavigationProp<BHRootNav>
+    CompositeNavigationProp<
+      NavigationProp<VersesStackNav, 'VerseList'>,
+      NavigationProp<BHRootTabs>
+    >,
+    NavigationProp<LearningStackNav>
   >;
 }
 
@@ -34,8 +38,9 @@ export default function VerseListScreen({navigation}: IProps) {
   const bookNames = useBibleBooks();
 
   const learnVerse = (verse: Verse) => {
-    dispatch(versesSlice.actions.learnAVerse(verse));
-    navigation.navigate('Learning');
+    navigation.navigate('DoLearn', {
+      review: {toReview: [], toLearn: [verse.id]},
+    });
   };
 
   useEffect(() => {
@@ -68,15 +73,22 @@ function ListItem(props: {
   goToVerse: () => void;
 }) {
   const t = useT();
+  const progress = verseStrength(props.verse);
   return (
     <View style={{flexDirection: 'row'}}>
       <TouchableOpacity onPress={props.goToVerse}>
         <BHText>{refText(props.verse)}</BHText>
       </TouchableOpacity>
       <View style={{flexGrow: 1}} />
-      {!props.verse.learned && (
-        <BHButton title={t('Practice')} onPress={props.learnVerse} />
-      )}
+      <View style={{alignSelf: 'center', paddingEnd: 8}}>
+        {props.verse.learned && (
+          <ProgressBar
+            width={100}
+            progress={progress}
+            color={progress >= 85 ? 'green' : 'yellow'}
+          />
+        )}
+      </View>
     </View>
   );
 }

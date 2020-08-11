@@ -22,23 +22,25 @@ export default function ButtonRowHideWords(props: IProps) {
           setPeek={props.setPeek}
           cancelPeek={props.cancelPeek}
           // button={props.button}
-          textStyle={buttonRowStyles.iconButtonText}
+          // textStyle={buttonRowStyles.iconButtonText}
         />
       </View>
       <View style={buttonRowStyles.buttonContainer}>
         <BHButton
           title=">>"
-          buttonStyle={buttonRowStyles.button}
-          textStyle={buttonRowStyles.buttonText}
+          // buttonStyle={buttonRowStyles.button}
+          // textStyle={buttonRowStyles.buttonText}
           onPress={props.normalStep}
+          size="jumbo"
         />
       </View>
       <View style={buttonRowStyles.buttonContainer}>
         <BHButton
           title=">>>"
-          buttonStyle={buttonRowStyles.button}
-          textStyle={buttonRowStyles.buttonText}
+          // buttonStyle={buttonRowStyles.button}
+          // textStyle={buttonRowStyles.buttonText}
           onPress={props.bigStep}
+          size="jumbo"
         />
       </View>
     </View>

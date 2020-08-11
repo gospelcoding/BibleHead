@@ -77,16 +77,4 @@ const styles = StyleSheet.create({
         paddingBottom: 8,
       },
     }) || {},
-  buttonTextStyle:
-    Platform.select({
-      // ios: {
-      //   fontWeight: "600",
-      //   fontSize: 20
-      // },
-      android: CommonStyles.androidDialogButtonText,
-    }) || {},
-  buttonStyle:
-    Platform.select({
-      android: CommonStyles.androidDialogButton,
-    }) || {},
 });

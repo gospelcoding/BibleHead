@@ -25,7 +25,7 @@ export default function ButtonWords(props: IProps) {
           title={word}
           color={buttonColor(word, index, props.greenWord, props.redButtons)}
           hidden={props.hidButtons.includes(index)}
-          buttonStyle={{margin: 4}}
+          // buttonStyle={{margin: 4}}
           onPress={() => {
             props.buttonWordPress(word, index);
           }}
@@ -41,7 +41,7 @@ function buttonColor(
   greenWord: string,
   redButtons: number[],
 ) {
-  if (word === greenWord) return ThemeColors.buttonGreen;
-  if (redButtons.includes(index)) return ThemeColors.red;
+  if (word === greenWord) return 'green';
+  if (redButtons.includes(index)) return 'red';
   return undefined;
 }

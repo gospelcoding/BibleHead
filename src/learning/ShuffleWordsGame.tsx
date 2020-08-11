@@ -11,6 +11,8 @@ const numberOfButtons = 12;
 
 interface IProps {
   verse: Verse;
+  didPractice: () => void;
+  done: () => void;
 }
 
 export default function ShuffleWordsGame(props: IProps) {
@@ -32,6 +34,7 @@ export default function ShuffleWordsGame(props: IProps) {
     const step = game.step + 1;
     if (step == game.wordsWithIndices.length) {
       setGame({...game, done: true, gameText: practiceParams.text});
+      props.didPractice();
     } else {
       const gameText = practiceParams.text.slice(
         0,
@@ -65,7 +68,7 @@ export default function ShuffleWordsGame(props: IProps) {
         <BHText>{game.gameText}</BHText>
       </ScrollView>
       {game.done ? (
-        <ButtonRowFinal replay={replay} verse={props.verse} />
+        <ButtonRowFinal replay={replay} verse={props.verse} done={props.done} />
       ) : (
         <ButtonWords
           buttonWords={game.buttonWords}

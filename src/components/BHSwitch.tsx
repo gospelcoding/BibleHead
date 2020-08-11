@@ -1,6 +1,7 @@
 import React from 'react';
 import {Switch, Platform} from 'react-native';
 import ThemeColors from '../util/ThemeColors';
+import {aShadeDarker} from '../util/util';
 
 const isIOS = Platform.OS == 'ios';
 
@@ -9,10 +10,9 @@ export default function BHSwitch(props: React.ComponentProps<typeof Switch>) {
     <Switch
       trackColor={{
         false: ThemeColors.grey,
-        true: ThemeColors.blue,
+        true: ThemeColors.lightBlue,
       }}
-      // ios_backgroundColor={ThemeColors.blue} // This doesn't seem to work ?
-      thumbTintColor={
+      thumbColor={
         isIOS ? undefined : props.value ? ThemeColors.blue : ThemeColors.grey
       }
       {...props}

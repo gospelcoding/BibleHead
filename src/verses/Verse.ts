@@ -1,5 +1,6 @@
 import {Passage} from '../addVerse/parsePassage';
 import {isInt} from '../util/util';
+import {BHReview} from '../learning/LearningScreen';
 
 export interface Verse {
   id: number;
@@ -13,7 +14,6 @@ export interface Verse {
   learned: boolean;
   createdAt: number;
   lastReview?: number;
-  review?: number;
   successfulReviews?: number;
   lastReviewWrong?: boolean;
   lastPracticed?: number;
@@ -109,11 +109,11 @@ export function reviewWeight(verse: Verse) {
   return (age * lastWrongFactor) / reviews;
 }
 
-export function selectReviewVersesAndLearningVerse(verses: Verse[]) {
+export function selectReviewVersesAndLearningVerse(verses: Verse[]): BHReview {
   const [reviewing, learning] = reviewingAndLearningLists(verses);
   return {
-    reviewVerses: selectReviewVerses(reviewing, 4),
-    learningVerse: selectLearningVerse(learning),
+    toReview: selectReviewVerses(reviewing, 4).map((v) => v.id),
+    toLearn: selectLearningVerses(learning).map((v) => v.id),
   };
 }
 
@@ -153,7 +153,7 @@ export function selectReviewVerses(verses: Verse[], number: number) {
   });
 }
 
-export function selectLearningVerse(verses: Verse[]) {
+export function selectLearningVerses(verses: Verse[]): Verse[] {
   let lastPracticedVerse;
   let oldestVerse;
   for (let verse of verses) {
@@ -166,7 +166,11 @@ export function selectLearningVerse(verses: Verse[]) {
     if (!oldestVerse || verse.createdAt < oldestVerse.createdAt)
       oldestVerse = verse;
   }
-  return lastPracticedVerse || oldestVerse;
+  return lastPracticedVerse
+    ? [lastPracticedVerse]
+    : oldestVerse
+    ? [oldestVerse]
+    : [];
 }
 
 export function compareVerses(a: Verse, b: Verse) {
@@ -244,4 +248,15 @@ export function normalizeVerses(
     }
     if (Object.keys(update).length > 0) updateVerse({...verse, ...update});
   });
+}
+
+export function verseStrength(verse: Verse): number {
+  if (!verse.learned) return 0;
+
+  const dayInMS = 1000 * 60 * 60 * 24;
+  const age = verse.lastReview ? (Date.now() - verse.lastReview) / dayInMS : 0;
+  return (
+    (-200 / ((verse.successfulReviews || 0) + 100) + 100) *
+    Math.max((100 - age) / 100, 0.05)
+  );
 }

@@ -236,6 +236,8 @@ PODS:
     - React-cxxreact (= 0.63.1)
     - React-jsi (= 0.63.1)
   - React-jsinspector (0.63.1)
+  - react-native-locale (0.0.19):
+    - React
   - react-native-safe-area-context (3.1.1):
     - React
   - react-native-webview (10.3.2):
@@ -314,6 +316,8 @@ PODS:
     - React
   - RNScreens (2.9.0):
     - React
+  - RNSVG (12.1.0):
+    - React
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -355,6 +359,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-locale (from `../node_modules/react-native-locale`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -374,6 +379,7 @@ DEPENDENCIES:
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -422,6 +428,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-locale:
+    :path: "../node_modules/react-native-locale"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-webview:
@@ -460,6 +468,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -490,6 +500,7 @@ SPEC CHECKSUMS:
   React-jsi: b32a31da32e030f30bbf9a8d3a9c8325df9e793f
   React-jsiexecutor: 7ab9cdcdd18d57652fb041f8a147fe9658d4e00a
   React-jsinspector: 2e28bb487e42dda6c94dbfa0c648d1343767a0fb
+  react-native-locale: bd8edf0e51706d469af3e2fa568a8102213a3139
   react-native-safe-area-context: 344b969c45af3d8464d36e8dea264942992ef033
   react-native-webview: 679b6f400176e2ea8a785acf7ae16cf282e7d1eb
   React-RCTActionSheet: 1702a1a85e550b5c36e2e03cb2bd3adea053de95
@@ -509,6 +520,7 @@ SPEC CHECKSUMS:
   RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
+  RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   Yoga: d5bd05a2b6b94c52323745c2c2b64557c8c66f64
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

@@ -4,7 +4,6 @@ import {
   compareVerses,
   successfulReviewParams,
   failedReviewParams,
-  selectReviewVersesAndLearningVerse,
   toggleLearnedParams,
 } from '../verses/Verse';
 import {AppDispatch, AppState} from '../BHState';
@@ -14,10 +13,6 @@ import {settingsSlice} from '../settings/Settings';
 export type VersesState = {
   verses: Verse[];
   nextId: number;
-  learning: {
-    toReview: number[];
-    toLearn: number[];
-  };
 };
 
 const versesSlice = createSlice({
@@ -25,10 +20,6 @@ const versesSlice = createSlice({
   initialState: {
     verses: [],
     nextId: 1,
-    learning: {
-      toReview: [],
-      toLearn: [],
-    },
   } as VersesState,
   reducers: {
     add: (state, action: PayloadAction<Verse[]>) => add(state, action.payload),
@@ -41,37 +32,21 @@ const versesSlice = createSlice({
     remove: (state, action: PayloadAction<number>) => {
       state.verses = state.verses.filter((v) => v.id !== action.payload);
     },
-    learnAVerse: (state, action: PayloadAction<Verse>) => {
-      state.learning = {toLearn: [action.payload.id], toReview: []};
-    },
-    startReview: (state) => {
-      const {reviewVerses, learningVerse} = selectReviewVersesAndLearningVerse(
-        state.verses,
-      );
-      state.learning.toReview = reviewVerses.map((v) => v.id);
-      state.learning.toLearn = learningVerse ? [learningVerse.id] : [];
-    },
-    // Payload indicates review success
-    reviewDone: (state, action: PayloadAction<boolean>) => {
-      const verseId: number | undefined = state.learning.toReview[0];
-      const verse = state.verses.find((v) => v.id == verseId);
+    reviewDone: (
+      state,
+      action: PayloadAction<{id: number; success: boolean}>,
+    ) => {
+      // const verseId: number | undefined = state.learning.toReview[0];
+      const verse = state.verses.find((v) => v.id == action.payload.id);
       if (verse) {
         const newVerse = {
           ...verse,
-          ...(action.payload
+          ...(action.payload.success
             ? successfulReviewParams(verse)
             : failedReviewParams()),
         };
         update(state, newVerse);
       }
-
-      state.learning.toReview.shift();
-    },
-    clearLearning: (state) => {
-      state.learning = {
-        toLearn: [],
-        toReview: [],
-      };
     },
   },
 });
@@ -120,9 +95,9 @@ export function removeVerse(id: number) {
   };
 }
 
-export function verseReviewDone(success: boolean) {
+export function verseReviewDone(id: number, success: boolean) {
   return (dispatch: AppDispatch, getState: () => AppState) => {
-    dispatch(versesSlice.actions.reviewDone(success));
+    dispatch(versesSlice.actions.reviewDone({id, success}));
     autoBackup(dispatch, getState);
   };
 }

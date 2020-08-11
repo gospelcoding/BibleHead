@@ -40,13 +40,13 @@ export function aShadeDarker(color: string) {
     '#' +
     [color.slice(1, 3), color.slice(3, 5), color.slice(5, 7)]
       .map((hex) => {
-        return Math.round(parseInt(`0x${hex}`) * 0.9).toString(16);
+        return zeroPad(Math.round(parseInt(`0x${hex}`) * 0.9).toString(16), 2);
       })
       .join('')
   );
 }
 
-export function zeroPad(number: number, length: number) {
+export function zeroPad(number: number | string, length: number) {
   const s = `${number}`;
   const zeros = new Array(length - s.length).fill('0').join('');
   return zeros + s;
@@ -57,8 +57,14 @@ export function sameDay(a: Date, b: Date): boolean {
 }
 
 // Returns as YYYY-MM-DD
-function isoDateString(date: Date): string {
-  return date.toISOString().slice(0, 10);
+export function isoDateString(date: Date): string {
+  return (
+    zeroPad(date.getFullYear(), 4) +
+    '-' +
+    zeroPad(date.getMonth() + 1, 2) +
+    '-' +
+    zeroPad(date.getDate(), 2)
+  );
 }
 
 export function isInt(x: unknown) {
@@ -71,3 +77,7 @@ export function isInt(x: unknown) {
 //   list.forEach(item => discriminator(item) ? pass.push(item) : fail.push(item))
 //   return [pass, fail]
 // }
+
+export function colorizeSvg(svg: string, color: string) {
+  return svg.replace(/#ffffff/g, color);
+}

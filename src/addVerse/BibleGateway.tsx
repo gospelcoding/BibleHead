@@ -36,6 +36,11 @@ export default function BibleGateway(props: IProps) {
     }
   };
 
+  const resetState = () => {
+    setPassage(null);
+    setLastUrl(null);
+  };
+
   const saveVerse = () => {
     if (passage) {
       const verse = newVerse({
@@ -44,6 +49,7 @@ export default function BibleGateway(props: IProps) {
       });
       dispatch(addVerses([verse]));
       props.done();
+      resetState();
     }
   };
 

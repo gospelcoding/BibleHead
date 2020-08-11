@@ -16,10 +16,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     borderBottomColor: ThemeColors.grey,
   },
-  androidDialogButtonText: {
-    color: ThemeColors.buttonBlue,
-  },
-  androidDialogButton: {backgroundColor: 'transparent', elevation: 0},
 });
 
 export default styles;

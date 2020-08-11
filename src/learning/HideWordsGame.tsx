@@ -11,6 +11,8 @@ const isIOS = Platform.OS == 'ios';
 
 interface IProps {
   verse: Verse;
+  didPractice: () => void;
+  done: () => void;
 }
 
 export default function HideWordsGame(props: IProps) {
@@ -25,6 +27,7 @@ export default function HideWordsGame(props: IProps) {
   const takeStep = (numberOfSteps: number) => {
     if (step >= coordinates.length) {
       setDone(true);
+      props.didPractice();
       setGameText(verseText);
     } else {
       const nextStepVals = calculateStep(
@@ -64,7 +67,7 @@ export default function HideWordsGame(props: IProps) {
         </Text>
       </ScrollView>
       {done ? (
-        <ButtonRowFinal replay={replay} verse={props.verse} />
+        <ButtonRowFinal replay={replay} verse={props.verse} done={props.done} />
       ) : (
         <ButtonRowHideWords
           step={step}

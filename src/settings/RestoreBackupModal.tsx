@@ -96,14 +96,6 @@ export default function RestoreBackupModal(props: IProps) {
                     {isTKey(errorMessage) ? t(errorMessage) : errorMessage}
                   </Text>
                 )}
-                {isIOS && code.length > 0 && (
-                  <BHButton
-                    title={t('GetVerses')}
-                    onPress={getVerses}
-                    textStyle={styles.buttonTextStyle}
-                    buttonStyle={styles.buttonStyle}
-                  />
-                )}
               </View>
             )}
             {phase == Phases.versesDisplay && (
@@ -116,40 +108,21 @@ export default function RestoreBackupModal(props: IProps) {
                     return <Text style={styles.verseRef}>{refText(item)}</Text>;
                   }}
                 />
-                {isIOS && (
-                  <BHButton
-                    title={t('AddVerses')}
-                    onPress={addNewVerses}
-                    textStyle={styles.buttonTextStyle}
-                    buttonStyle={styles.buttonStyle}
-                  />
-                )}
               </View>
             )}
-          </View>
-          <View style={styles.buttonContainer}>
-            <BHButton
-              title={t('Cancel')}
-              onPress={props.dismissModal}
-              textStyle={styles.buttonTextStyle}
-              buttonStyle={styles.buttonStyle}
-            />
-            {!isIOS && phase == Phases.codeEntry && code.length > 0 && (
-              <BHButton
-                title={t('GetVerses')}
-                onPress={getVerses}
-                textStyle={styles.buttonTextStyle}
-                buttonStyle={styles.buttonStyle}
-              />
-            )}
-            {!isIOS && phase == Phases.versesDisplay && (
-              <BHButton
-                title={t('AddVerses')}
-                onPress={addNewVerses}
-                textStyle={styles.buttonTextStyle}
-                buttonStyle={styles.buttonStyle}
-              />
-            )}
+            <View style={styles.buttonContainer}>
+              {phase == Phases.codeEntry && (
+                <BHButton
+                  title={t('GetVerses')}
+                  onPress={getVerses}
+                  disabled={code.length == 0}
+                />
+              )}
+              {phase == Phases.versesDisplay && (
+                <BHButton title={t('AddVerses')} onPress={addNewVerses} />
+              )}
+              <BHButton title={t('Cancel')} onPress={props.dismissModal} />
+            </View>
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -158,47 +131,19 @@ export default function RestoreBackupModal(props: IProps) {
 }
 
 const styles = StyleSheet.create({
-  mainContainer:
-    Platform.select({
-      ios: {
-        backgroundColor: 'white',
-        borderRadius: 16,
-        paddingHorizontal: 16,
-        marginBottom: 8,
-        flexShrink: 1,
-      },
-      android: {
-        backgroundColor: 'white',
-        flexShrink: 1,
-      },
-    }) || {},
-  buttonContainer:
-    Platform.select({
-      ios: {
-        backgroundColor: 'white',
-        borderRadius: 16,
-        paddingVertical: 10,
-      },
-      android: {
-        backgroundColor: 'white',
-        justifyContent: 'flex-end',
-        paddingRight: 16,
-        paddingBottom: 8,
-        flexDirection: 'row',
-      },
-    }) || {},
-  buttonTextStyle:
-    Platform.select({
-      // ios: {
-      //   // fontWeight: "600",
-      //   // fontSize: 20
-      // },
-      android: CommonStyles.androidDialogButtonText,
-    }) || {},
-  buttonStyle:
-    Platform.select({
-      android: CommonStyles.androidDialogButton,
-    }) || {},
+  mainContainer: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    marginBottom: 8,
+    flexShrink: 1,
+  },
+  buttonContainer: {
+    backgroundColor: 'white',
+    justifyContent: 'space-between',
+    paddingBottom: 8,
+    flexDirection: 'row',
+  },
   codeText: {
     fontSize: 24,
     marginVertical: 12,

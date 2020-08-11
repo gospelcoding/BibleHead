@@ -11,18 +11,22 @@ interface IProps {
 
 export default function TapText(props: IProps) {
   return (
-    <BHTouchable onPress={props.onPress}>
-      <View style={style.container}>
-        <BHText>{props.text}</BHText>
-      </View>
+    <BHTouchable onPress={props.onPress} backgroundColor={ThemeColors.white}>
+      {(backgroundColor) => (
+        <View style={[style.container, {backgroundColor}]}>
+          <BHText>{props.text}</BHText>
+        </View>
+      )}
     </BHTouchable>
   );
 }
 
 const style = StyleSheet.create({
   container: {
-    padding: 8,
-    borderBottomColor: ThemeColors.grey,
-    borderBottomWidth: 1,
+    padding: 4,
+    borderColor: ThemeColors.grey,
+    borderWidth: 1,
+    borderRadius: 16,
+    margin: 16,
   },
 });

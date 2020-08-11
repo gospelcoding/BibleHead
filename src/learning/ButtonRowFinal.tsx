@@ -6,11 +6,12 @@ import {Verse} from '../verses/Verse';
 import versesSlice, {toggleVerseLearned} from '../verseList/versesSlice';
 import {buttonRowStyles} from '../util/CommonStyles';
 import BHCheckbox from '../components/BHCheckbox';
-import BHIconButton from '../components/BHIconButton';
+import BHButton from '../components/BHButton';
 
 interface IProps {
   replay: () => void;
   verse: Verse;
+  done: () => void;
 }
 
 export default function ButtonRowFinal(props: IProps) {
@@ -19,29 +20,32 @@ export default function ButtonRowFinal(props: IProps) {
 
   return (
     <View>
-      <BHCheckbox
-        label={t('Learned')}
-        value={!!props.verse.learned}
-        onValueChange={() => dispatch(toggleVerseLearned(props.verse.id))}
-        containerStyle={styles.checkboxContainerStyle}
-      />
+      <View style={{flexDirection: 'row-reverse'}}>
+        <BHCheckbox
+          label={t('Learned')}
+          value={!!props.verse.learned}
+          onValueChange={() => dispatch(toggleVerseLearned(props.verse.id))}
+        />
+      </View>
       <View style={buttonRowStyles.buttonRow}>
         <View style={buttonRowStyles.buttonContainer}>
-          <BHIconButton
-            name="refresh"
-            size={36}
+          <BHButton
+            icon="refresh"
+            // size={36}
             onPress={props.replay}
-            buttonStyle={buttonRowStyles.button}
-            textStyle={buttonRowStyles.iconButtonText}
+            // buttonStyle={buttonRowStyles.button}
+            // textStyle={buttonRowStyles.iconButtonText}
+            size="jumbo"
           />
         </View>
         <View style={buttonRowStyles.buttonContainer}>
-          <BHIconButton
-            name="home"
-            size={36}
-            onPress={() => dispatch(versesSlice.actions.clearLearning())}
-            buttonStyle={buttonRowStyles.button}
-            textStyle={buttonRowStyles.iconButtonText}
+          <BHButton
+            icon="home"
+            // size={36}
+            onPress={props.done}
+            // buttnStyle={buttonRowStyles.button}
+            // textStoyle={buttonRowStyles.iconButtonText}
+            size="jumbo"
           />
         </View>
       </View>

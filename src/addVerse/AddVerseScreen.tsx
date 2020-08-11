@@ -8,13 +8,14 @@ import BHButton from '../components/BHButton';
 import {useDispatch} from 'react-redux';
 import {settingsSlice} from '../settings/Settings';
 import {NavigationProp} from '@react-navigation/native';
-import {BHRootNav} from '../BibleHeadApp';
 import BibleGateway from './BibleGateway';
 import VerseEditor from './VerseEditor';
 import {addVerses} from '../verseList/versesSlice';
+import {BHRootTabs} from '../BHRootNav';
+import {LATEST_VERSE} from '../learning/useVerseById';
 
 interface IProps {
-  navigation: NavigationProp<BHRootNav, 'AddVerse'>;
+  navigation: NavigationProp<BHRootTabs, 'AddVerse'>;
 }
 
 export default function AddVerseScreen({navigation}: IProps) {
@@ -25,10 +26,20 @@ export default function AddVerseScreen({navigation}: IProps) {
     (state) => state.settings.useBibleGateway,
   );
 
+  const done = () => {
+    navigation.navigate('Verses', {
+      screen: 'VerseShow',
+      params: {id: LATEST_VERSE},
+      initial: false,
+    });
+  };
+
   return (
     <ScreenRoot>
       <View style={{flexDirection: 'row'}}>
-        <BHText>{bibleGateway ? t('BibleGateway') : t('ManualEntry')}</BHText>
+        <BHText heading>
+          {bibleGateway ? t('BibleGateway') : t('ManualEntry')}
+        </BHText>
         <View style={{flex: 1}} />
         <BHButton
           title={bibleGateway ? t('ManualEntry') : t('BibleGateway')}
@@ -36,10 +47,10 @@ export default function AddVerseScreen({navigation}: IProps) {
         />
       </View>
       {bibleGateway ? (
-        <BibleGateway done={() => navigation.navigate('Verses')} />
+        <BibleGateway done={done} />
       ) : (
         <VerseEditor
-          done={() => navigation.navigate('Verses')}
+          done={done}
           saveVerse={(verse) => dispatch(addVerses([verse]))}
         />
       )}

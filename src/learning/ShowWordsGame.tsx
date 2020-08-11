@@ -7,6 +7,7 @@ import BHText from '../components/BHText';
 
 interface IProps {
   verse: Verse;
+  done: () => void;
 }
 
 const isIOS = Platform.OS == 'ios';
@@ -52,17 +53,14 @@ export default function ShowWordsGame(props: IProps) {
 
   return (
     <View style={styles.showWordsGame}>
-      <BHText>{refText(props.verse)}</BHText>
       <ScrollView
         ref={scrollViewRef}
         style={{flex: 1}}
         contentContainerStyle={{flexGrow: 1}}>
-        <Text style={styles.gameText} textBreakStrategy="simple">
-          {gameText}
-        </Text>
+        <BHText textBreakStrategy="simple">{gameText}</BHText>
       </ScrollView>
       {splitIndex == verseText.length ? (
-        <ButtonRowReviewFinal verse={props.verse} />
+        <ButtonRowReviewFinal verse={props.verse} done={props.done} />
       ) : (
         <ButtonRowShowWords
           normalStep={normalStep}
