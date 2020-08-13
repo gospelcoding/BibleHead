@@ -25,5 +25,6 @@ export function extendStreak(
 ): Streak | false {
   const dateStr = isoDateString(date);
   if (streakLength([streak[1], dateStr]) > 2) return false;
+  if (dateStr <= streak[1]) return streak;
   return [streak[0], dateStr];
 }

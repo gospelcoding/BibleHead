@@ -1,7 +1,7 @@
 import {newStreak, streakLength, extendStreak, Streak} from './Streak';
 
+const tzOffset = new Date().getTimezoneOffset();
 function localDate(str: string) {
-  const tzOffset = new Date().getTimezoneOffset();
   return new Date(new Date(str).valueOf() - tzOffset);
 }
 
@@ -28,6 +28,10 @@ test('Streak Extends', () => {
 test('Streak Extends - no op', () => {
   const streak: Streak = ['2020-08-13', '2020-08-21'];
   expect(extendStreak(streak, localDate('2020-08-21T13:59:59'))).toEqual([
+    '2020-08-13',
+    '2020-08-21',
+  ]);
+  expect(extendStreak(streak, localDate('2020-08-04T13:59:59'))).toEqual([
     '2020-08-13',
     '2020-08-21',
   ]);
