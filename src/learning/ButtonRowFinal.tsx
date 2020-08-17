@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useT} from '../i18n/i18nReact';
 import {useDispatch} from 'react-redux';
-import {Verse} from '../verses/Verse';
-import versesSlice, {toggleVerseLearned} from '../verseList/versesSlice';
+import {Verse, versePracticeParams} from '../verses/Verse';
+import versesSlice, {versesUpdateAction} from '../verseList/versesSlice';
 import {buttonRowStyles} from '../util/CommonStyles';
 import BHCheckbox from '../components/BHCheckbox';
 import BHButton from '../components/BHButton';
@@ -18,13 +18,29 @@ export default function ButtonRowFinal(props: IProps) {
   const t = useT();
   const dispatch = useDispatch();
 
+  const [sectionLearned, setSectionLearned] = useState(
+    versePracticeParams(props.verse).learned,
+  );
+
+  const toggleLearned = () => {
+    setSectionLearned(!sectionLearned);
+    dispatch(
+      versesUpdateAction(
+        versesSlice.actions.toggleSectionLearned({
+          id: props.verse.id,
+          learned: !sectionLearned,
+        }),
+      ),
+    );
+  };
+
   return (
     <View>
       <View style={{flexDirection: 'row-reverse'}}>
         <BHCheckbox
           label={t('Learned')}
-          value={!!props.verse.learned}
-          onValueChange={() => dispatch(toggleVerseLearned(props.verse.id))}
+          value={!!sectionLearned}
+          onValueChange={toggleLearned}
         />
       </View>
       <View style={buttonRowStyles.buttonRow}>

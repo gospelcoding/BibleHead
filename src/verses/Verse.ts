@@ -1,5 +1,5 @@
 import {Passage} from '../addVerse/parsePassage';
-import {isInt} from '../util/util';
+import {isInt, localDateString} from '../util/util';
 import {BHReview} from '../learning/LearningScreen';
 
 export interface Verse {
@@ -12,6 +12,7 @@ export interface Verse {
   startVerse?: number;
   endVerse?: number;
   learned: boolean;
+  learnedDate?: string; // YYYY-MM-DD
   createdAt: number;
   lastReview?: number;
   successfulReviews?: number;
@@ -193,15 +194,22 @@ export function compareVerses(a: Verse, b: Verse) {
 //   };
 // }
 
-export function toggleLearnedParams(verse: Verse) {
-  const learned = !verse.learned;
-  if (!isDivided(verse)) return {learned};
+export function toggleSectionLearnedParams(verse: Verse, learned: boolean) {
+  if (!isDivided(verse)) return toggleLearnedParams(verse);
+
   const newCurrentSplit = learned
     ? verse.currentSplit + 1
     : verse.currentSplit - 1;
   if (newCurrentSplit == verse.splitIndices.length)
-    return {learned: true, currentSplit: 0};
+    return {...toggleLearnedParams(verse), currentSplit: 0};
   return {currentSplit: newCurrentSplit};
+}
+
+export function toggleLearnedParams(verse: Verse) {
+  return {
+    learned: !verse.learned,
+    learnedDate: verse.learned ? undefined : localDateString(new Date()),
+  };
 }
 
 export function successfulReviewParams(verse: Verse) {

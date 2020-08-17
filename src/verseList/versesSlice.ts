@@ -5,14 +5,18 @@ import {
   successfulReviewParams,
   failedReviewParams,
   toggleLearnedParams,
+  toggleSectionLearnedParams,
 } from '../verses/Verse';
 import {AppDispatch, AppState} from '../BHState';
 import {automaticBackup} from '../util/Backups';
 import {settingsSlice} from '../settings/Settings';
+import {Streak, isCurrent, extendStreak, streakLength} from '../util/Streak';
 
 export type VersesState = {
   verses: Verse[];
   nextId: number;
+  bestStreak?: Streak;
+  currentStreak?: Streak;
 };
 
 const versesSlice = createSlice({
@@ -29,8 +33,25 @@ const versesSlice = createSlice({
       const verse = state.verses.find((v) => v.id == action.payload);
       if (verse) Object.assign(verse, toggleLearnedParams(verse));
     },
+    toggleSectionLearned: (
+      state,
+      action: PayloadAction<{id: number; learned: boolean}>,
+    ) => {
+      const verse = state.verses.find((v) => v.id == action.payload.id);
+      if (verse)
+        Object.assign(
+          verse,
+          toggleSectionLearnedParams(verse, action.payload.learned),
+        );
+    },
     remove: (state, action: PayloadAction<number>) => {
       state.verses = state.verses.filter((v) => v.id !== action.payload);
+    },
+    practiceDone: (state, action: PayloadAction<number>) => {
+      const verse = state.verses.find((v) => v.id == action.payload);
+      if (verse) verse.lastPracticed = Date.now();
+
+      streakUpdate(state);
     },
     reviewDone: (
       state,
@@ -46,7 +67,12 @@ const versesSlice = createSlice({
             : failedReviewParams()),
         };
         update(state, newVerse);
+
+        streakUpdate(state);
       }
+    },
+    streakReset: (state) => {
+      streakReset(state);
     },
   },
 });
@@ -67,37 +93,20 @@ function update(state: VersesState, verse: Verse) {
   }
 }
 
-export function addVerses(verses: Verse[]) {
-  return (dispatch: AppDispatch, getState: () => AppState) => {
-    dispatch(versesSlice.actions.add(verses));
-    autoBackup(dispatch, getState);
-  };
+function streakReset(state: VersesState) {
+  if (state.currentStreak && !isCurrent(state.currentStreak))
+    state.currentStreak = undefined;
 }
 
-export function updateVerse(verse: Verse) {
-  return (dispatch: AppDispatch, getState: () => AppState) => {
-    dispatch(versesSlice.actions.update(verse));
-    autoBackup(dispatch, getState);
-  };
+function streakUpdate(state: VersesState) {
+  state.currentStreak = extendStreak(state.currentStreak);
+  if (streakLength(state.currentStreak) > streakLength(state.bestStreak))
+    state.bestStreak = state.currentStreak;
 }
 
-export function toggleVerseLearned(id: number) {
+export function versesUpdateAction(action: PayloadAction<any>) {
   return (dispatch: AppDispatch, getState: () => AppState) => {
-    dispatch(versesSlice.actions.toggleLearned(id));
-    autoBackup(dispatch, getState);
-  };
-}
-
-export function removeVerse(id: number) {
-  return (dispatch: AppDispatch, getState: () => AppState) => {
-    dispatch(versesSlice.actions.remove(id));
-    autoBackup(dispatch, getState);
-  };
-}
-
-export function verseReviewDone(id: number, success: boolean) {
-  return (dispatch: AppDispatch, getState: () => AppState) => {
-    dispatch(versesSlice.actions.reviewDone({id, success}));
+    dispatch(action);
     autoBackup(dispatch, getState);
   };
 }

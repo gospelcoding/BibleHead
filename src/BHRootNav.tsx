@@ -10,7 +10,7 @@ import ReviewSummaryScreen from './learning/ReviewSummaryScreen';
 
 export type BHRootTabs = {
   AddVerse: undefined;
-  Verses: undefined | {showLatestVerse: boolean};
+  Verses: undefined | {screen: string; params: {id: number}; initial: boolean};
   Learning: undefined;
   Preferences: undefined;
 };

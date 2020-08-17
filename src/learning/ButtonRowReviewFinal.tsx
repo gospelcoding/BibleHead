@@ -4,9 +4,9 @@ import {useDispatch} from 'react-redux';
 import {buttonRowStyles} from '../util/CommonStyles';
 import ThemeColors from '../util/ThemeColors';
 import {Verse} from '../verses/Verse';
-import {verseReviewDone} from '../verseList/versesSlice';
 import BHButton from '../components/BHButton';
 import {useT} from '../i18n/i18nReact';
+import versesSlice, {versesUpdateAction} from '../verseList/versesSlice';
 
 const isIOS = Platform.OS == 'ios';
 
@@ -29,7 +29,14 @@ export default function ButtonRowReviewFinal(props: IProps) {
           // buttonStyle={buttonRowStyles.button}
           // textStyle={buttonRowStyles.buttonText}
           onPress={() => {
-            dispatch(verseReviewDone(props.verse.id, false));
+            dispatch(
+              versesUpdateAction(
+                versesSlice.actions.reviewDone({
+                  id: props.verse.id,
+                  success: false,
+                }),
+              ),
+            );
             props.done();
           }}
           title={t('Wrong')}
@@ -45,7 +52,14 @@ export default function ButtonRowReviewFinal(props: IProps) {
           // buttonStyle={buttonRowStyles.button}
           // textStyle={buttonRowStyles.buttonText}
           onPress={() => {
-            dispatch(verseReviewDone(props.verse.id, true));
+            dispatch(
+              versesUpdateAction(
+                versesSlice.actions.reviewDone({
+                  id: props.verse.id,
+                  success: true,
+                }),
+              ),
+            );
             props.done();
           }}
           title={t('Correct')}

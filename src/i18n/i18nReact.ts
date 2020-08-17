@@ -11,3 +11,7 @@ export function useT(): TFunc {
 export function useBibleBooks(): string[] {
   return useContext(I18nContext).bibleBooks;
 }
+
+export function useMonthNames(): string[] {
+  return useContext(I18nContext).months;
+}

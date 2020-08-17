@@ -1,4 +1,4 @@
-import {loadStrings, locales} from './i18n';
+import {loadStrings, locales, tForStrings} from './i18n';
 import fs from 'fs';
 import path from 'path';
 
@@ -29,4 +29,13 @@ test.skip('No missing strings in translations', () => {
     enKeys.filter((key) => !(key in strings)),
   );
   expect(missingKeys).toEqual(otherStrings.map(() => []));
+});
+
+test('Pluralizing', () => {
+  const t = tForStrings(en);
+  expect(t('days', {number: '0'}, 0)).toBe('0 days');
+  expect(t('days', {number: '1'}, 1)).toBe('1 day');
+  expect(t('days', {number: '2'}, 2)).toBe('2 days');
+
+  expect(t('days', {number: '1'})).toBe('1 days');
 });

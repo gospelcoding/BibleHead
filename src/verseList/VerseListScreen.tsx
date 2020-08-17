@@ -17,7 +17,7 @@ import {
   CompositeNavigationProp,
 } from '@react-navigation/native';
 import {VersesStackNav} from './VersesStack';
-import versesSlice, {updateVerse} from './versesSlice';
+import versesSlice, {versesUpdateAction} from './versesSlice';
 import {LearningStackNav} from '../learning/LearningStack';
 import {BHRootTabs} from '../BHRootNav';
 import ProgressBar from '../components/ProgressBar';
@@ -44,7 +44,12 @@ export default function VerseListScreen({navigation}: IProps) {
   };
 
   useEffect(() => {
-    normalizeVerses(verses, (verse) => dispatch(updateVerse(verse)), bookNames);
+    normalizeVerses(
+      verses,
+      (verse) =>
+        dispatch(versesUpdateAction(versesSlice.actions.update(verse))),
+      bookNames,
+    );
   }, []);
 
   return (
@@ -75,20 +80,20 @@ function ListItem(props: {
   const t = useT();
   const progress = verseStrength(props.verse);
   return (
-    <View style={{flexDirection: 'row'}}>
-      <TouchableOpacity onPress={props.goToVerse}>
+    <TouchableOpacity onPress={props.goToVerse}>
+      <View style={{flexDirection: 'row'}}>
         <BHText>{refText(props.verse)}</BHText>
-      </TouchableOpacity>
-      <View style={{flexGrow: 1}} />
-      <View style={{alignSelf: 'center', paddingEnd: 8}}>
-        {props.verse.learned && (
-          <ProgressBar
-            width={100}
-            progress={progress}
-            color={progress >= 85 ? 'green' : 'yellow'}
-          />
-        )}
+        <View style={{flexGrow: 1}} />
+        <View style={{alignSelf: 'center', paddingEnd: 8}}>
+          {props.verse.learned && (
+            <ProgressBar
+              width={100}
+              progress={progress}
+              color={progress >= 85 ? 'green' : 'yellow'}
+            />
+          )}
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

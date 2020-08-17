@@ -15,11 +15,11 @@ import {restoreBackup} from '../util/Backups';
 import {Verse, refText} from '../verses/Verse';
 import {useDispatch} from 'react-redux';
 import {useT} from '../i18n/i18nReact';
-import {addVerses} from '../verseList/versesSlice';
 import {isTKey} from '../i18n/i18n';
 import BHButton from '../components/BHButton';
 import CommonStyles from '../util/CommonStyles';
 import ThemeColors from '../util/ThemeColors';
+import versesSlice, {versesUpdateAction} from '../verseList/versesSlice';
 
 const isIOS = Platform.OS == 'ios';
 enum Phases {
@@ -58,7 +58,7 @@ export default function RestoreBackupModal(props: IProps) {
 
   const addNewVerses = async () => {
     if (verses) {
-      dispatch(addVerses(verses));
+      dispatch(versesUpdateAction(versesSlice.actions.add(verses)));
       props.dismissModal();
       props.goHome();
     }

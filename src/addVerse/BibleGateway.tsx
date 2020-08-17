@@ -5,10 +5,10 @@ import Axios from 'axios';
 import BGPassageDisplay from './BGPassageDisplay';
 import WebView from 'react-native-webview';
 import {newVerse} from '../verses/Verse';
-import {addVerses} from '../verseList/versesSlice';
 import {useDispatch} from 'react-redux';
 import {useT} from '../i18n/i18nReact';
 import BHText from '../components/BHText';
+import versesSlice, {versesUpdateAction} from '../verseList/versesSlice';
 
 interface IProps {
   done: () => void;
@@ -47,7 +47,7 @@ export default function BibleGateway(props: IProps) {
         text: passage.text,
         ...passage.ref,
       });
-      dispatch(addVerses([verse]));
+      dispatch(versesUpdateAction(versesSlice.actions.add([verse])));
       props.done();
       resetState();
     }

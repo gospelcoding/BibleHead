@@ -10,9 +10,9 @@ import {settingsSlice} from '../settings/Settings';
 import {NavigationProp} from '@react-navigation/native';
 import BibleGateway from './BibleGateway';
 import VerseEditor from './VerseEditor';
-import {addVerses} from '../verseList/versesSlice';
 import {BHRootTabs} from '../BHRootNav';
 import {LATEST_VERSE} from '../learning/useVerseById';
+import versesSlice, {versesUpdateAction} from '../verseList/versesSlice';
 
 interface IProps {
   navigation: NavigationProp<BHRootTabs, 'AddVerse'>;
@@ -51,7 +51,9 @@ export default function AddVerseScreen({navigation}: IProps) {
       ) : (
         <VerseEditor
           done={done}
-          saveVerse={(verse) => dispatch(addVerses([verse]))}
+          saveVerse={(verse) =>
+            dispatch(versesUpdateAction(versesSlice.actions.add([verse])))
+          }
         />
       )}
     </ScreenRoot>

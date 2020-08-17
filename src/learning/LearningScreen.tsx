@@ -12,7 +12,7 @@ import HideWordsGame from './HideWordsGame';
 import {useDispatch} from 'react-redux';
 import {useVerseById} from './useVerseById';
 import ShowWordsGame from './ShowWordsGame';
-import {updateVerse} from '../verseList/versesSlice';
+import versesSlice, {versesUpdateAction} from '../verseList/versesSlice';
 import ScreenRoot from '../components/ScreenRoot';
 import ShuffleWordsGame from './ShuffleWordsGame';
 import SwitchGameButton from './SwitchGameButton';
@@ -41,7 +41,9 @@ export default function LearningScreen({navigation, route}: IProps) {
 
   const didPracticeLearnVerse = () => {
     if (!learnVerse) return;
-    dispatch(updateVerse({...learnVerse, lastPracticed: Date.now()}));
+    dispatch(
+      versesUpdateAction(versesSlice.actions.practiceDone(learnVerse.id)),
+    );
   };
 
   // useEffect(() => {

@@ -11,7 +11,6 @@ import BHText from '../components/BHText';
 import BHButton from '../components/BHButton';
 import {VersesStackNav} from './VersesStack';
 import {useDispatch} from 'react-redux';
-import {updateVerse, toggleVerseLearned, removeVerse} from './versesSlice';
 import {useT} from '../i18n/i18nReact';
 import BHCheckbox from '../components/BHCheckbox';
 import VerseEditor from '../addVerse/VerseEditor';
@@ -26,6 +25,7 @@ import ThemeColors from '../util/ThemeColors';
 import formattedDate from '../util/formattedDate';
 import {LearningStackNav} from '../learning/LearningStack';
 import {useVerseById} from '../learning/useVerseById';
+import versesSlice, {versesUpdateAction} from './versesSlice';
 
 interface IProps {
   navigation: CompositeNavigationProp<
@@ -54,7 +54,7 @@ export default function VerseShowScreen({navigation, route}: IProps) {
 
   const removeTheVerse = () => {
     navigation.navigate('VerseList');
-    dispatch(removeVerse(verse.id));
+    dispatch(versesUpdateAction(versesSlice.actions.remove(verse.id)));
   };
 
   return (
@@ -62,7 +62,9 @@ export default function VerseShowScreen({navigation, route}: IProps) {
       {editing ? (
         <VerseEditor
           done={() => setEditing(false)}
-          saveVerse={(verse) => dispatch(updateVerse(verse))}
+          saveVerse={(verse) =>
+            dispatch(versesUpdateAction(versesSlice.actions.update(verse)))
+          }
           verse={verse}
         />
       ) : (
@@ -82,7 +84,13 @@ export default function VerseShowScreen({navigation, route}: IProps) {
             <BHCheckbox
               label={t('Learned')}
               value={verse.learned}
-              onValueChange={() => dispatch(toggleVerseLearned(verse.id))}
+              onValueChange={() =>
+                dispatch(
+                  versesUpdateAction(
+                    versesSlice.actions.toggleLearned(verse.id),
+                  ),
+                )
+              }
             />
             <View style={{flex: 1}} />
             <BHButton icon="create" onPress={() => setEditing(true)} />

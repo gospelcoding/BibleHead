@@ -9,6 +9,7 @@ export function isValidInteger(
   return true;
 }
 
+// Return val >= 0 and < max
 export function randInt(max: number) {
   return Math.floor(Math.random() * max);
 }
@@ -53,11 +54,11 @@ export function zeroPad(number: number | string, length: number) {
 }
 
 export function sameDay(a: Date, b: Date): boolean {
-  return isoDateString(a) == isoDateString(b);
+  return localDateString(a) == localDateString(b);
 }
 
 // Returns as YYYY-MM-DD
-export function isoDateString(date: Date): string {
+export function localDateString(date: Date): string {
   return (
     zeroPad(date.getFullYear(), 4) +
     '-' +
@@ -65,6 +66,15 @@ export function isoDateString(date: Date): string {
     '-' +
     zeroPad(date.getDate(), 2)
   );
+}
+
+export function utcDateString(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
+
+export function localDateFromString(dateStr: string) {
+  const [year, month, day] = dateStr.split('-');
+  return new Date(parseInt(year), parseInt(month) + 1, parseInt(day));
 }
 
 export function isInt(x: unknown) {
