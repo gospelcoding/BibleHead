@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react';
-import {View} from 'react-native';
+import {View, ActivityIndicator, Platform} from 'react-native';
 import parsePassage, {Passage} from './parsePassage';
 import Axios from 'axios';
 import BGPassageDisplay from './BGPassageDisplay';
@@ -9,6 +9,9 @@ import {useDispatch} from 'react-redux';
 import {useT} from '../i18n/i18nReact';
 import BHText from '../components/BHText';
 import versesSlice, {versesUpdateAction} from '../verseList/versesSlice';
+import ThemeColors from '../util/ThemeColors';
+
+const isAndroid = Platform.OS == 'android';
 
 interface IProps {
   done: () => void;
@@ -59,6 +62,14 @@ export default function BibleGateway(props: IProps) {
         style={{flex: 1}}
         ref={webViewRef}
         startInLoadingState={true}
+        renderLoading={() => (
+          <View style={{flex: 1}}>
+            <ActivityIndicator
+              size="large"
+              color={isAndroid ? ThemeColors.blue : undefined}
+            />
+          </View>
+        )}
         source={{uri: 'https://www.biblegateway.com/passage/'}}
         // useWebKit
         onNavigationStateChange={handleNavigationStateChange}
