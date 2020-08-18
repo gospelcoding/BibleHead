@@ -10,7 +10,7 @@ import BHButton from '../components/BHButton';
 import Container from '../components/Container';
 
 interface IProps {
-  done: () => void;
+  done: (save: boolean) => void;
   saveVerse: (verse: Verse) => void;
   verse?: Verse;
 }
@@ -51,12 +51,12 @@ export default function VerseEditor(props: IProps) {
               title={t('Save')}
               onPress={() => {
                 props.saveVerse(verse);
-                props.done();
+                props.done(true);
                 setVerse(undefined);
               }}
               disabled={verse.text.length == 0}
             />
-            <BHButton title={t('Cancel')} onPress={props.done} />
+            <BHButton title={t('Cancel')} onPress={() => props.done(false)} />
           </View>
         </Container>
       )}

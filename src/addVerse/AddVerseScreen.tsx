@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ScreenRoot from '../components/ScreenRoot';
 import {View} from 'react-native';
 import BHText from '../components/BHText';
@@ -26,12 +26,15 @@ export default function AddVerseScreen({navigation}: IProps) {
     (state) => state.settings.useBibleGateway,
   );
 
-  const done = () => {
-    navigation.navigate('Verses', {
-      screen: 'VerseShow',
-      params: {id: LATEST_VERSE},
-      initial: false,
-    });
+  const [verseEdKey, setVerseEdKey] = useState(1);
+  const done = (saved: boolean) => {
+    if (saved)
+      navigation.navigate('Verses', {
+        screen: 'VerseShow',
+        params: {id: LATEST_VERSE},
+        initial: false,
+      });
+    else setVerseEdKey(verseEdKey + 1);
   };
 
   return (
@@ -47,9 +50,10 @@ export default function AddVerseScreen({navigation}: IProps) {
         />
       </View>
       {bibleGateway ? (
-        <BibleGateway done={done} />
+        <BibleGateway done={() => done(true)} />
       ) : (
         <VerseEditor
+          key={verseEdKey}
           done={done}
           saveVerse={(verse) =>
             dispatch(versesUpdateAction(versesSlice.actions.add([verse])))
