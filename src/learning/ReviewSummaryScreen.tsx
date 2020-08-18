@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAppSelector} from '../BHState';
 import {sameDay} from '../util/util';
 import {View, StyleSheet} from 'react-native';
@@ -74,16 +74,34 @@ export default function ReviewSummaryScreen({navigation}: IProps) {
     dispatch(versesSlice.actions.streakReset());
   });
 
+  const [didAutoReview, setDidAutoReview] = useState(false);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      // Start review automatically app startup
+      if (!didAutoReview) {
+        setDidAutoReview(true);
+        navigation.navigate('DoLearn', {
+          review: selectReviewVersesAndLearningVerse(verses),
+        });
+      }
+    });
+
+    return unsubscribe;
+  });
+
   return (
     <ScreenRoot>
       <ScrollView>
-        <BHText heading>
-          {t(
+        <HighlightText
+          text={t(
             'VersesReviewedToday',
             {number: reviewedToday.length},
             reviewedToday.length,
           )}
-        </BHText>
+          pattern={reviewedToday.length}
+          style={[styles.base, styles.med, styles.center]}
+          highlightStyle={[styles.big, styles.blue, styles.shadow]}
+        />
         <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
           <BHButton
             title={t('ReviewVerses')}

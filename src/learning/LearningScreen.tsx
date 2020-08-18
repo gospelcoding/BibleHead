@@ -46,16 +46,6 @@ export default function LearningScreen({navigation, route}: IProps) {
     );
   };
 
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener('focus', () => {
-  //     // Start review if coming to this screen and no review in progress
-  //     if (!reviewVerse && !learnVerse)
-  //       dispatch(versesSlice.actions.startReview());
-  //   });
-
-  //   return unsubscribe;
-  // }, [navigation]);
-
   const done = () => {
     const nextReview: BHReview =
       toReview.length > 0
