@@ -10,6 +10,7 @@ export interface BHSettings {
   automaticBackup: boolean;
   learnGame: LearnGame;
   latestBackup?: LatestBackup;
+  passageSplitterHelpTextSeen?: boolean;
 }
 
 export function defaultSettings(): BHSettings {
@@ -41,6 +42,9 @@ export const settingsSlice = createSlice({
     },
     toggleAutomaticBackups: (state) => {
       state.automaticBackup = !state.automaticBackup;
+    },
+    setPassageSplitterHelpTextSeen: (state, action: PayloadAction<boolean>) => {
+      state.passageSplitterHelpTextSeen = action.payload;
     },
   },
 });

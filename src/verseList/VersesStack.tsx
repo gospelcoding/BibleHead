@@ -4,6 +4,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import VerseListScreen from './VerseListScreen';
 import VerseShowScreen from './VerseShowScreen';
 import {BHRootTabs} from '../BHRootNav';
+import PassageSplitterScreen from './PassageSplitterScreen';
+import {useT} from '../i18n/i18nReact';
 
 interface IProps {
   navigation: NavigationProp<BHRootTabs, 'Verses'>;
@@ -13,11 +15,13 @@ interface IProps {
 export type VersesStackNav = {
   VerseList: undefined;
   VerseShow: {id: number};
+  PassageSplitter: {id: number};
 };
 
 const Stack = createStackNavigator<VersesStackNav>();
 
 export default function VersesStack(props: IProps) {
+  const t = useT();
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -26,6 +30,7 @@ export default function VersesStack(props: IProps) {
         options={{headerShown: false, title: ' '}}
       />
       <Stack.Screen name="VerseShow" component={VerseShowScreen} />
+      <Stack.Screen name="PassageSplitter" component={PassageSplitterScreen} />
     </Stack.Navigator>
   );
 }

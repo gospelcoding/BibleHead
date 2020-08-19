@@ -4,6 +4,7 @@ import {aShadeDarker} from '../util/util';
 
 interface IProps {
   backgroundColor: string;
+  lighten?: boolean;
   onPress: () => void;
   children: (backgroundColor: string) => ReactNode;
   onPressIn?: () => void;
@@ -14,7 +15,9 @@ interface IProps {
 export default function BHTouchable(props: IProps) {
   const [pressed, setPressed] = useState(false);
   const backgroundColor = pressed
-    ? aShadeDarker(props.backgroundColor)
+    ? props.lighten
+      ? `${props.backgroundColor}80`
+      : aShadeDarker(props.backgroundColor)
     : props.backgroundColor;
 
   // Using TouchableWithoutFeedback because of this issue with Pressable:

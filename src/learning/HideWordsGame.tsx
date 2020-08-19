@@ -16,7 +16,7 @@ interface IProps {
 }
 
 export default function HideWordsGame(props: IProps) {
-  const practiceParams = versePracticeParams(props.verse);
+  const [practiceParams] = useState(versePracticeParams(props.verse));
   const [verseText] = useState(nonBreakingHyphenize(practiceParams.text));
   const [gameText, setGameText] = useState(verseText);
   const [coordinates, setCoordinates] = useState(getWordCoordinates(verseText));

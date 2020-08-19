@@ -26,6 +26,8 @@ import formattedDate from '../util/formattedDate';
 import {LearningStackNav} from '../learning/LearningStack';
 import {useVerseById} from '../learning/useVerseById';
 import versesSlice, {versesUpdateAction} from './versesSlice';
+import splitIcon from './splitIcon';
+import useSetVerseRefTitle from './useSetVerseRefTitle';
 
 interface IProps {
   navigation: CompositeNavigationProp<
@@ -46,9 +48,7 @@ export default function VerseShowScreen({navigation, route}: IProps) {
 
   const [editing, setEditing] = useState(false);
 
-  useEffect(() => {
-    if (verse) navigation.setOptions({title: refText(verse)});
-  }, [verse && refText(verse)]);
+  useSetVerseRefTitle(navigation, verse);
 
   if (!verse) return null;
 
@@ -94,6 +94,12 @@ export default function VerseShowScreen({navigation, route}: IProps) {
             />
             <View style={{flex: 1}} />
             <BHButton icon="create" onPress={() => setEditing(true)} />
+            <BHButton
+              svg={splitIcon}
+              onPress={() =>
+                navigation.navigate('PassageSplitter', {id: verse.id})
+              }
+            />
             <BHButton icon="trash" onPress={removeTheVerse} color="red" />
           </Row>
         </Container>
