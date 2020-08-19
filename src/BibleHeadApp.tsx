@@ -7,7 +7,7 @@ import LearningStack from './learning/LearningStack';
 import {Platform, StatusBar} from 'react-native';
 import ThemeColors from './util/ThemeColors';
 
-const isAndroid = Platform.OS == 'android';
+const androidFallback = Platform.OS == 'android' && Platform.Version < 23;
 
 export default function BibleHeadApp() {
   const [deviceStrings] = useState(stringsForDeviceLocale());
@@ -17,7 +17,9 @@ export default function BibleHeadApp() {
       <I18nContext.Provider value={deviceStrings}>
         <NavigationContainer>
           <StatusBar
-            backgroundColor={ThemeColors.darkBlue}
+            backgroundColor={
+              androidFallback ? ThemeColors.blue : ThemeColors.white
+            }
             barStyle="dark-content"
           />
           <LearningStack />
