@@ -4,10 +4,12 @@ import {stringsForDeviceLocale} from './i18n/i18nRN';
 import {I18nContext, useT} from './i18n/i18nReact';
 import BHState from './BHState';
 import LearningStack from './learning/LearningStack';
-import {Platform, StatusBar} from 'react-native';
+import {Platform, StatusBar, View, ActivityIndicator} from 'react-native';
 import ThemeColors from './util/ThemeColors';
+import useStartupTasks from './util/useStartupTasks';
 
-const androidFallback = Platform.OS == 'android' && Platform.Version < 23;
+const isAndroid = Platform.OS == 'android';
+const androidFallback = isAndroid && Platform.Version < 23;
 
 export default function BibleHeadApp() {
   const [deviceStrings] = useState(stringsForDeviceLocale());
@@ -15,16 +17,32 @@ export default function BibleHeadApp() {
   return (
     <BHState>
       <I18nContext.Provider value={deviceStrings}>
-        <NavigationContainer>
-          <StatusBar
-            backgroundColor={
-              androidFallback ? ThemeColors.blue : ThemeColors.white
-            }
-            barStyle="dark-content"
-          />
-          <LearningStack />
-        </NavigationContainer>
+        <App />
       </I18nContext.Provider>
     </BHState>
+  );
+}
+
+function App() {
+  const {ready} = useStartupTasks();
+
+  if (!ready)
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignContent: 'center'}}>
+        <ActivityIndicator
+          size="large"
+          color={isAndroid ? ThemeColors.blue : undefined}
+        />
+      </View>
+    );
+
+  return (
+    <NavigationContainer>
+      <StatusBar
+        backgroundColor={androidFallback ? ThemeColors.blue : ThemeColors.white}
+        barStyle="dark-content"
+      />
+      <LearningStack />
+    </NavigationContainer>
   );
 }

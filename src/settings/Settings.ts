@@ -3,6 +3,8 @@ import {LatestBackup} from '../util/Backups';
 
 export type LearnGame = 'HideWords' | 'ShuffleWords';
 
+export const CURRENT_VERSION = '3.0';
+
 export interface BHSettings {
   notification: boolean;
   notificationTime: string;
@@ -11,6 +13,7 @@ export interface BHSettings {
   learnGame: LearnGame;
   latestBackup?: LatestBackup;
   passageSplitterHelpTextSeen?: boolean;
+  prevRunVersion?: string;
 }
 
 export function defaultSettings(): BHSettings {
@@ -30,6 +33,9 @@ export const settingsSlice = createSlice({
     toggleNotifications: (state, action: PayloadAction<boolean>) => {
       state.notification = action.payload;
     },
+    setNotificationTime: (state, action: PayloadAction<string>) => {
+      state.notificationTime == action.payload;
+    },
     toggleLearnGame: (state) => {
       state.learnGame =
         state.learnGame == 'HideWords' ? 'ShuffleWords' : 'HideWords';
@@ -45,6 +51,9 @@ export const settingsSlice = createSlice({
     },
     setPassageSplitterHelpTextSeen: (state, action: PayloadAction<boolean>) => {
       state.passageSplitterHelpTextSeen = action.payload;
+    },
+    setPrevRunVersion: (state) => {
+      state.prevRunVersion = CURRENT_VERSION;
     },
   },
 });
