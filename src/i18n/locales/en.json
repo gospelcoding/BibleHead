@@ -24,6 +24,8 @@
   "CurrentStreak": "Current Streak",
   "days": "{{number}} days",
   "days_1" : "{{number}} day",
+  "Delete": "Delete",
+  "DeleteVerse?": "Delete {{ref}}?",
   "Done": "Done",
   "DownloadFromBibleGateway": "Download from Bible Gateway",
   "End": "End",

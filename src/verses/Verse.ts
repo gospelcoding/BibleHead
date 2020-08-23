@@ -209,6 +209,7 @@ export function toggleLearnedParams(verse: Verse) {
   return {
     learned: !verse.learned,
     learnedDate: verse.learned ? undefined : localDateString(new Date()),
+    currentSplit: isDivided(verse) ? 0 : undefined,
   };
 }
 

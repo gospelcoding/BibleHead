@@ -11,7 +11,6 @@ interface IProps {
 
 export default function UndoAlert(props: IProps) {
   const t = useT();
-  let buttonText = t('Undo');
 
   return (
     <View style={styles.container}>

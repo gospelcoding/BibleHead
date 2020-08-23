@@ -28,6 +28,7 @@ import {useVerseById} from '../learning/useVerseById';
 import versesSlice, {versesUpdateAction} from './versesSlice';
 import splitIcon from './splitIcon';
 import useSetVerseRefTitle from './useSetVerseRefTitle';
+import BHModal from '../components/BHModal';
 
 interface IProps {
   navigation: CompositeNavigationProp<
@@ -47,6 +48,7 @@ export default function VerseShowScreen({navigation, route}: IProps) {
   const verse = useVerseById(route.params.id);
 
   const [editing, setEditing] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useSetVerseRefTitle(navigation, verse);
 
@@ -100,8 +102,29 @@ export default function VerseShowScreen({navigation, route}: IProps) {
                 navigation.navigate('PassageSplitter', {id: verse.id})
               }
             />
-            <BHButton icon="trash" onPress={removeTheVerse} color="red" />
+            <BHButton
+              icon="trash"
+              onPress={() => setDeleting(true)}
+              color="red"
+            />
           </Row>
+          <BHModal isVisible={deleting}>
+            <View>
+              <BHText>{t('DeleteVerse?', {ref: refText(verse)})}</BHText>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <BHButton
+                  color="red"
+                  title={t('Delete')}
+                  onPress={removeTheVerse}
+                />
+                <BHButton
+                  title={t('Cancel')}
+                  onPress={() => setDeleting(false)}
+                />
+              </View>
+            </View>
+          </BHModal>
         </Container>
       )}
     </ScreenRoot>
