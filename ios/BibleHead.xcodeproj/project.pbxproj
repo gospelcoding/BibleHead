@@ -54,6 +54,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = BibleHead/main.m; sourceTree = "<group>"; };
 		16A16826F4DB4A8A9F9477FA /* Pods-BibleHead-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BibleHead-tvOS.release.xcconfig"; path = "Target Support Files/Pods-BibleHead-tvOS/Pods-BibleHead-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		1CB9F328D441F8971C57C9E2 /* Pods-BibleHead.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BibleHead.debug.xcconfig"; path = "Target Support Files/Pods-BibleHead/Pods-BibleHead.debug.xcconfig"; sourceTree = "<group>"; };
+		1D778C8224F4479600595708 /* BibleHead.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = BibleHead.entitlements; path = BibleHead/BibleHead.entitlements; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* BibleHead-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BibleHead-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* BibleHead-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BibleHead-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		44BD0ABE3B0318F856EEF142 /* Pods-BibleHead-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BibleHead-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-BibleHead-tvOSTests/Pods-BibleHead-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -63,7 +64,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = BibleHead/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		912AC4E700A04755DFC7EF70 /* Pods-BibleHead-BibleHeadTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BibleHead-BibleHeadTests.release.xcconfig"; path = "Target Support Files/Pods-BibleHead-BibleHeadTests/Pods-BibleHead-BibleHeadTests.release.xcconfig"; sourceTree = "<group>"; };
 		95366341A06023C4740D5E65 /* libPods-BibleHead-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BibleHead-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9CD7E0293E524EC8B37B0286 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-ionicons/fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		9CD7E0293E524EC8B37B0286 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-ionicons/fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		AF741B9880108A6FA4389DA7 /* Pods-BibleHead-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BibleHead-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-BibleHead-tvOSTests/Pods-BibleHead-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C78952DD9D211E632161133E /* Pods-BibleHead-BibleHeadTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BibleHead-BibleHeadTests.debug.xcconfig"; path = "Target Support Files/Pods-BibleHead-BibleHeadTests/Pods-BibleHead-BibleHeadTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -127,6 +128,7 @@
 		13B07FAE1A68108700A75B9A /* BibleHead */ = {
 			isa = PBXGroup;
 			children = (
+				1D778C8224F4479600595708 /* BibleHead.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -197,7 +199,6 @@
 				AF741B9880108A6FA4389DA7 /* Pods-BibleHead-tvOSTests.debug.xcconfig */,
 				44BD0ABE3B0318F856EEF142 /* Pods-BibleHead-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -207,7 +208,6 @@
 				9CD7E0293E524EC8B37B0286 /* Ionicons.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -306,6 +306,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 2238U5YMFM;
 						LastSwiftMigration = 1120;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -668,19 +669,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BibleHead/BibleHead.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2238U5YMFM;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BibleHead/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 3.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.gospelcoding.biblehead;
 				PRODUCT_NAME = BibleHead;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -691,17 +697,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BibleHead/BibleHead.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2238U5YMFM;
 				INFOPLIST_FILE = BibleHead/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 3.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.gospelcoding.biblehead;
 				PRODUCT_NAME = BibleHead;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
