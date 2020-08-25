@@ -5,20 +5,19 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {Verse, newVerse} from '../verses/Verse';
 import versesSlice from '../verseList/versesSlice';
 import {I18nContext} from '../i18n/i18nReact';
-import {Strings} from '../i18n/i18n';
-import {settingsSlice} from '../settings/Settings';
+import {Strings, tForStrings} from '../i18n/i18n';
+import {settingsSlice, BHSettings} from '../settings/Settings';
+import {configureNotifications, sendNotifications} from './notifications';
 
 export default function useStartupTasks() {
   const dispatch = useDispatch();
-  const prevRunVersion = useAppSelector(
-    (state) => state.settings.prevRunVersion,
-  );
+  const settings = useAppSelector((state) => state.settings);
   const i18n = useContext(I18nContext);
 
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    startupTasks(prevRunVersion, dispatch, i18n)
+    startupTasks(settings, dispatch, i18n)
       .catch((err) => console.error(err))
       .finally(() => setReady(true));
   }, []);
@@ -27,11 +26,11 @@ export default function useStartupTasks() {
 }
 
 async function startupTasks(
-  prevRunVersion: string | undefined,
+  settings: BHSettings,
   dispatch: AppDispatch,
   i18n: Strings,
 ) {
-  if (prevRunVersion === undefined) {
+  if (settings.prevRunVersion === undefined) {
     try {
       console.log('WELCOME TO BIBLEHEAD!');
       await firstRunRestoreVersesOrInitialize(dispatch, i18n);
@@ -42,6 +41,10 @@ async function startupTasks(
   }
 
   dispatch(settingsSlice.actions.setPrevRunVersion());
+
+  configureNotifications();
+  if (settings.notification)
+    sendNotifications(settings.notificationTime, tForStrings(i18n));
 }
 
 async function firstRunRestoreVersesOrInitialize(

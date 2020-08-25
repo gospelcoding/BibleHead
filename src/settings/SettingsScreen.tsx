@@ -1,23 +1,13 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
-// import I18n from '../../i18n/i18n';
-// import Settings from '../../util/Settings';
-// import update from 'immutability-helper';
-// import XPlatformTouchable from '../shared/XPlatformTouchable';
-// import DateTimePicker from 'react-native-modal-datetime-picker';
-// import Notifications from '../../util/Notifications';
-// import PickerModal from '../shared/PickerModal';
-// import BHSwitch from '../shared/BHSwitch';
-// import Backup from '../../util/Backups';
+import {StyleSheet, View, Text} from 'react-native';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import RestoreBackupModal from './RestoreBackupModal';
 // import CodeExplanationModal from './CodeExplanationModal';
-// import {zeroPad} from '../../util/util';
 import {useAppSelector} from '../BHState';
 import {useT} from '../i18n/i18nReact';
 import BHSwitch from '../components/BHSwitch';
 import {useDispatch} from 'react-redux';
 import {settingsSlice} from './Settings';
-// import {TouchableOpacity} from 'react-native-gesture-handler';
 import BHButton from '../components/BHButton';
 import ThemeColors from '../util/ThemeColors';
 import {NavigationProp} from '@react-navigation/native';
@@ -27,6 +17,13 @@ import {LatestBackup, createBackup} from '../util/Backups';
 import {TFunc, TKey} from '../i18n/i18n';
 import CodeExplanationModal from './CodeExplanationModal';
 import {BHRootTabs} from '../BHRootNav';
+import {
+  cancelNotifications,
+  sendNotifications,
+  nextDateAtTime,
+  timeStrFromDate,
+  getTimePieces,
+} from '../util/notifications';
 
 interface IProps {
   navigation: NavigationProp<BHRootTabs, 'Preferences'>;
@@ -36,6 +33,7 @@ export default function SettingsScreen({navigation}: IProps) {
   const t = useT();
   const dispatch = useDispatch();
 
+  const [showTimePickerModal, setShowTimePickerModal] = useState(false);
   const [showingRestoreBackupModal, setShowingRestoreBackupModal] = useState(
     false,
   );
@@ -49,18 +47,21 @@ export default function SettingsScreen({navigation}: IProps) {
   const settings = useAppSelector((state) => state.settings);
   const verses = useAppSelector((state) => state.verses.verses);
 
-  // updateNotificationSchedule = (mergeSettings) => {
-  //   if (
-  //     mergeSettings.notificationTime ||
-  //     mergeSettings.notification !== undefined
-  //   )
-  //     Notifications.updateNotificationSchedule();
-  // };
+  const toggleNotifications = () => {
+    if (settings.notification) {
+      cancelNotifications();
+    } else {
+      sendNotifications(settings.notificationTime, t);
+    }
+    dispatch(settingsSlice.actions.toggleNotifications(!settings.notification));
+  };
 
-  // setNotificationTime = (date) => {
-  //   this.updateSettings({notificationTime: notificationTimeFromDate(date)});
-  //   this.setState({showingTimePicker: false});
-  // };
+  const setNotificationTime = (date: Date) => {
+    setShowTimePickerModal(false);
+    const timeStr = timeStrFromDate(date);
+    if (settings.notification) sendNotifications(timeStr, t);
+    dispatch(settingsSlice.actions.setNotificationTime(timeStr));
+  };
 
   const backup = async () => {
     setBackingUp(true);
@@ -79,12 +80,6 @@ export default function SettingsScreen({navigation}: IProps) {
     }
   };
 
-  // static navigationOptions = () => {
-  //   return {
-  //     headerTitle: t('Preferences'),
-  //   };
-  // };
-
   return (
     <ScreenRoot>
       <View style={styles.row}>
@@ -93,23 +88,24 @@ export default function SettingsScreen({navigation}: IProps) {
         </Text>
         <BHSwitch
           value={settings.notification}
-          onValueChange={(value) =>
-            dispatch(settingsSlice.actions.toggleNotifications(value))
-          }
+          onValueChange={toggleNotifications}
         />
       </View>
 
-      {/* {settings.notification && (
-          <XPlatformTouchable
-            onPress={() => this.setState({showingTimePicker: true})}>
-            <View style={styles.row}>
+      {settings.notification && (
+        <BHTouchable
+          onPress={() => setShowTimePickerModal(true)}
+          backgroundColor={ThemeColors.white}>
+          {(backgroundColor) => (
+            <View style={[styles.row, {backgroundColor}]}>
               <Text style={styles.settingTitle}>{t('ReviewTime')}</Text>
               <Text style={styles.settingText}>
                 {settings.notificationTime}
               </Text>
             </View>
-          </XPlatformTouchable>
-        )} */}
+          )}
+        </BHTouchable>
+      )}
 
       <View style={styles.row}>
         <Text style={styles.settingTitle}>
@@ -148,17 +144,17 @@ export default function SettingsScreen({navigation}: IProps) {
           </View>
         )}
       </BHTouchable>
-      {/* 
-        <DateTimePicker
-          isVisible={this.state.showingTimePicker}
-          mode="time"
-          date={dateFromNotificationTime(settings.notificationTime)}
-          onConfirm={this.setNotificationTime}
-          onCancel={() => this.setState({showingTimePicker: false})}
-          titleIOS={t('ReviewTime')}
-          confirmTextIOS={t('Confirm')}
-          cancelTextIOS={t('Cancel')}
-        /> */}
+
+      <DateTimePicker
+        isVisible={showTimePickerModal}
+        mode="time"
+        date={nextDateAtTime(getTimePieces(settings.notificationTime))}
+        onConfirm={setNotificationTime}
+        onCancel={() => setShowTimePickerModal(false)}
+        headerTextIOS={t('ReviewTime')}
+        confirmTextIOS={t('Confirm')}
+        cancelTextIOS={t('Cancel')}
+      />
 
       <RestoreBackupModal
         goHome={() => navigation.navigate('Verses')}
@@ -192,17 +188,6 @@ function backupDetailText(
     });
   return '';
 }
-
-// function dateFromNotificationTime(timeStr) {
-//   const hourMinute = timeStr.split(':').map((str) => parseInt(str));
-//   let date = new Date();
-//   date.setHours(hourMinute[0], hourMinute[1]);
-//   return date;
-// }
-
-// function notificationTimeFromDate(date) {
-//   return `${date.getHours()}:${zeroPad(date.getMinutes(), 2)}`;
-// }
 
 const styles = StyleSheet.create({
   row: {

@@ -34,7 +34,7 @@ export const settingsSlice = createSlice({
       state.notification = action.payload;
     },
     setNotificationTime: (state, action: PayloadAction<string>) => {
-      state.notificationTime == action.payload;
+      state.notificationTime = action.payload;
     },
     toggleLearnGame: (state) => {
       state.learnGame =
