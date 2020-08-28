@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.biblehead">
+  package="org.gospelcoding.biblehead">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Vibrate and Boot-Complete permissions for react-native-push-notifications -->

@@ -129,11 +129,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.biblehead"
+        applicationId "org.gospelcoding.biblehead"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        multiDexEnabled true
+        versionCode 30002
+        versionName "3.0"
     }
     splits {
         abi {
@@ -206,6 +207,8 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    implementation 'com.android.support:multidex:1.0.3'
 }
 
 // Run this once to be able to run the application with BUCK
