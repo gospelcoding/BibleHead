@@ -63,3 +63,6 @@ buck-out/
 
 # Api Keys
 src/util/apiKeys.ts
+
+# Outputs
+android/app/release
