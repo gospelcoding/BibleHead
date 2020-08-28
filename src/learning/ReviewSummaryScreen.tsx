@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useAppSelector} from '../BHState';
-import {sameDay} from '../util/util';
+import {sameDay, localDateString} from '../util/util';
 import {View, StyleSheet} from 'react-native';
 import BHButton from '../components/BHButton';
 import {useT, useMonthNames} from '../i18n/i18nReact';
@@ -58,6 +58,26 @@ export default function ReviewSummaryScreen({navigation}: IProps) {
 
   const learnedStats = learnedSummary(verses, monthNames);
 
+  useEffect(() => {
+    dispatch(versesSlice.actions.streakReset());
+  });
+
+  const [lastAutoReview, setLastAutoReview] = useState('');
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      // Start review automatically app startup
+      const today = localDateString(new Date());
+      if (today !== lastAutoReview) {
+        setLastAutoReview(today);
+        navigation.navigate('DoLearn', {
+          review: selectReviewVersesAndLearningVerse(verses),
+        });
+      }
+    });
+
+    return unsubscribe;
+  });
+
   if (verses.length == 0) {
     return (
       <View>
@@ -69,25 +89,6 @@ export default function ReviewSummaryScreen({navigation}: IProps) {
       </View>
     );
   }
-
-  useEffect(() => {
-    dispatch(versesSlice.actions.streakReset());
-  });
-
-  const [didAutoReview, setDidAutoReview] = useState(false);
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      // Start review automatically app startup
-      if (!didAutoReview) {
-        setDidAutoReview(true);
-        navigation.navigate('DoLearn', {
-          review: selectReviewVersesAndLearningVerse(verses),
-        });
-      }
-    });
-
-    return unsubscribe;
-  });
 
   return (
     <ScreenRoot>

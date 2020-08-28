@@ -5,12 +5,13 @@ import {TFunc} from '../i18n/i18n';
 import {zeroPad, isInt} from './util';
 
 export function sendNotifications(time: string, t: TFunc) {
+  cancelNotifications();
+
   console.log(
     `Send notifications at ${time} (${nextDateAtTime(getTimePieces(time))})`,
   );
 
   PushNotification.localNotificationSchedule({
-    id: 1,
     title: t('NotificationTitle'),
     message: t('NotificationText'),
     date: nextDateAtTime(getTimePieces(time)),

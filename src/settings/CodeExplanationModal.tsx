@@ -23,9 +23,9 @@ export default function CodeExplanationModal(props: IProps) {
           <Text style={styles.message}>
             {t('CodeExplanation', {code: props.code})}
           </Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <BHButton title={t('GotIt')} onPress={props.dismissModal} />
+          <View style={styles.buttonContainer}>
+            <BHButton title={t('GotIt')} onPress={props.dismissModal} />
+          </View>
         </View>
       </SafeAreaView>
     </Modal>
@@ -33,33 +33,16 @@ export default function CodeExplanationModal(props: IProps) {
 }
 
 const styles = StyleSheet.create({
-  container:
-    Platform.select({
-      ios: {
-        backgroundColor: 'white',
-        borderRadius: 16,
-        paddingHorizontal: 16,
-        marginBottom: 8,
-      },
-      android: {
-        backgroundColor: 'white',
-      },
-    }) || {},
-  buttonContainer:
-    Platform.select({
-      ios: {
-        backgroundColor: 'white',
-        borderRadius: 16,
-        paddingVertical: 10,
-      },
-      android: {
-        backgroundColor: 'white',
-        justifyContent: 'flex-end',
-        paddingRight: 16,
-        paddingBottom: 8,
-        flexDirection: 'row',
-      },
-    }) || {},
+  container: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    marginBottom: 8,
+  },
+  buttonContainer: {
+    backgroundColor: 'white',
+    paddingVertical: 10,
+  },
   // buttonTextStyle: Platform.select({
   //   ios: {
   //     fontWeight: "600",

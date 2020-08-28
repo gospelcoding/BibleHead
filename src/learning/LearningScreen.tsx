@@ -67,6 +67,10 @@ export default function LearningScreen({navigation, route}: IProps) {
     }
   }, [verse && refText(verse)]);
 
+  useEffect(() => {
+    if (!reviewVerse && !learnVerse) navigation.goBack();
+  });
+
   if (reviewVerse) {
     return (
       <ScreenRoot>

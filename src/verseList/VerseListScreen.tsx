@@ -33,6 +33,7 @@ interface IProps {
 }
 
 export default function VerseListScreen({navigation}: IProps) {
+  const t = useT();
   const dispatch = useDispatch();
   const verses = useAppSelector((state) => state.verses.verses);
   const bookNames = useBibleBooks();
@@ -67,6 +68,7 @@ export default function VerseListScreen({navigation}: IProps) {
         )}
         keyExtractor={(verse) => `${verse.id}`}
         ItemSeparatorComponent={DividingLine}
+        ListHeaderComponent={() => <BHText heading>{t('MyVerses')}</BHText>}
       />
     </SafeAreaView>
   );
