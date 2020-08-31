@@ -62,7 +62,6 @@ export default function ButtonRowReviewFinal(props: IProps) {
             );
             props.done();
           }}
-          title={t('Correct')}
           size="jumbo"
           iosFixJumboIcon
         />

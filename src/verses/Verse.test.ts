@@ -1,6 +1,6 @@
 import {newVerse, verseStrength} from './Verse';
 
-test('Verse Strength', () => {
+test.skip('Verse Strength', () => {
   const baseVerse = {
     ...newVerse({
       text: '',

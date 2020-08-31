@@ -20,7 +20,6 @@ export default function PeekButton(props: IProps) {
       onPressOut={props.cancelPeek}
       hidden={props.step == 0 ? true : false}
       onPress={() => {}}
-      title={t('Peek')}
       size="jumbo"
     />
   );
