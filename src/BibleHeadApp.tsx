@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {stringsForDeviceLocale} from './i18n/i18nRN';
 import {I18nContext, useT} from './i18n/i18nReact';
@@ -7,6 +7,7 @@ import LearningStack from './learning/LearningStack';
 import {Platform, StatusBar, View, ActivityIndicator} from 'react-native';
 import ThemeColors from './util/ThemeColors';
 import useStartupTasks from './util/useStartupTasks';
+import SplashScreen from 'react-native-splash-screen';
 
 const isAndroid = Platform.OS == 'android';
 const androidFallback = isAndroid && Platform.Version < 23;
@@ -25,6 +26,10 @@ export default function BibleHeadApp() {
 
 function App() {
   const {ready} = useStartupTasks();
+
+  useEffect(() => {
+    if (ready) SplashScreen.hide();
+  });
 
   if (!ready)
     return (
