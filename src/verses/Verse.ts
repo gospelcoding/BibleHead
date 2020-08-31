@@ -265,7 +265,7 @@ export function verseStrength(verse: Verse): number {
   const dayInMS = 1000 * 60 * 60 * 24;
   const age = verse.lastReview ? (Date.now() - verse.lastReview) / dayInMS : 0;
   return (
-    (-200 / ((verse.successfulReviews || 0) + 100) + 100) *
+    (-200 / ((verse.successfulReviews || 0) / 2 + 2) + 100) *
     Math.max((100 - age) / 100, 0.05)
   );
 }
