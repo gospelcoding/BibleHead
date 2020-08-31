@@ -74,7 +74,6 @@
   "VersesReviewedToday_1": "{{number}} verse reviewed today",
   "VerseTextInputHint": "Paste or type verse text here.",
   "MyVerses": "My Verses",
-  "Wrong": "Wrong",
   "xOfY": "{{x}} of {{y}}",
   "YourBestStreak": "Your best streak was {{number}} days from {{dateStart}} to {{dateEnd}}.",
   "YourBestStreak_1": "Your best streak was {{number}} day from {{dateStart}} to {{dateEnd}}.",
