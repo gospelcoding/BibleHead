@@ -1,12 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useAppSelector} from '../BHState';
-import {sameDay, localDateString} from '../util/util';
+import {sameDay} from '../util/util';
 import {View, StyleSheet} from 'react-native';
 import BHButton from '../components/BHButton';
 import {useT, useMonthNames} from '../i18n/i18nReact';
 import BHText from '../components/BHText';
 import {selectReviewVersesAndLearningVerse, Verse} from '../verses/Verse';
-import Container from '../components/Container';
 import ScreenRoot from '../components/ScreenRoot';
 import {
   CompositeNavigationProp,
@@ -25,6 +24,7 @@ import DividingLine from '../components/DividingLine';
 import {Text} from 'react-native';
 import HighlightText from '../components/HighlightText';
 import {useFormattedDate} from '../util/formattedDate';
+import useAutoReview from './useAutoReview';
 
 interface IProps {
   navigation: CompositeNavigationProp<
@@ -62,21 +62,7 @@ export default function ReviewSummaryScreen({navigation}: IProps) {
     dispatch(versesSlice.actions.streakReset());
   });
 
-  const [lastAutoReview, setLastAutoReview] = useState('');
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      // Start review automatically app startup
-      const today = localDateString(new Date());
-      if (today !== lastAutoReview) {
-        setLastAutoReview(today);
-        navigation.navigate('DoLearn', {
-          review: selectReviewVersesAndLearningVerse(verses),
-        });
-      }
-    });
-
-    return unsubscribe;
-  });
+  useAutoReview(verses, navigation);
 
   if (verses.length == 0) {
     return (
