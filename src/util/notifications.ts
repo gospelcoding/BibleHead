@@ -6,6 +6,7 @@ import {zeroPad, isInt} from './util';
 
 export function sendNotifications(time: string, t: TFunc) {
   cancelNotifications();
+  PushNotification.removeAllDeliveredNotifications();
 
   console.log(
     `Send notifications at ${time} (${nextDateAtTime(getTimePieces(time))})`,
