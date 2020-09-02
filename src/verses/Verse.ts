@@ -112,9 +112,12 @@ export function reviewWeight(verse: Verse) {
 
 export function selectReviewVersesAndLearningVerse(verses: Verse[]): BHReview {
   const [reviewing, learning] = reviewingAndLearningLists(verses);
+  const toReview = selectReviewVerses(reviewing, 4).map((v) => v.id);
+  const toLearn = selectLearningVerses(learning).map((v) => v.id);
   return {
-    toReview: selectReviewVerses(reviewing, 4).map((v) => v.id),
-    toLearn: selectLearningVerses(learning).map((v) => v.id),
+    toReview,
+    toLearn,
+    verseCount: toReview.length + toLearn.length,
   };
 }
 

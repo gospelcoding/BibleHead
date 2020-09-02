@@ -7,7 +7,7 @@ import {
 import {View} from 'react-native';
 import BHText from '../components/BHText';
 import {useAppSelector} from '../BHState';
-import {refText} from '../verses/Verse';
+import {refText, Verse} from '../verses/Verse';
 import HideWordsGame from './HideWordsGame';
 import {useDispatch} from 'react-redux';
 import {useVerseById} from './useVerseById';
@@ -19,10 +19,12 @@ import SwitchGameButton from './SwitchGameButton';
 import ThemeColors from '../util/ThemeColors';
 import Row from '../components/Row';
 import {LearningStackNav} from './LearningStack';
+import {useT} from '../i18n/i18nReact';
 
 export type BHReview = {
   toReview: number[];
   toLearn: number[];
+  verseCount: number;
 };
 
 interface IProps {
@@ -32,8 +34,9 @@ interface IProps {
 
 export default function LearningScreen({navigation, route}: IProps) {
   const dispatch = useDispatch();
+  const t = useT();
 
-  const {toReview, toLearn} = route.params.review;
+  const {toReview, toLearn, verseCount} = route.params.review;
   const reviewVerse = useVerseById(toReview[0]);
   const learnVerse = useVerseById(toLearn[0]);
   const learnGame = useAppSelector((state) => state.settings.learnGame);
@@ -49,8 +52,8 @@ export default function LearningScreen({navigation, route}: IProps) {
   const done = () => {
     const nextReview: BHReview =
       toReview.length > 0
-        ? {toReview: toReview.slice(1), toLearn}
-        : {toReview, toLearn: toLearn.slice(1)};
+        ? {toReview: toReview.slice(1), toLearn, verseCount}
+        : {toReview, toLearn: toLearn.slice(1), verseCount};
 
     if (nextReview.toLearn.length == 0 && nextReview.toReview.length == 0) {
       navigation.dispatch(StackActions.pop());
@@ -62,9 +65,8 @@ export default function LearningScreen({navigation, route}: IProps) {
   };
 
   useEffect(() => {
-    if (verse) {
-      navigation.setOptions({title: refText(verse)});
-    }
+    const current = 1 + verseCount - toReview.length - toLearn.length;
+    navigation.setOptions({title: t('xOfY', {x: current, y: verseCount})});
   }, [verse && refText(verse)]);
 
   useEffect(() => {
@@ -74,6 +76,7 @@ export default function LearningScreen({navigation, route}: IProps) {
   if (reviewVerse) {
     return (
       <ScreenRoot>
+        <BHText heading>{refText(reviewVerse)}</BHText>
         <ShowWordsGame key={reviewVerse.id} verse={reviewVerse} done={done} />
       </ScreenRoot>
     );
@@ -82,9 +85,10 @@ export default function LearningScreen({navigation, route}: IProps) {
   if (learnVerse) {
     return (
       <ScreenRoot>
-        <Row>
-          <BHText heading>{refText(learnVerse)}</BHText>
-          <View style={{flex: 1}} />
+        <Row spaceBetween>
+          <View style={{flexShrink: 1}}>
+            <BHText heading>{refText(learnVerse)}</BHText>
+          </View>
           <SwitchGameButton game={learnGame} />
         </Row>
         {learnGame == 'HideWords' ? (

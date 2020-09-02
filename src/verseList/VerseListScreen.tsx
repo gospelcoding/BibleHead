@@ -40,7 +40,7 @@ export default function VerseListScreen({navigation}: IProps) {
 
   const learnVerse = (verse: Verse) => {
     navigation.navigate('DoLearn', {
-      review: {toReview: [], toLearn: [verse.id]},
+      review: {toReview: [], toLearn: [verse.id], verseCount: 1},
     });
   };
 

@@ -76,7 +76,7 @@ export default function VerseShowScreen({navigation, route}: IProps) {
               verse={verse}
               practice={() =>
                 navigation.navigate('DoLearn', {
-                  review: {toReview: [], toLearn: [verse.id]},
+                  review: {toReview: [], toLearn: [verse.id], verseCount: 1},
                 })
               }
             />
