@@ -74,7 +74,7 @@ export function utcDateString(date: Date): string {
 
 export function localDateFromString(dateStr: string) {
   const [year, month, day] = dateStr.split('-');
-  return new Date(parseInt(year), parseInt(month) + 1, parseInt(day));
+  return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
 }
 
 export function isInt(x: unknown) {

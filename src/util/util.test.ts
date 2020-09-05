@@ -1,4 +1,4 @@
-import {isInt, aShadeDarker} from './util';
+import {isInt, aShadeDarker, localDateFromString} from './util';
 
 test('isInt', () => {
   expect(isInt(0)).toBe(true);
@@ -15,4 +15,9 @@ test('isInt', () => {
 
 test('a shade darker', () => {
   expect(aShadeDarker('#bb0a21')).toBe('#a8091e');
+});
+
+test('Local Date from String', () => {
+  const date = localDateFromString('2020-09-05');
+  expect(date.getMonth()).toBe(8);
 });
