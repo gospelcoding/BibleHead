@@ -1,12 +1,6 @@
 import React, {useEffect} from 'react';
 import {useAppSelector} from '../BHState';
-import {
-  FlatList,
-  SafeAreaView,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import {FlatList, Text, View, TouchableOpacity} from 'react-native';
 import {refText, Verse, normalizeVerses, verseStrength} from '../verses/Verse';
 import BHText from '../components/BHText';
 import DividingLine from '../components/DividingLine';
@@ -21,6 +15,7 @@ import versesSlice, {versesUpdateAction} from './versesSlice';
 import {LearningStackNav} from '../learning/LearningStack';
 import {BHRootTabs} from '../BHRootNav';
 import ProgressBar from '../components/ProgressBar';
+import ScreenRoot from '../components/ScreenRoot';
 
 interface IProps {
   navigation: CompositeNavigationProp<
@@ -54,7 +49,7 @@ export default function VerseListScreen({navigation}: IProps) {
   }, []);
 
   return (
-    <SafeAreaView>
+    <ScreenRoot>
       <FlatList
         data={verses}
         renderItem={(verse) => (
@@ -70,7 +65,7 @@ export default function VerseListScreen({navigation}: IProps) {
         ItemSeparatorComponent={DividingLine}
         ListHeaderComponent={() => <BHText heading>{t('MyVerses')}</BHText>}
       />
-    </SafeAreaView>
+    </ScreenRoot>
   );
 }
 

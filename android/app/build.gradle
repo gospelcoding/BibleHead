@@ -133,7 +133,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 302000
+        versionCode 302001
         versionName "3.2"
     }
     splits {
