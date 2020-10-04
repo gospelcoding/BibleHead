@@ -103,12 +103,12 @@ export function currentLearningPrompt(verse: Verse) {
   return matches[0];
 }
 
-export function reviewWeight(verse: Verse) {
-  const age = new Date().getTime() - (verse.lastReview || 0);
-  const reviews = (verse.successfulReviews || 0) + 1; // Add one to prevent using 0 in geometric weighting
-  const lastWrongFactor = verse.lastReviewWrong ? 2 : 1;
-  return (age * lastWrongFactor) / reviews;
-}
+// export function reviewWeight(verse: Verse) {
+//   const age = new Date().getTime() - (verse.lastReview || 0);
+//   const reviews = (verse.successfulReviews || 0) + 1; // Add one to prevent using 0 in geometric weighting
+//   const lastWrongFactor = verse.lastReviewWrong ? 2 : 1;
+//   return (age * lastWrongFactor) / reviews;
+// }
 
 export function selectReviewVersesAndLearningVerse(verses: Verse[]): BHReview {
   const [reviewing, learning] = reviewingAndLearningLists(verses);
@@ -146,11 +146,11 @@ export function selectReviewVerses(verses: Verse[], number: number) {
   let weightedVerses = verses.map((verse) => {
     return {
       verse: verse,
-      weight: reviewWeight(verse),
+      weight: verseStrength(verse),
     };
   });
   weightedVerses.sort((a, b) => {
-    return b.weight - a.weight;
+    return a.weight - b.weight;
   });
   return weightedVerses.slice(0, number).map((wVerse) => {
     return wVerse.verse;
@@ -263,12 +263,11 @@ export function normalizeVerses(
 }
 
 export function verseStrength(verse: Verse): number {
-  if (!verse.learned) return 0;
+  if (!verse.lastReview) return 0;
 
   const dayInMS = 1000 * 60 * 60 * 24;
-  const age = verse.lastReview ? (Date.now() - verse.lastReview) / dayInMS : 0;
-  return (
-    (-200 / ((verse.successfulReviews || 0) / 2 + 2) + 100) *
-    Math.max((100 - age) / 100, 0.05)
-  );
+  const age = (Date.now() - verse.lastReview) / dayInMS;
+  const reviews = verse.successfulReviews || 1;
+  const base = verse.lastReviewWrong ? 50 : 100;
+  return Math.max(0, base - (10 / reviews) * age);
 }
