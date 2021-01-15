@@ -46,7 +46,7 @@ export function learnedSummary(verses: Verse[], monthNames: string[]) {
   const learnedDates = learnedDateList(learned);
   const thisYear = new Date().getFullYear();
   const thisMonth = new Date().getMonth();
-  const lastMonth = thisMonth == 0 ? 12 : thisMonth - 1;
+  const lastMonth = thisMonth == 0 ? 11 : thisMonth - 1;
 
   return {
     total: learned.length,
