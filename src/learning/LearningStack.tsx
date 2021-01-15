@@ -2,6 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import LearningScreen, {BHReview} from './LearningScreen';
 import BHRootNav from '../BHRootNav';
+import backButtonWorkaround from '../util/backButtonWorkaround';
 
 export type LearningStackNav = {
   Main: undefined;
@@ -21,9 +22,13 @@ export default function LearningStack() {
       <Stack.Screen
         name="Main"
         component={BHRootNav}
-        options={{headerShown: false, title: ' '}}
+        options={{headerShown: false}}
       />
-      <Stack.Screen name="DoLearn" component={LearningScreen} />
+      <Stack.Screen
+        name="DoLearn"
+        component={LearningScreen}
+        options={backButtonWorkaround()}
+      />
     </Stack.Navigator>
   );
 }
