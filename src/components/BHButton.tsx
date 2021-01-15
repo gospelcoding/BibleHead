@@ -10,7 +10,7 @@ interface IProps {
   title?: string;
   svg?: string;
   icon?: ComponentProps<typeof Icon>['name'];
-  color?: 'red' | 'yellow' | 'green';
+  color?: 'blue' | 'red' | 'yellow' | 'green';
   size?: 'big' | 'jumbo';
   iosFixJumboIcon?: boolean;
   hidden?: boolean;

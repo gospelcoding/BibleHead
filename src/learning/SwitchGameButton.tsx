@@ -5,6 +5,7 @@ import {useDispatch} from 'react-redux';
 import cardsSvg from './cardsIcon';
 import hideWordsSvg from './hideWordsIcon';
 import BHButton from '../components/BHButton';
+import floatWordsIcon from './floatWordsIcon';
 
 interface IProps {
   game: LearnGame;
@@ -19,7 +20,9 @@ export default function SwitchGameButton(props: IProps) {
       {buttonParams.map((params) => (
         <View style={{padding: 8}} key={params.game}>
           <BHButton
-            onPress={() => dispatch(settingsSlice.actions.toggleLearnGame())}
+            onPress={() =>
+              dispatch(settingsSlice.actions.setLearnGame(params.game))
+            }
             svg={params.svg}
             title={params.game}
             size="big"
@@ -31,7 +34,7 @@ export default function SwitchGameButton(props: IProps) {
 }
 
 function getButtonParams(currentGame: LearnGame) {
-  let buttonParams = [];
+  let buttonParams: {game: LearnGame; svg: string}[] = [];
   if (currentGame != 'HideWords')
     buttonParams.push({
       game: 'HideWords',
@@ -41,6 +44,11 @@ function getButtonParams(currentGame: LearnGame) {
     buttonParams.push({
       game: 'ShuffleWords',
       svg: cardsSvg,
+    });
+  if (currentGame != 'FloatWords')
+    buttonParams.push({
+      game: 'FloatWords',
+      svg: floatWordsIcon,
     });
   return buttonParams;
 }

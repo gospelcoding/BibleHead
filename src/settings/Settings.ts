@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {LatestBackup} from '../util/Backups';
 
-export type LearnGame = 'HideWords' | 'ShuffleWords';
+export type LearnGame = 'HideWords' | 'ShuffleWords' | 'FloatWords';
 
 export const CURRENT_VERSION = '3.2';
 
@@ -36,9 +36,8 @@ export const settingsSlice = createSlice({
     setNotificationTime: (state, action: PayloadAction<string>) => {
       state.notificationTime = action.payload;
     },
-    toggleLearnGame: (state) => {
-      state.learnGame =
-        state.learnGame == 'HideWords' ? 'ShuffleWords' : 'HideWords';
+    setLearnGame: (state, action: PayloadAction<LearnGame>) => {
+      state.learnGame = action.payload;
     },
     toggleBibleGateway: (state) => {
       state.useBibleGateway = !state.useBibleGateway;
