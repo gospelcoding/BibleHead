@@ -16,6 +16,7 @@ export function sendNotifications(time: string, t: TFunc) {
     title: t('NotificationTitle'),
     message: t('NotificationText'),
     date: nextDateAtTime(getTimePieces(time)),
+    largeIcon: '',
     smallIcon: 'drawable/ic_stat_biblehead_notification',
     repeatType: 'day',
     playSound: false,
