@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import DateTimePicker from 'react-native-modal-datetime-picker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import RestoreBackupModal from './RestoreBackupModal';
-// import CodeExplanationModal from './CodeExplanationModal';
 import {useAppSelector} from '../BHState';
 import {useT} from '../i18n/i18nReact';
 import BHSwitch from '../components/BHSwitch';
@@ -24,6 +23,7 @@ import {
   timeStrFromDate,
   getTimePieces,
 } from '../util/notifications';
+import NotificationTimeRow from './NotificationTimeRow';
 
 interface IProps {
   navigation: NavigationProp<BHRootTabs, 'Preferences'>;
@@ -92,20 +92,11 @@ export default function SettingsScreen({navigation}: IProps) {
         />
       </View>
 
-      {settings.notification && (
-        <BHTouchable
-          onPress={() => setShowTimePickerModal(true)}
-          backgroundColor={ThemeColors.white}>
-          {(backgroundColor) => (
-            <View style={[styles.row, {backgroundColor}]}>
-              <Text style={styles.settingTitle}>{t('ReviewTime')}</Text>
-              <Text style={styles.settingText}>
-                {settings.notificationTime}
-              </Text>
-            </View>
-          )}
-        </BHTouchable>
-      )}
+      <NotificationTimeRow
+        setShowTimePickerModal={setShowTimePickerModal}
+        setNotificationTime={setNotificationTime}
+        settings={settings}
+      />
 
       <View style={styles.row}>
         <Text style={styles.settingTitle}>
@@ -145,7 +136,7 @@ export default function SettingsScreen({navigation}: IProps) {
         )}
       </BHTouchable>
 
-      <DateTimePicker
+      <DateTimePickerModal
         isVisible={showTimePickerModal}
         mode="time"
         date={nextDateAtTime(getTimePieces(settings.notificationTime))}
@@ -189,7 +180,7 @@ function backupDetailText(
   return '';
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',

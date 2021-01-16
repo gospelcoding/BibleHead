@@ -3,6 +3,7 @@ import PushNotification from 'react-native-push-notification';
 import {Platform} from 'react-native';
 import {TFunc} from '../i18n/i18n';
 import {zeroPad, isInt} from './util';
+import {uses24HourClock} from 'react-native-localize';
 
 export function sendNotifications(time: string, t: TFunc) {
   cancelNotifications();
@@ -47,6 +48,19 @@ export function getTimePieces(
     hour: isInt(pieces[0]) ? pieces[0] : fallback.hour,
     minute: isInt(pieces[1]) ? pieces[1] : fallback.minute,
   };
+}
+
+export function printNotificationTime(time: string) {
+  if (uses24HourClock()) return time;
+
+  const pieces = getTimePieces(time);
+  if (pieces.hour >= 1 && pieces.hour <= 11) return time;
+
+  if (pieces.hour == 0) return `12:${pieces.minute}`;
+
+  if (pieces.hour == 12) return `12:${pieces.minute}p`;
+
+  return `${pieces.hour - 12}:${pieces.minute}p`;
 }
 
 export function cancelNotifications() {
