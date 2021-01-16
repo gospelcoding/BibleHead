@@ -3,7 +3,7 @@ import {LatestBackup} from '../util/Backups';
 
 export type LearnGame = 'HideWords' | 'ShuffleWords';
 
-export const CURRENT_VERSION = '3.2';
+export const CURRENT_VERSION = '3.3';
 
 export interface BHSettings {
   notification: boolean;
