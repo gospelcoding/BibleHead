@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, Platform} from 'react-native';
 import RefEditor from './RefEditor';
 import {useDispatch} from 'react-redux';
 import {Verse, refText} from '../verses/Verse';
@@ -8,6 +8,7 @@ import BHTextInput from '../util/BHTextInput';
 import {useT} from '../i18n/i18nReact';
 import BHButton from '../components/BHButton';
 import Container from '../components/Container';
+import {useKeyboard} from '@react-native-community/hooks';
 
 interface IProps {
   done: (save: boolean) => void;
@@ -17,10 +18,15 @@ interface IProps {
 
 export default function VerseEditor(props: IProps) {
   const t = useT();
-  const dispatch = useDispatch();
 
   const [verse, setVerse] = useState<Verse | undefined>(props.verse);
   const [showRefEditor, setShowRefEditor] = useState(!props.verse);
+  const keyboard = useKeyboard();
+  const tabHeight = 49;
+  const keyboardPad =
+    keyboard.keyboardShown && Platform.OS == 'ios'
+      ? keyboard.keyboardHeight - tabHeight
+      : 0;
 
   return (
     <Container>
@@ -32,21 +38,30 @@ export default function VerseEditor(props: IProps) {
         />
       ) : (
         <Container>
-          <TapText
-            text={refText(verse)}
-            onPress={() => setShowRefEditor(true)}
-          />
-          <View style={{flex: 1, justifyContent: 'flex-end', padding: 16}}>
-            <ScrollView>
-              <BHTextInput
-                multiline
-                value={verse.text}
-                onChangeText={(text) => setVerse({...verse, text})}
-                placeholder={t('VerseTextInputHint')}
-              />
-            </ScrollView>
+          {!keyboard.keyboardShown && (
+            <TapText
+              text={refText(verse)}
+              onPress={() => setShowRefEditor(true)}
+            />
+          )}
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'flex-end',
+            }}>
+            <BHTextInput
+              multiline
+              value={verse.text}
+              onChangeText={(text) => setVerse({...verse, text})}
+              placeholder={t('VerseTextInputHint')}
+            />
           </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingBottom: keyboardPad,
+            }}>
             <BHButton
               title={t('Save')}
               onPress={() => {
