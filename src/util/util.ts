@@ -91,3 +91,10 @@ export function isInt(x: unknown) {
 export function colorizeSvg(svg: string, color: string) {
   return svg.replace(/#ffffff/g, color);
 }
+
+export function count<T>(list: T[], itemToFind: T): number {
+  return list.reduce(
+    (count, item) => (item === itemToFind ? count + 1 : count),
+    0,
+  );
+}

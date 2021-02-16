@@ -25,6 +25,7 @@ import {Text} from 'react-native';
 import HighlightText from '../components/HighlightText';
 import {useFormattedDate} from '../util/formattedDate';
 import useAutoReview from './useAutoReview';
+import CommonStyles from '../util/CommonStyles';
 
 interface IProps {
   navigation: CompositeNavigationProp<
@@ -248,11 +249,7 @@ const styles = StyleSheet.create({
   right: {
     textAlign: 'right',
   },
-  shadow: {
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 4,
-  },
+  shadow: CommonStyles.shadow,
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',

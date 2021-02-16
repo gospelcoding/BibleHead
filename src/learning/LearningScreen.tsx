@@ -7,7 +7,7 @@ import {
 import {View} from 'react-native';
 import BHText from '../components/BHText';
 import {useAppSelector} from '../BHState';
-import {refText, Verse} from '../verses/Verse';
+import {refText} from '../verses/Verse';
 import HideWordsGame from './HideWordsGame';
 import {useDispatch} from 'react-redux';
 import {useVerseById} from './useVerseById';
@@ -16,10 +16,11 @@ import versesSlice, {versesUpdateAction} from '../verseList/versesSlice';
 import ScreenRoot from '../components/ScreenRoot';
 import ShuffleWordsGame from './ShuffleWordsGame';
 import SwitchGameButton from './SwitchGameButton';
-import ThemeColors from '../util/ThemeColors';
 import Row from '../components/Row';
 import {LearningStackNav} from './LearningStack';
 import {useT} from '../i18n/i18nReact';
+import FloatWordsGame from './FloatWordsGame';
+import ElevatedView from 'react-native-elevated-view';
 
 export type BHReview = {
   toReview: number[];
@@ -85,12 +86,15 @@ export default function LearningScreen({navigation, route}: IProps) {
   if (learnVerse) {
     return (
       <ScreenRoot>
-        <Row spaceBetween>
-          <View style={{flexShrink: 1}}>
-            <BHText heading>{refText(learnVerse)}</BHText>
-          </View>
-          <SwitchGameButton game={learnGame} />
-        </Row>
+        <ElevatedView elevation={8} style={{backgroundColor: '#FFFFFF'}}>
+          <Row spaceBetween>
+            <View style={{flexShrink: 1}}>
+              <BHText heading>{refText(learnVerse)}</BHText>
+            </View>
+            <SwitchGameButton game={learnGame} />
+          </Row>
+        </ElevatedView>
+
         {learnGame == 'HideWords' ? (
           <HideWordsGame
             key={learnVerse.id}
@@ -98,8 +102,15 @@ export default function LearningScreen({navigation, route}: IProps) {
             didPractice={didPracticeLearnVerse}
             done={done}
           />
-        ) : (
+        ) : learnGame == 'ShuffleWords' ? (
           <ShuffleWordsGame
+            key={learnVerse.id}
+            verse={learnVerse}
+            didPractice={didPracticeLearnVerse}
+            done={done}
+          />
+        ) : (
+          <FloatWordsGame
             key={learnVerse.id}
             verse={learnVerse}
             didPractice={didPracticeLearnVerse}
