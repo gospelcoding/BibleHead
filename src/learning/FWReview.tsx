@@ -28,9 +28,10 @@ export default function FWReview(props: IProps) {
         ]}>
         {gameScore}%
       </Text>
-      <ScrollView>
+      <ScrollView style={{flex: 1}}>
         <BaseHighlightText
           pieces={chunks}
+          style={{fontSize: 24}}
           highlightStyle={{color: ThemeColors.green, fontWeight: 'bold'}}
         />
       </ScrollView>
